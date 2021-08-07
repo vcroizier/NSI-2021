@@ -1,0 +1,486 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+% TODO: Ajuster la position des sauts de page.
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2021--2022}
+{Numérique et Sciences Informatiques}{Chap. 1 : Rappels}
+\section{Généralités sur les variables}
+\subsection{Définition}
+Le premier élément de base de la programmation est la \emph{variable}, qui permet
+de stocker les données utilisées par le programme.
+
+Pour simplifier,
+
+\begin{Definition}{}
+Une variable est l'association d'un nom (l'identifiant) et d'une valeur via 
+l'indication d'un emplacement mémoire.
+
+Les variables ont un type, qui définit les modalités de stockage en 
+mémoire, la nature des valeurs qu'elles peuvent prendre et les opérations que 
+l'on peut exécuter avec.
+
+Donner une valeur à une variable s'appelle réaliser une affectation. 
+\end{Definition}
+
+\medskip
+Diverses remarques : 
+\begin{itemize}
+	\item En langage Python, les identifiants des variables peuvent contenir des 
+	chiffres et des lettres (mais ne peuvent commencer par un chiffre) et le 
+	symboles $\_$ (underscore : tiret bas, touche 8). Ils sont \emph{case-sensitive} 
+	c'est à dire sensible aux majuscules/minuscules.
+	\item Certains langages, comme le C, sont à \emph{typage statique} : les 
+	variables et leurs types doivent être déclarées préalablement et ne peuvent 
+	accueillir que des valeurs de ce type.
+
+	D'autres langages, comme Python, sont à \emph{typage dynamique} et les 
+	variables reçoivent leurs types lors de l'affectation et ce type peut 
+	changer au cours de l'exécution d'un programme.  
+\end{itemize}
+
+\subsection{Les différents types simples}
+En Python, on accède au type d'une variable via la commande \code{type}. On 
+distingue les types simples suivants :
+\begin{itemize}
+\item \code{int} : entiers signés, sans limitation de taille (\emph{entiers longs}).
+\item \code{float} : nombres à virgule flottante codés sur 64 bits (mantisse : 52 bits,
+exposant : 11 bits, signe : 1 bit) et allant environ de $5\cdot10^{-324}$ à $2\cdot 10^{308}$.
+\item \code{str} : chaînes de caractères, délimitées par des guillemets simples 
+ou doubles.
+\item \code{bool} : booléens, ce sont des variables pouvant prendre comme valeur 
+\code{True} et \code{False}, correspondant aux propositions logiques. 
+\end{itemize}
+\subsubsection*{Activité 1}
+Dans la console Python, tapez les commandes suivantes et commentez les résultats :
+\begin{Python}
+a=5
+b=1.23
+type(a)
+type(b)
+a+b
+type(a+b)
+c=a>b
+type(c)
+d='coucou'
+type(d)
+'5'+'5'
+5+5
+5+'5'
+int(7.5)
+int('75')
+str(71.23)
+\end{Python}
+On reverra dans la suite du chapitre les types construits de Python : tableau, 
+tuple, dictionnaire. 
+\subsection{Les règles de l'affectation}
+Les emplacements mémoires où peuvent être stockées les variables Python sont 
+repérés par des entiers auxquels ont peut accéder par la commande \code{id}.
+
+En langage Python, l'affectation d'une variable se fait par une écriture du type
+
+\smallskip
+\centerline{\code{identifiant de variable = expression}}
+
+\smallskip
+et obéit aux règles suivantes :
+\begin{itemize}
+\item si l'expression est réduite à un nom de variable, la nouvelle variable se
+ voit attribuer le même emplacement mémoire / le même \code{id} que la variable 
+ de droite. Ainsi, les deux noms de variables sont juste deux accès différents 
+ vers une même ressource. %c'est l'aliasing : à dire à l'oral.
+\item sinon, l'expression est évaluée et :
+\begin{itemize}
+% On dira : immuable ou non mutable. 
+% zapper le vocabulaire sur l'interning, trop spécialisé.
+\item si elle est d'un type simple et que la valeur a déjà été stockée en 
+mémoire, alors \uline{sauf exceptions} on lui attribue l'\code{id} déjà donné à 
+cette valeur.
+\item dans le cas contraire,
+elle est stockée dans un nouvel emplacement mémoire et reçoit un nouvel \code{id}
+\end{itemize}
+\end{itemize}
+
+Le but de ceci est d'économiser la mémoire en faisant en sorte que si on a mille 
+variables de même valeur 2, elles pointent toutes (autant que possible) vers un 
+même case mémoire qui contient la valeur 2.
+% Cette manœuvre a un coût, c'est pour ça que le choix de Python est de ne faire
+% que partiellement l'interning. 
+
+\medskip
+Par contre, on insiste bien sur le fait que à chaque affectation, on crée une 
+nouvelle variable : comme on le verra ci-dessous, si on écrit \code{a=2} puis 
+\code{a=5}, les deux \code{a} sont des variables différentes en terme 
+d'emplacement mémoire, de même si on écrit \code{a=a+1}.
+\subsubsection*{Activité 2}
+Dans la console Python, tapez les commandes suivantes et commentez les résultats :
+\begin{Python}
+a=5
+b=a
+c=3+2
+d=int('2')
+e=a+1
+id(a)
+id(b)
+id(c)
+id(d)
+id(e)
+\end{Python}
+On retrouve bien le fait que la plupart des variables qui ont pour valeur 2 ont 
+le même id.
+\begin{Python}
+a=8
+b=a
+id(a)
+id(b)
+a=50
+b
+id(a)
+id(b)
+\end{Python}
+
+Les quatre premières lignes sont classiques. Puis, au moment de l'affectation 
+\code{a=50}, on crée une nouvelle variable, à un nouvel emplacement mémoire. 
+Et comme cette variable a également comme identifiant \code{a}, \code{a} et 
+\code{b} pointent maintenant vers des emplacements mémoires différents et comme 
+\code{b} pointe vers l'ancien emplacement mémoire, la variable \code{b} conserve 
+sa valeur initiale.
+
+\bigskip
+D'autres exemples seront donnés avec des variables de types construits.
+
+\subsection{Comparaison de variables}
+Il existe deux commandes permettant de tester l'égalité de variables : \code{==} 
+et \code{is}.
+
+Plus précisément, \code{==} teste l'égalité des valeurs tandis que \code{is} 
+permet de tester que l'égalité des emplacements mémoires, des \code{id}.
+
+\subsubsection*{Activité 3}
+Dans la console Python, tapez les commandes suivantes et commentez les résultats :
+\begin{Python}
+a=2
+b=2.0
+a==b
+a is b
+\end{Python}
+
+Là encore, d'autres exemples seront donnés avec des variables de types construits.
+
+\section{Types construits}
+Dans cette section, on évoque les modèles théoriques de types construits et leurs 
+implémentations en Python. 
+\subsection{Tableaux}
+\begin{Definition}{}
+Un tableau est une collection ordonnée de taille fixée d'éléments de même type, 
+auxquels on peut accéder (pour lecture ou écriture) au moyen d'un indice.  
+\end{Definition}
+
+\medskip
+Historiquement, cette définition se comprend car elle permettait
+une gestion de mémoire et un accès efficace.
+En effet, on déclarait un tableau de taille fixée dont tous les éléments étaient 
+du même type et le programme réservait des emplacements mémoires consécutifs 
+et de même taille et dès lors, un calcul très simple permettait de trouver 
+l'emplacement mémoire correspondant à chaque indice du tableau.
+
+\medskip
+Cependant, en Python, il n'y a pas de type \code{array} natif (même si on en 
+trouve dans des modules comme \code{numpy}) et ce qui s'en rapproche le plus à 
+l'usage est le type \code{list}  
+qui est beaucoup plus souple d'usage car ses éléments peuvent être de différents 
+types et on peut y ajouter des éléments.
+
+\medskip
+En Python, les éléments de type \code{list} sont représentés entre crochets 
+\code{[ ]} et sont indexés à partir de $0$ (ces propriétés étant communes à de 
+nombreux langages).
+
+\subsubsection*{Activité 4}
+Dans la console Python, tapez les commandes suivantes et commentez les résultats :
+\begin{Python}
+t=[2,5,7,-6,4]
+type(t)
+len(t)
+t[0]
+t[1]
+t.append(10)
+t
+t.extend([7,8,9])
+t
+\end{Python}
+On peut aussi illustrer sur ce type les règles d'affectation discutées précédemment. 
+\begin{Python}
+t=[1,2,3]
+u=t
+v=[1,2,3]
+id(t)
+id(u)
+id(v)
+t==v
+t is v
+t==u
+t is u
+t[0]=5
+u.append(10)
+t
+u
+\end{Python}
+On observe bien que \code{u} et \code{t} mènent à un même emplacement 
+mémoire. Et donc, toute modification de l'une, que ce soit au moyen d'un 
+\code{.append} ou en modifiant une composante, modifie l'autre (vu qu'en 
+fait ils ne font qu'un).
+
+Par contre, si on refait une affectation \code{t=[...]}, alors on crée une nouvelle 
+variable \code{t} avec un nouvel \code{id} et qui est donc indépendante de \code{u}.
+\subsubsection*{Problèmes de copies}
+Copier une liste de la manière précédente conduit très souvent à des problèmes
+inattendus à l'exécution. Il convient de dupliquer la liste de diverses manières :    
+\begin{Python}
+a=[7,12,-11,2,0] 
+b=list(a)
+c=a[:]
+d=a+[]
+\end{Python}
+On vérifie facilement que \code{a}, \code{b}, \code{c} et \code{d} sont des 
+listes contenant les mêmes éléments mais non liées.
+
+Cependant ce genre de duplication ne créé de double que de la liste, pas de ses 
+éléments (c'est un clonage simple : un seul niveau). Comme on peut le voir dans
+la suite :
+\begin{Python}
+a=[1,2,3]
+b=[4,5,6] 
+c=[a,b] 
+d=list(c) 
+\end{Python}
+\code{c} et \code{d} ne sont pas liés : on peut rajouter un élément à \code{c} 
+sans que cela impacte \code{d} (ou on peut vérifier qu'elles ont des \code{id} 
+différents.): 
+\begin{Python}
+c.append([7,8,9]) 
+c
+d
+\end{Python}
+Mais \code{c[0]} et \code{d[0]}, qui sont deux alias de \code{a}, mènent à un 
+seul et même emplacement mémoire !! 
+\begin{Python}
+c[0][1]=13 
+c 
+d 
+\end{Python}
+Pour parer à ce genre de difficultés, on peut utiliser des bibliothèques 
+spécialement conçues : 
+\begin{Python}
+import copy  # importe la bibliothèque copy
+d=copy.deepcopy(c) # crée une copie de c complètement indépendante 
+\end{Python}
+Ici, le clonage est fait en profondeur: on clone la liste, ses éléments, les 
+éléments dans les éléments\dots
+\subsection{Les p-uplets}
+\begin{Definition}{}
+Un p-uplet est une collection ordonnée de taille fixée d'éléments auxquels on 
+peut accéder pour lecture au moyen d'un indice.
+
+Un p-uplet est une structure immuable :
+	\begin{itemize}
+	\item on ne peut modifier ses éléments.
+	\item on ne peut lui rajouter des éléments
+	\end{itemize}
+\end{Definition}
+
+\medskip
+En Python, les p-uplets (\code{tuple}) sont présentés par des suites d'éléments
+séparés par des virgules, éventuellement encadrés par des parenthèses (non 
+obligatoires sauf pour le tuple vide).
+
+\medskip
+\begin{Python}
+tuple1=(2,5,7,'abc',3.25)
+tuple1[2]
+tuple1[0]
+len(tuple1)
+type(tuple1)
+tuple2=5,9,'bonjour'
+type(tuple2) # les parenthèses sont inutiles
+tuple3=()
+type(tuple3)
+tuple4=(3)
+type(tuple4) # ATTENTION !! (3) est un int
+tuple4=(3,)
+type(tuple4) # Là, c est mieux !!
+\end{Python}
+
+Notons que lorsqu'on réalise une affectation simultanée ou lorsqu'on considère 
+une fonction qui renvoie plusieurs valeurs, on utilise la structure de tuple.
+
+\subsubsection*{Caractère immuable}
+On voit maintenant la différence essentielle : l'impossibilité de faire des 
+affectations sur des tuples. Testons les commandes suivantes en prenant bonne 
+note des messages d'erreurs obtenus. 
+\begin{Python}
+tuple1=(2,5.8,'abc',14)
+tuple1.append(7)
+tuple1[3]=78
+\end{Python}
+
+\medskip
+\includegraphics[width=14cm]{images/erreurtuple1.JPG}
+
+\vspace{1cm}
+\includegraphics[width=14cm]{images/erreurtuple2.JPG}
+
+\subsection{Les Dictionnaires}
+\subsubsection*{Premières définitions} 
+Les tableaux sont un bon outil quand on a des données de même nature et qui apparaissent 
+dans un ordre naturel : 1$^{ere}$ note obtenue, 2$^{eme}$ note obtenue,.... 
+
+Mais si on veut regrouper dans une même structure des données de type différents 
+et pour lesquels il n'y a pas de raisons d'avoir un ordre particulier, alors la 
+structure de dictionnaire est la plus adaptée. 
+\begin{Definition}{} Un dictionnaire est une structure de données dans lequel 
+les éléments sont représentés par des couples clés-valeurs, les clés servant pour 
+accéder aux valeurs.
+
+Un dictionnaire est une structure mutable :
+	\begin{itemize}
+	\item on peut modifier les valeurs
+	\item on peut lui rajouter des couples clés-valeurs
+	\end{itemize}
+\end{Definition}
+
+En Python, les dictionnaires sont écrits entre accolades, chaque couple 
+\code{clé:valeur} étant séparé par une virgule. 
+
+Par exemple,
+\begin{Python}
+eleve1={"nom":"Dupont","prenom":"Nadia","sexe":0,"anglais":True,"notesAnglais":[15,17,9,12],"allemand":False,"notesAllemand":[]}
+eleve1["nom"]
+eleve1["anglais"]
+eleve1["notesAnglais"].append(18)
+eleve1["nom"]="Dupond"
+\end{Python}
+
+$\bullet$ Ici, les clefs sont :
+
+\code{"nom","prenom","sexe","anglais","notesAnglais","allemand","notesAllemand"}
+
+On peut y accéder directement au moyen de :
+\begin{Python}
+eleve1.keys()
+\end{Python}
+
+$\bullet$ Ici, les valeurs sont :
+
+\code{"Dupont","Nadia",0,True,[15,17,9,12],False,[]}
+
+On peut y accéder directement au moyen de :
+\begin{Python}
+eleve1.values()
+\end{Python}
+
+$\bullet$ On peut accéder aux couples \code{clé:valeur} (représentés comme des 
+2-uplets) au moyen de \code{items} : 
+\begin{Python}
+eleve1.items()
+\end{Python}
+\subsubsection*{Nature des clefs}
+Dans l'exemple ci-dessus, il est naturel d'avoir pour clef des chaînes de caractères. \\
+Mais en fait, les clefs peuvent être des \code{int}, \code{float} ou même des tuples.
+\begin{Python}
+essai={1:3,1.5:7,2.8:9,(1,2):10}
+essai[1]         # renvoie 3
+essai[2.8]       # renvoie 9
+essai[(1,2)]     # renvoie 10
+\end{Python}
+\subsubsection*{Ajout d'une clef}
+Contrairement à ce qui se passe avec un type \code{list}, on peut ajouter "à la volée" un 
+couple clef:valeur à un dictionnaire.
+
+\begin{Python}
+eleve1["regime"]="externe"
+eleve1
+\end{Python}
+Le couple \code{"regime":"externe"} a été ajouté au dictionnaire \code{eleve1} 
+
+\subsubsection*{Test sur les éléments d'un dictionnaire}
+
+Les divers tests s'effectuent au moyen du mot-clef  \code{in}.
+
+Les tests suivants existent :  
+\begin{Python}
+clef in dictionnaire
+# teste si une clef est dans le dictionnaire
+clef in dictionnaire.keys()
+# teste si une clef est dans la liste des clefs
+(clef,valeur) in dictionnaire.items()
+# teste si un couple clef:valeur est dans la liste des couples du dictionnaire
+valeur in dictionnaire.values()
+# teste si une valeur est dans la liste des valeurs
+\end{Python}
+\`A noter que le test le moins coûteux informatiquement est \code{clef in dictionnaire}, 
+les autres tests obligeant d'abord à créer les listes des clefs/valeurs/objets.
+
+Le test \code{value in dictionnaire}, quant à lui, ne fonctionne pas. 
+
+Par exemple,
+\begin{Python}
+"prenom" in eleve1                   # renvoie True
+"Nadia" in eleve1                    # renvoie False
+"prenom" in eleve1.keys()            # renvoie True
+("prenom","Nadia") in eleve1.items() # renvoie True
+"Nadia" in eleve1.values()           # renvoie True
+\end{Python}
+\subsubsection*{Parcours d'un dictionnaire}
+On peut déduire du comportement des tests que l'on peut faire un parcours sur 
+les clés d'un dictionnaire mais pas sur ses valeurs.
+
+Ainsi, quand on écrit \code{for k in dictionnaire}, la variable \code{k} va 
+parcourir l'ensemble des clefs du dictionnaire. 
+Par exemple, les commandes 
+\begin{Python}
+for k in eleve1:
+	print(k)
+\end{Python}
+provoquent l'affichage de :
+
+nom
+
+prenom
+
+sexe
+
+anglais
+
+... 
+\medskip\\
+On peut aussi tester de manière similaire : 
+\begin{Python}
+for k in eleve1:
+	print(k,eleve1[k])
+\end{Python}
+ou encore 
+\begin{Python}
+for k in eleve1.items():
+	print(k)
+\end{Python}
+ou encore 
+\begin{Python}
+for k in eleve1.items():
+	print( k[0]+" a la valeur "+ str(k[1]) )
+\end{Python}
+
+\subsubsection*{Activité 5}
+On crée la variable 
+\begin{Python}
+D={'400' : 'chute de Rame', '1492' : 'decouverte Amerique', '1789' : 'prise Bastille','1945' : 'fin 2eme GM'}
+\end{Python}
+\begin{enumerate}
+\item Quel est le type de \code{D} ?
+\item Que renvoie \code{len(D)} ?  
+\item Que renvoie \code{D[0]} ?
+\item Donner les clefs de \code{D}. Quelle commande permet d'y accéder ?
+\item Citer une valeur de \code{D}. Comment obtenir la liste des valeurs ?
+\item Proposer une commande pour corriger la faute d'orthographe \code{ 'Rame'} au lieu de \code{'Rome'}.
+\item Proposer une commande pour ajouter une entrée concernant la fin de la première guerre mondiale à \code{D}. 
+\end{enumerate} 
+\end{document}

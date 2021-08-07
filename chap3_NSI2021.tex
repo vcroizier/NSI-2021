@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+% TODO: Ajuster la position des sauts de page.
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2020--2021}
+{Numérique et Sciences Informatiques}{Chap. 3 : Quelques notions sur la 
+Programmation Orientée Objet}
+\section{Définition}
+\begin{Definition}{}
+\begin{enumerate}
+\item En informatique, une {\color{red} classe} est une structure de données dont 
+les composantes peuvent être de natures variées. 
+\item Les composantes d'une classe s'appellent ses {\color{red} attributs} et 
+sont référencées par des noms.
+\item La structure d'une classe peut également contenir des fonctions, qui 
+s'appellent ses {\color{red} méthodes} et dont le but premier est la manipulation 
+des attributs de la classe.
+\item On appelle {\color{red} objet} une instance d'une classe.
+\end{enumerate}
+\end{Definition}
+
+\section{Exemple en langage Python}
+On propose un exemple dont le code est donné page 3.
+
+Remarquons les points suivants :
+\begin{enumerate}
+\item En Python, on définit une classe grace au mot-clef \code{class} et le nom 
+de la classe (ici \code{Personnage}) doit commencer par une majuscule.
+\item La fonction \code{\_\_init\_\_} s'appelle le {\bf constructeur de la classe} 
+et c'est par son utilisation que l'on crée des objets cette classe.
+
+On remarque l'utilisation du mot-clef \code{self} qui, à l'intérieur de la définition
+de la classe, désigne l'objet sur lequel on travaille.
+
+\item En regardant le constructeur de la classe, on constate que la classe 
+\code{Personnage} possède sept attributs :
+\begin{itemize}
+    \item \code{nom} et \code{race} dont les valeurs sont de type \code{str};
+    \item \code{age}, \code{force}, \code{vitalite}, \code{vitalite\_max} dont les 
+    valeurs sont de type \code{int};
+    \item \code{en\_vie} dont la valeur est de type \code{bool}.
+\end{itemize}
+On remarque que à la création d'un objet, les valeurs des attributs peuvent être fixées 
+par l'utilisateur ou peuvent être déterminées (constantes, tirées au hasard, etc...) 
+dans le constructeur.
+\item \code{\_\_str\_\_}, \code{affiche\_carac}, \code{perd\_vie}, 
+\code{mange\_haricot}, \code{attaque} sont des méthodes de la classe.
+
+Elles prennent toutes au moins un argument qui est \code{self} (qui référence 
+l'objet lui-même).
+
+Elles peuvent avoir d'autres arguments, de tous types, y compris objet de cette 
+classe ou d'une autre.
+
+\end{enumerate}
+
+\subsection*{Activite}
+\begin{enumerate}
+\item Les deux commandes suivantes créent les variables \code{goku} et \code{krilin},
+qui sont des instances de la classe \code{Personnage}.
+\begin{Python}
+goku=Personnage("San Goku","Saiyan",32)
+krilin=Personnage("Krilin","Humain",35)
+type(goku)
+type(krilin)
+\end{Python}
+    \item On peut accéder aux attributs avec la syntaxe \code{objet.attribut} :
+\begin{Python}
+goku.nom
+goku.vitalite
+krilin.force
+\end{Python} 
+    On peut aussi les modifier "à la main" :
+\begin{Python}
+goku.nom="Kakarot"
+krilin.force=500
+\end{Python} 
+    Mais même si cela est possible informatiquement, c'est considéré comme étant 
+    de la mauvaise pratique en terme de programmation et normalement, les attributs 
+    d'un objet ne doivent être modifiés que via des méthodes dédiées.
+
+Ceci est lié au principe d'{\em encapsulation } : une classe est une structure 
+de données fournie par un concepteur à un utilisateur ({\em client}).
+
+Le client doit connaître les actions qu'il peut accomplir sur ces données. 
+Ceci conduit à une énumération des fonctions, l'{\em interface} de la classe. 
+
+Mais le client ignore a priori l'{\em implémentation} de la classe et modifier 
+des attributs à la volée peut avoir des {\em effets de bords} non désirés. 
+
+\item Les méthodes dont le nom commencent par une lettre s'utilisent avec la syntaxe
+
+
+\code{objet.methode(arguments éventuels)}
+\begin{Python}
+goku.affiche_carac()
+krilin.affiche_carac()
+krilin.attaque(goku)
+goku.attaque(krilin)
+krilin.perd_vie(15)
+\end{Python}
+
+\item Les méthodes dont le nom est encadré par des \code{\_\_} correspondent à 
+des opérations prédéfinies de Python et on les appelle avec des mots-clefs ou des
+symboles plutôt qu'avec la syntaxe \code{objet.methode}
+
+Par exemple, \code{\_\_str\_\_} est appelée par le mot clef \code{str} et renvoie 
+une chaîne de caractères décrivant l'objet.
+
+\begin{Python}
+str(goku)
+\end{Python}
+
+De même,
+\begin{itemize} 
+\item \code{\_\_lt\_\_} permet de définir une méthode qui effectue des tests, 
+renvoie un booléen et est appelée par \code{<}.
+\item \code{\_\_eq\_\_} permet de définir une méthode qui effectue des tests, 
+renvoie un booléen et est appelée par \code{==}. En effet, par défaut, le \code{==}  
+appliqué à des objets réagira comme le \code{is} et ne renverra \code{True} que si 
+les deux identifiants comparés renvoient au même \code{id}.
+
+Par exemple, le code :
+\begin{Python}
+    def __eq__(self,autre):
+        return(self.force+self.vitalite==autre.force+autre.vitalite)
+\end{Python}
+
+définit une méthode et le test \code{goku==krilin} renverra \code{True} si 
+on obtient le même total en additionnant leurs \code{force} et \code{vitalite}. 
+\end{itemize}
+\end{enumerate}
+
+
+\subsection*{Code Python de la classe}
+\begin{Python}
+import random
+
+class Personnage:
+    def __init__(self,lenom,larace,lage):
+        self.nom=lenom
+        self.race=larace
+        self.age=lage
+        self.en_vie=True
+        if self.race=="Saiyan":
+            self.force=random.randint(30,40)
+            self.vitalite=100
+            self.vitalite_max=100
+        elif self.race=="Humain":
+            self.force=random.randint(10,20)
+            self.vitalite=30
+            self.vitalite_max=30
+        
+    def __str__(self):
+            return ("Bonjour, je m'appelle "+self.nom+" de la race des "+self.race+"s\n. J'ai "+str(self.force)+" ans.")
+        
+    def affiche_carac(self):
+            print(str([self.nom,self.force,self.vitalite]))  
+
+    def perd_vie(self,n):
+        self.vitalite=self.vitalite-n
+        print(self.nom+" a encore une vitalité de "+str(self.vitalite))
+        if self.vitalite<=0:
+            self.en_vie=False
+            print(self.nom+" est mort.")
+        
+    def mange_haricot(self):
+        self.vitalite=self.vitalite_max
+        
+    def attaque(self,autre):
+        autre.perd_vie(self.force)
+\end{Python}
+
+
+\end{document}

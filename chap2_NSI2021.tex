@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+% TODO: Ajuster la position des sauts de page.
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2020--2021}
+{Numérique et Sciences Informatiques}{Chap. 2 : Quelques notions sur la récursivité}
+\section{Définition}
+\begin{Definition}{}
+\begin{enumerate}
+\item Un algorithme récursif est un algorithme qui résout un problème 
+en calculant des solutions d'instances plus petites du même problème.
+\item Une fonction récursive est une fonction qui s'appelle elle-même 
+dans sa définition. 
+\end{enumerate}
+\end{Definition}
+
+Par exemple, écrivons une fonction permettant de calculer la somme 
+des $n$ premiers entiers non nuls. 
+
+Sous forme classique,
+\begin{Python}
+def somme(n):
+	S=0
+	for k in range(1,n+1):
+		S=S+k
+	return S
+\end{Python}
+En version récursive, on obtient le programme 
+\begin{Python}
+def somme_rec(n):
+	if n==1:
+		return 1
+	else :
+		return n+somme_rec(n-1)
+\end{Python}
+Détaillons le fonctionnement de \code{somme\_rec} pour $n=4$ en détaillant 
+la pile d'exécution (\emph{call stack}) relative à ce programme.
+%à ce moment, je leur fais à la main le cheminement du programme
+
+\newpage
+On observe qu'une fonction récursive s'écrit avec : 
+\begin{itemize}
+\item un (ou plusieurs) cas terminal pour lequel la fonction renvoie 
+directement une valeur;
+\item un cas général pour lequel la fonction fait appel à elle-même. 
+\end{itemize}
+
+Un exemple dans lequel on a deux cas terminaux, la célébrissime 
+suite de Fibonacci, définie par 
+$\sys{
+F_0=0\\
+F_1=1\\
+F_{n+2}=F_{n+1}+F_n\text{ si $n\geq 0$}
+}$
+
+
+Elle se programme par récursivité au moyen de 
+
+\begin{Python}
+def Fib(n):
+	if n==0:
+		return 0
+	elif n==1:
+		return 1
+	else :
+		return Fib(n-1)+Fib(n-2)
+\end{Python}
+
+Calculons à la main les premiers termes et observons les appels occasionnés
+par l'exécution de \code{Fib(5)}.
+\vspace{7cm}
+
+\section{Terminaison et coût d'exécution d'une fonction récursive}
+\subsection{Terminaison} 
+Si on veut être certain de la terminaison d'un appel d'une fonction récursive,
+on doit vérifier que quelle que soit la valeur de départ des arguments, 
+toutes les piles d'appels engendrées par l'exécution du programme se termineront
+en un nombre fini d'étapes par des cas terminaux.
+
+Ceci reprend le principe des {\em variants de boucle} utilisés pour prouver 
+la terminaison d'une boucle \code{while}.
+
+Par exemple, en reprenant \code{somme\_rec}. Soit \code{n} un entier $\geq1$.
+\begin{itemize}
+\item si \code{n} vaut 1, l'exécution de \code{somme\_rec(n)} s'arrête , 
+on a bien la terminaison.
+\item si \code{n}>1, on appelle \code{somme\_rec(n-1)} et donc le problème 
+de terminaison pour \code{somme\_rec(n)} se ramène exactement à celui 
+de \code{somme\_rec(n-1)} 
+\end{itemize}
+Par suite, si on commence avec un entier \code{n}$\geq1$,
+on sait que l'exécution du programme s'arrêtera en  \code{n-1} étapes.
+
+Par contre, si on essaye de calculer \code{somme\_rec(1/2)}, on n'arrive 
+jamais à la valeur terminale et on fait donc une infinité d'appels récursifs. 
+
+Ceci provoque une erreur spécifique, le dépassement de la taille de la pile 
+d'appel, un \emph{stack overflow}.
+ 
+\includegraphics[width=14cm]{images/erreurrec.JPG}    
+
+Il vaut mieux donc commencer une fonction récursive par l'utilisation d'une commande
+\code{assert} pour éviter tout mauvais choix d'arguments.
+
+\subsection{Coût d'exécution} 
+Il peut être assez difficile à calculer, dépendant du nombre d'appels récursifs
+faits et du coût d'exécution de chaque appel. 
+
+
+Par exemple, pour \code{somme\_rec}, on a un test et une addition à chaque appel
+de la fonction, ce qui fait de l'ordre de 2n opérations pour exécuter 
+\code{somme\_rec(n)}. 
+
+
+Il faut noter que le coût d'exécution de fonctions récursives peut être 
+extrêmement élevés.
+
+
+Par exemple, si on s'intéresse au nombre d'appels causés par l'exécution de
+\code{Fib(n)}, on voit qu'il est de l'ordre de \code{Fib(n)} car il obéit 
+au même principe : on additionne le nombre d'appels occasionnés par l'exécution 
+de \code{Fib(n-1)} et de \code{Fib(n-2)} pour avoir le nombre d'appels 
+occasionnés par l'exécution de \code{Fib(n)}.
+
+
+On peut être plus précis grâce au programme suivant, compter 
+le nombre exact d'appels :
+
+\begin{Python}
+nap=0
+
+def Fib(n):
+    global nap
+    nap=nap+1
+    if n==0:
+        return 0
+    elif n==1:
+        return 1
+    else :
+        return Fib(n-1)+Fib(n-2)
+\end{Python}
+
+On constate que pour calculer \code{Fib(20)},
+on doit faire 21891 appels de fonctions !! 
+
+Ici, une programmation classique serait beaucoup moins coûteuse
+(quelques dizaines d'opérations).
+
+À noter que l'optimisation de tels programmes en mémorisant les résultats
+des appels se nomme la \emph{mémoïsation}, et qu'elle relève du domaine 
+de la \emph{programmation dynamique}.
+ 
+\end{document}
