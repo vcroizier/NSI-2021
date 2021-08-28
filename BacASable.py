@@ -48,4 +48,39 @@ a=[1]
 b=a
 b+=[2]
 print(a,b)
+
 # %%
+a=5
+b=a
+a+=1
+print(id(a)==id(b))
+
+# %%
+a=[5]
+b=a
+a+=[1]
+print(id(a)==id(b))
+#%%
+a=([],)
+b=(a[0],)
+print(id(a)==id(b))
+b[0].append(1)
+print(id(a)==id(b))
+print(a,b)
+
+#%%
+a=1000
+b=999+1
+print(id(a)==id(b))
+print(a is b)
+print(a == b)
+
+#%%
+
+def en_liste(elt,L=[]):
+    L.append(elt)
+    return L
+
+print(en_liste(5))
+print(en_liste(6,[3]))
+print(en_liste(17))
