@@ -8,7 +8,7 @@
 \TitreISN{Classe de Terminale}{Année 2021--2022}
 {Numérique et Sciences Informatiques}{TP 1 : Sommation, recherche, maximum.}
 
-Il s'agit ici d'un TP d'application du chapitre 1 regoupant un certain nombre d'algorithmes de base.
+Il s'agit ici d'un TP d'application du chapitre 1 regroupant un certain nombre d'algorithmes de base.
 
 \tableofcontents
 
@@ -355,11 +355,13 @@ alors le dictionnaire contiendra le couple clef-valeur \code{''A'':''N''}.
 
 \begin{enumerate}
 \item Taper les commandes suivantes :
-\begin{Python}% cSpell:disable
+% cSpell:disable
+\begin{Python}
 alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 alphabet_code=" NBVCXWQSDFGHJKLMPOIUYTREZA"
 dico_codage=dict(zip(alphabet,alphabet_code))
-\end{Python}% cSpell:enable
+\end{Python}
+% cSpell:enable
 Notez que la commande \code{zip} peut aussi être utilisée 
 avec des types \code{list},\dots
 \item Écrire une fonction \code{codage\_mono} prenant comme argument 
