@@ -106,9 +106,9 @@ A noter que on utilise une boucle \codePY{for} alors que l'on n'est pas sûr de 
 def recherche2(L,v) :
     """Répond True si v est dans L et False sinon."""
     n = len(L) # nombre de termes du tableau
-    k=0 # indice de l'élément étudié
+    k = 0 # indice de l'élément étudié
     while k<n and v!=L[k] :
-        k=k+1
+        k = k+1
     return k!=n
 \end{Python}
 
@@ -186,11 +186,11 @@ def maximum(L) :
     """Donne le plus grand des termes du tableau L et l'indice auquel on le rencontre."""
     n = len(L) # nombre de termes du tableau
     M = L[0]
-    i=0
+    i = 0
     for k in range(1,n) :
         if L[k]>M :
             M = L[k]
-            i=k
+            i = k
     return M,i
 \end{Python}
 
