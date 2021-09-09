@@ -72,9 +72,10 @@ str(71.23)
 \end{Python}
 On reverra dans la suite du chapitre les types construits de Python : tableau, 
 tuple, dictionnaire. 
+
 \subsection{Les règles de l'affectation}
-Les emplacements mémoires où peuvent être stockées les variables Python sont 
-repérés par des entiers auxquels ont peut accéder par la commande \code{id}.
+Les objets peuvent être affectés à des variables Python, il est important de 
+comprendre la sémantique de l'affectation. 
 
 En langage Python, l'affectation d'une variable se fait par une écriture du type
 
@@ -82,71 +83,74 @@ En langage Python, l'affectation d'une variable se fait par une écriture du typ
 \centerline{\code{identifiant de variable = expression}}
 
 \smallskip
-et obéit aux règles suivantes :
+L'expression est évaluée, le résultat est un objet qui est ensuite associé à la 
+variable. Cette association peut avoir deux sémantiques :
 \begin{itemize}
-\item si l'expression est réduite à un nom de variable, la nouvelle variable se
- voit attribuer le même emplacement mémoire / le même \code{id} que la variable 
- de droite. Ainsi, les deux noms de variables sont juste deux accès différents 
- vers une même ressource. %c'est l'aliasing : à dire à l'oral.
-\item sinon, l'expression est évaluée et :
-\begin{itemize}
+\item si l'objet est immutable, l'objet est dupliqué (sur un seul niveau de 
+profondeur) et écrit dans la variable. On dit qu'il s'agit d'une 
+\underline{affectation par valeur}.
+\item si l'objet est mutable, C'est la référence vers l'emplacement de l'objet
+en mémoire qui est écrit dans la variable. On dit qu'il s'agit d'une 
+\underline{affectation par référence}.
+\end{itemize}
 % On dira : immutable ou non mutable. 
 % zapper le vocabulaire sur l'interning, trop spécialisé.
-\item si elle est d'un type simple et que la valeur a déjà été stockée en 
-mémoire, alors \uline{sauf exceptions} on lui attribue l'\code{id} déjà donné à 
-cette valeur.
-\item dans le cas contraire,
-elle est stockée dans un nouvel emplacement mémoire et reçoit un nouvel \code{id}
-\end{itemize}
-\end{itemize}
 
-Le but de ceci est d'économiser la mémoire en faisant en sorte que si on a mille 
-variables de même valeur 2, elles pointent toutes (autant que possible) vers un 
-même case mémoire qui contient la valeur 2.
-% Cette manœuvre a un coût, c'est pour ça que le choix de Python est de ne faire
-% que partiellement l'interning. 
+Dans l'implémentation de python, l'\code{id} correspond parfaitement à la notion
+de références pour les objets mutables. Par contre l'\code{id} est aussi utilisé
+pour les objets immutables et sont comportement est alors assez imprévisible
+pour un non-expert. L'utilisation dans vos programmes des \code{id} est donc à
+proscrire.
 
-\medskip
-Par contre, on insiste bien sur le fait que à chaque affectation, on crée une 
-nouvelle variable : comme on le verra ci-dessous, si on écrit \code{a=2} puis 
-\code{a=5}, les deux \code{a} sont des variables différentes en terme 
-d'emplacement mémoire, de même si on écrit \code{a=a+1}.
 \subsubsection*{Activité 2}
+Pour comprendre ce qui suit, il faut garder en tête que les entiers sont 
+immutables alors que les listes sont mutables.
 Dans la console Python, tapez les commandes suivantes et commentez les résultats :
 \begin{Python}
 a=5
 b=a
-c=3+2
-d=int('2')
-e=a+1
-id(a)
-id(b)
-id(c)
-id(d)
-id(e)
+print(a,b,a==b)
+a=a+[1]
+print(a,b,a==b)
 \end{Python}
-On retrouve bien le fait que la plupart des variables qui ont pour valeur 2 ont 
-le même id.
+Notez que la modification d'une variable n'a pas d'impact sur l'autre.
 \begin{Python}
-a=8
+a=[5]
 b=a
-id(a)
-id(b)
-a=50
-b
-id(a)
-id(b)
+print(a,b,a==b)
+a.append(1)
+print(a,b,a==b)
+a=a+[2]
+print(a,b,a==b)
 \end{Python}
+Notez bien ici que \code{a.append(1)} modifiant la liste de façon interne, les 
+deux variables \code{a} et \code{b}, qui contiennent une référence vers le même
+objet liste, voit leur contenu modifié.
 
-Les quatre premières lignes sont classiques. Puis, au moment de l'affectation 
-\code{a=50}, on crée une nouvelle variable, à un nouvel emplacement mémoire. 
-Et comme cette variable a également comme identifiant \code{a}, \code{a} et 
-\code{b} pointent maintenant vers des emplacements mémoires différents et comme 
-\code{b} pointe vers l'ancien emplacement mémoire, la variable \code{b} conserve 
-sa valeur initiale.
+Alors que \code{a=a+[2]} crée un nouvel objet liste avec une nouvelle référence
+qui est écrite dans \code{a}. \code{b}, n'ayant pas changé de référence, n'a
+donc pas été impacté.
 
-\bigskip
-D'autres exemples seront donnés avec des variables de types construits.
+\medskip
+\warning{} Il est à noté que l'usage de \code{+=} avec des liste est donne un 
+comportement inattendu.
+
+Là où, avec des immutables comme les entiers, \code{a+=5} est équivalent à
+\code{a=a+5}. Avec des listes, \code{a+=[5]} ne réagit pas comme \code{a=a+[5]}.
+\begin{Python}
+	a=[7]
+	b=a
+	print(a,b,a==b)
+	a+=[5]
+	print(a,b,a==b)
+	a=a+[4]
+	print(a,b,a==b)
+\end{Python}
+En fait, \code{a+=[5]} crée une nouvelle liste mais la stocke au même
+emplacement mémoire que la liste \code{a}. Ce qui donne un comportement
+similaire à \code{a.append(5)}. Ce choix de comportement est pour le moins
+contestable, il est donc bon d'en avoir conscience.  
+
 
 \subsection{Comparaison de variables}
 Il existe deux commandes permettant de tester l'égalité de variables : \code{==} 
@@ -155,16 +159,25 @@ et \code{is}.
 Plus précisément, \code{==} teste l'égalité des valeurs tandis que \code{is} 
 permet de tester que l'égalité des emplacements mémoires, des \code{id}.
 
+Autrement dit, \code{==} teste les deux objets ont la même valeur alors que 
+\code{is} teste si c'est le même objet. 
+
+\warning{} Comme \code{is} utilise les \code{id}, son usage avec des immutables est
+hasardeux, et donc à éviter. 
+
 \subsubsection*{Activité 3}
 Dans la console Python, tapez les commandes suivantes et commentez les résultats :
 \begin{Python}
 a=2
 b=2.0
-a==b
-a is b
+print(a==b, a is b)
+c=[5]
+d=c
+e=[5]
+print(c==d, c is d)
+print(c==e, c is e)
 \end{Python}
 
-Là encore, d'autres exemples seront donnés avec des variables de types construits.
 
 \section{Types construits}
 Dans cette section, on évoque les modèles théoriques de types construits et leurs 
