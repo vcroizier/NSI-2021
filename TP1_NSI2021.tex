@@ -36,12 +36,12 @@ def somme(L) :
     return S
 \end{Python}
 
-Un exemple d'exécution :
-\begin{Python*}
-somme([5,9,-2,5,8])
-\end{Python*}
+%Un exemple d'exécution :
+%\begin{Python*}
+%somme([5,9,-2,5,8])
+%\end{Python*}
 
-Le tableau suivant retrace l'exécution de la fonction \code{somme}.
+Le tableau suivant retrace l'exécution de l'appel \code{somme([5,9,-2,5,8])}.\medskip
 
 {\large \begin{tabular} {|l|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}\hline
 \verb|initialisation |&\multicolumn{6}{l|}{}\\ \hline
@@ -59,26 +59,27 @@ $\sum_{k=1}^n\frac{1}{k^2}=\frac{1}{1^2}+\frac{1}{2^2}+\frac{1}{3^2}+\ldots
 +\frac{1}{n^2}$.
 	
 \activite
-Écrire une fonction \code{produit(L)} qui, pour un tableau \code{L}, donne
-le produit de tous ses éléments.
+Écrire une fonction \code{produit(L)} qui, pour un tableau \code{L}, donne le produit de tous ses éléments.
+
+On donnera deux versions, dont une dans laquelle on n'utilise pas les indices des éléments.
 	
 \activite
 Écrire une fonction \code{sommeTermesPositifs(L)} qui, pour un
 tableau \code{L}, donne le somme des éléments positifs du tableau.
+
+On donnera deux versions, dont une dans laquelle on n'utilise pas les indices des éléments.
 	
 \activite
 Écrire une fonction \code{moyenne(L)} qui, pour un tableau \code{L} de tuples 
 \code{(valeur,coefficient)}, donne le moyenne pondérée.
 
-Testez avec \code{moyenne([(10,4),(7,2),(15,3))}, qui doit donner $11$.
+On testera avec \code{moyenne([(10,4),(7,2),(15,3))}, qui renvoie $11$.
 
 \activite
 Écrire une fonction \code{somme\_double(T)} qui, pour un tableau de tableaux \code{T}, 
 donne le somme des éléments du tableau.
 
-Testez avec \code{somme\_double([[1,2,3],[4,5]])}, qui doit donner $15$.
-
-
+On testera avec \code{somme\_double([[1,2,3],[4,5]])}, qui renvoie $15$.
 \section{Recherche d'un élément}
 \subsection{Algorithme de recherche}
 On a un tableau \code{L} et une valeur \code{v}, on veut déterminer si la valeur
@@ -86,9 +87,7 @@ On a un tableau \code{L} et une valeur \code{v}, on veut déterminer si la valeu
 
 (En python, cela correspond à l'expression \codePY{v in L}.)
 
-L'idée principale est de comparer successivement chacun des termes du tableau
-avec la valeur recherché et de répondre \code{True} dès qu'on la trouve. Et si 
-jamais on atteint la fin du tableau sans jamais avoir trouvé la valeur, alors 
+La version la plus basique est de parcourir le tableau au moyen d'une boucle \codePY{for} et de comparer chacun des éléments du tableau avec la valeur recherchée et de répondre \code{True} dès qu'on la trouve. Si jamais on atteint la fin du tableau sans jamais avoir trouvé la valeur, alors 
 on répond \code{False}.
 
 \begin{Python}
@@ -101,90 +100,63 @@ def recherche(L,v) :
     return False
 \end{Python}
 
-Un exemple d'exécution :
-\begin{Python*}
-recherche([5,2,9,-2,9,5],9)
-\end{Python*}
+A noter que on utilise une boucle \codePY{for} alors que l'on n'est pas sûr de vouloir parcourir le tableau. Ici, ce serait plus élégant et rigoureux d'utiliser une boucle \codePY{while} car on ne parcourt le tableau que tant que l'on a pas trouvé l'élément, mais cela complique un peu la programmation : 
 
-Le tableau suivant retrace l'exécution de la fonction \code{recherche}.
+\begin{Python}
+def recherche2(L,v) :
+    """Répond True si v est dans L et False sinon."""
+    n = len(L) # nombre de termes du tableau
+    k=0 # indice de l'élément étudié
+    while k<n and v!=L[k] :
+        k=k+1
+    return k!=n
+\end{Python}
 
-Il donne l'état des variables après l'exécution de chacune des lignes (donnée
-par leur numéro).
+Le tableau suivant retrace l'exécution de l'appel \code{recherche2([2,5,3,-2],3)} \medskip\\
 
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-  N° ligne&\makebox[2cm]{v}&\makebox[2cm]{k}&\makebox[2cm]{n}&\makebox[5cm]{L}\\
-  \hline
-  1 &&&&\\
-  \hline
-  3 &&&&\\
-  \hline
-  4 &&&&\\
-  \hline
-  5 &&&\multicolumn{2}{l|}{Le test \code{v==L[k]} est}\\
-  \hline
-  4 &&&&\\
-  \hline
-  5 &&&\multicolumn{2}{l|}{Le test \code{v==L[k]} est}\\
-  \hline
-  4 &&&&\\
-  \hline
-  5 &&&\multicolumn{2}{l|}{Le test \code{v==L[k]} est}\\
-  \hline
-  6 &\multicolumn{4}{c|}{}\\
-  \hline
-\end{tabular}
-\end{center}
+{\large \begin{tabular} {|l|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}\hline
+\code{initialisation} &\multicolumn{6}{l|}{}\\ \hline
+\code{while}&\code{k<n}& & & && \\ \hline
+&\code{v!=L[k]}& & && & \\ \hline
+&\code{k}& & && & \\ \hline
+\code{fin while}&\multicolumn{6}{l|}{}\\ \hline
+ \end{tabular}}
+\medskip\\
 
-\pagebreak
-deuxième exemple d'exécution :
-\begin{Python*}
-recherche([5,-2],9)
-\end{Python*}
+Le tableau suivant retrace l'exécution de l'appel \code{recherche2([2,5,3,-2],4)}  \medskip\\
 
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-  N° ligne&\makebox[2cm]{v}&\makebox[2cm]{k}&\makebox[2cm]{n}&\makebox[5cm]{L}\\
-  \hline
-  1 &&&&\\
-  \hline
-  3 &&&&\\
-  \hline
-  4 &&&&\\
-  \hline
-  5 &&&\multicolumn{2}{l|}{Le test \code{v==L[k]} est}\\
-  \hline
-  4 &&&&\\
-  \hline
-  5 &&&\multicolumn{2}{l|}{Le test \code{v==L[k]} est}\\
-  \hline
-  4 &&&\multicolumn{2}{l|}{}\\
-  \hline
-  7 &\multicolumn{4}{c|}{}\\
-  \hline
-\end{tabular}
-\end{center}
-
+{\large \begin{tabular} {|l|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}\hline
+\code{initialisation} &\multicolumn{6}{l|}{}\\ \hline
+\code{while}&\code{k<n}& & & && \\ \hline
+&\code{v!=L[k]}& & && & \\ \hline
+&\code{k}& & && & \\ \hline
+\code{fin while}&\multicolumn{6}{l|}{}\\ \hline
+ \end{tabular}}
+\medskip\\
+Cependant, si on est intéressé par une donnée un peu moins basique, telle le nombre d'occurrences  ou les positions d'un élément dans une liste, on doit alors utiliser un parcours complet de la liste au moyen d'une boucle \code{for}.   
 \subsection{Applications}
 % TODO: Applications à revoir.
 \activite
-Écrire une fonction \code{recherche2} qui prend comme argument un tableau 
+Écrire une fonction \code{recherche3} qui prend comme argument un tableau 
 \code{L} et un élément \code{a} et renvoie la position de l'élément s'il est 
 présent, ou \code{-1} sinon.
 
 Par exemple, avec \code{L=[2,7,-8,2,2,9]},\\
-\code{recherche2(L,2)} donne \code{0} ou \code{3} ou \code{4} (fonction de votre
-programmation) et \code{recherche2(L,15)=-1}
+\code{recherche3(L,2)} renvoie \code{0} ou \code{3} ou \code{4} et \code{recherche2(L,15)} renvoie \code{-1} .
 
 \activite
-Écrire une fonction \code{recherche3} qui prend comme argument un tableau 
+Écrire une fonction \code{recherche4} qui prend comme argument un tableau 
 \code{L} et un élément \code{a} et renvoie un tableau \code{T} contenant les 
 indices des occurrences de \code{a} dans \code{L}.
 
-Par exemple, avec \code{L=[2,7,-8,2,2,9]},\\
-\code{recherche3(L,2)=[0,3,4]} et \code{recherche3(L,15)=[]}
+Par exemple, avec \code{L=[2,7,-8,2,2,9]},
+\code{recherche4(L,2)} renvoie \code{[0,3,4]} et \code{recherche4(L,15)} renvoie \code{[]} .
+
+\activite
+Écrire une fonction \code{recherche5} qui prend comme argument un tableau 
+\code{L} et un élément \code{a} et renvoyant le nombre d'éléments de \code{L} qui sont $>a$.
+
+Par exemple, avec \code{L=[3,7,-8,2,5,-2,9]}, \code{recherche5(L,2)} renvoie \code{4} et \code{recherche5(L,10)} renvoie \code{0} .
 
 \activite
 Écrire une fonction Python \code{positions(sequence,codon)}, où \code{sequence}
@@ -193,10 +165,8 @@ tableau des positions du \code{codon} dans \code{sequence}. Pour être plus pré
 la position du codon est l'index de sa première lettre.
 
 Par exemple, avec \code{seq="ACGTCACCGTCA"},\\
-\code{positions(seq,"GTC")=[2,8]} et \code{positions(seq,"ACCTGA")=[]}
+\code{positions(seq,"GTC")} renvoie \code{[2,8]} et \code{positions(seq,"ACCTGA")} renvoie \code{[]}
 
-
-\newpage
 \section{Recherche du maximum}
 \subsection{Algorithme du maximum}
 On a un tableau \code{L}, on veut déterminer le plus grand des termes
@@ -224,30 +194,21 @@ def maximum(L) :
     return M,i
 \end{Python}
 
-Un exemple d'exécution :
-\begin{Python*}
-maximum([5,2,9,-2,11,5,7])
-\end{Python*}
-
-Le tableau suivant retrace l'exécution de la fonction \code{maximum}.
+Le tableau suivant retrace l'exécution de l'appel \code{maximum([2,-1,5,4,5,9,1])}.
 
 \vspace{1cm}
 {\large \begin{tabular} {|l|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|}\hline
-\verb|initialisation |&\multicolumn{7}{l|}{}\\ \hline
-\mbox{boucle for}&\verb|k|&&&&&&\\ \hline
-&\verb|L[k]|& & && & &\\ \hline
-&\verb|Test|& & && & &\\ \hline
-&\verb|M|& & && & &\\ \hline
-&\verb|i|& & && & &\\ \hline
-\mbox{fin boucle for}&\multicolumn{7}{l|}{}\\ \hline
+\code{initialisation}&\multicolumn{7}{l|}{}\\ \hline
+\code{boucle for}&\verb|k|&&&&&&\\ \hline
+&\code{L[k]}& & && & &\\ \hline
+&\code{Test}& & && & &\\ \hline
+&\code{M}& & && & &\\ \hline
+&\code{i}& & && & &\\ \hline
+\code{fin boucle for}&\multicolumn{7}{l|}{}\\ \hline
 \end{tabular}}
  
 \medskip
 \subsection{Applications}
-\activite
-Écrire une fonction \code{position\_du\_max(L)} qui, pour un tableau \code{L}, 
-donne la/une position du plus grand des éléments du tableau.
-
 \activite
 Écrire une fonction \code{positions\_du\_max(L)} qui, pour un tableau \code{L},
 donne le tableau des positions du plus grand des éléments du tableau.
