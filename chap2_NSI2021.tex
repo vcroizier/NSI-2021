@@ -1,5 +1,6 @@
 \documentclass[11pt,a4paper,french,twoside]{PMCours}
 \usepackage{hyperref}
+\frenchbsetup{StandardLists=true}
 % TODO: Ajuster la position des sauts de page.
 \begin{document}
 \TitreISN{Classe de Terminale}{Année 2021--2022}
@@ -38,11 +39,11 @@ la pile d'exécution (\emph{call stack}) relative à ce programme.
 %à ce moment, je leur fais à la main le cheminement du programme
 
 \newpage
-On observe qu'une fonction récursive s'écrit avec : 
+On observe qu'une fonction récursive s'écrit avec un branchement conditionnel contenant :  
 \begin{itemize}
-\item un (ou plusieurs) cas terminal pour lequel la fonction renvoie 
-directement une valeur;
-\item un cas général pour lequel la fonction fait appel à elle-même. 
+\item au moins un {\color{red} cas de base} pour lequel la fonction renvoie 
+directement une valeur. La condition associée à un cas de base est appelée {\color{red} conditions de terminaisons}.
+\item au moins un cas général pour lequel la fonction fait appel à elle-même. 
 \end{itemize}
 
 Un exemple dans lequel on a deux cas terminaux, la célébrissime 
