@@ -1,0 +1,165 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+\frenchbsetup{StandardLists=true}
+\newcounter{activite}
+\newcommand{\activite}{\subsubsection*{Activité~\refstepcounter{activite}\theactivite}}
+
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2021--2022}
+{Numérique et Sciences Informatiques}{Un petit peu de Mathématiques}
+
+%\tableofcontents
+
+
+%\newpage
+
+\section*{Exercice 1 : Tracés}
+On importe deux modules de la bibliothèque \code{matplotlib} et une bibliothèque de calcul numérique \code{numpy}
+\begin{Python}
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as img
+\end{Python}
+Sous sa forme la plus simple, le principe est : 
+\begin{itemize}
+\item On construit deux listes de même longeur \code{n}, \code{X} et \code{Y}, contenant des nombres .
+\item La commande \code{plt.plot(X,Y)} crée alors le tracé des points \code{(X[0],Y[0])}, \code{(X[1],Y[1])},... \code{(X[n-1],Y[n-1])}. Par défaut, ces points seront reliés en une ligne brisée. De nombreuses options existent : 
+\begin{itemize}
+\item \code{color=} suivi d'une chaine de caractères \code{'blue'}, \code{'green'},...
+\item \code{linestyle=} suivi d'une chaine de caractères \code{'None'} pour que les points ne soient pas reliés, \code{'dashed'} pour des pointillés,...
+\item \code{marker=}, \code{markersize=} ...
+\end{itemize}
+\item On répète les deux opérations précédentes si on veut d'autres tracés.
+\item On tape la commande \code{plt.show()}, qui affiche le tracé. 
+ \end{itemize}
+Par exemple, étudions le script : 
+\begin{Python}
+X=np.linspace(-np.pi,np.pi,1000)
+Y=[x-x**3/6+x**5/120 for x in X]
+Z=[x-x**3/6 for x in X]
+T=[np.sin(x) for x in X]
+
+plt.plot(X,Y,linestyle='dotted',color='blue')
+plt.plot(X,Z,linestyle='dotted',color='blue')
+plt.plot(X,T,color='red')
+plt.axvline(0)
+plt.axhline(0)
+
+plt.show() 
+\end{Python}
+o\`u  :
+\begin{itemize}
+\item le préfixe \code{np} devant un nom de fonction signifie que celle-ci provient du module \code{numpy}, que l'on a importé sous l'alias \code{np}.
+\item \code{np.linspace(a,b,n)} renvoie un tableau de \code{n} valeurs équiréparties, la première valant    \code{a}, la dernière valant \code{b}
+\item \code{np.pi} est le nombre $\pi$, \code{np.sin} est la fonction $\sin$ 
+\item les tableaux \code{Y}, \code{Z} et \code{T} sont définis en compréhension. 
+\end{itemize}
+\begin{center}
+\includegraphics[width=8.7cm]{images/graphe1.png}
+\end{center}
+\subsubsection*{\vskip -1cm Activité 1}
+Mettre en évidence au moyen d'un tracé que 
+ $$\mbox{Pour tout }x\in[-\pi,\pi],\;\;\; 1-\tfrac12 {x^2}\leq \cos(x)\leq 1-\tfrac 12 {x^2}+\tfrac 1{24} {x^4}$$
+ 
+Dans l'exemple précédent, on a réalisé des graphes de fonctions de la forme $y=f(x)$ et donc on prenait pour $X$ un ensemble d'abscisses équiréparties.\\
+Mais on peut aussi facilement tracer la trajectoire d'un point mobile de la forme $t\mapsto (x(t);y(t))$ .\\ 
+Par exemple, le script : 
+\begin{Python}
+T=np.linspace(0,2*np.pi,1000)
+X=[np.cos(t) for t in T]
+Y=[np.sin(t) for t in T]
+
+plt.plot(X,Y,color='red')
+plt.axvline(0)
+plt.axhline(0)
+
+plt.show() 
+\end{Python} 
+
+donne la figure 
+
+\begin{center}
+\includegraphics[width=8.7cm]{images/graphe2.png}
+\end{center}
+
+\subsubsection*{Activité 2} 
+Ecrire le script d'une fonction \code{trace\_trigo} prenant en entrée un couple de valeurs \code{(a,b)} et traçant pour $t\in[0;2\pi]$ la courbe $t\mapsto (\cos(at),\sin(bt))$. \\
+Tester \code{trace\_trigo(3,4)}
+
+\section*{Exercice 2 : Méthode de Monte-Carlo}
+La m\'ethode de Monte Carlo est une m\'ethode probabiliste permettant d'estimer une aire.\\
+On consid\`ere un carr\'e de cot\'e $2$ et dans lequel on trace le disque unit\'e.\\
+On r\'ep\`ete un certain nombre de fois l'op\'eration suivante :\\
+- on tire un point au hasard dans le carr\'e en tirant une abcisse \code{x} et une ordonn\'ee \code{y} dans $[-1;1]$.\\
+- si le point $M$ de coordonnées \code{(x;y)} est situ\'e dans le disque (ce qui \'equivaut \`a $x^2+y^2\leq 1$), alors on augmente de 1 le nombre \code{S} de succ\'es.\\
+A la fin, la proportion de succ\'es doit approcher la proportion des aires, c'est \`a dire $\dfrac{\mbox{aire du disque}}{\mbox{aire du carr\'e}}=\frac {\pi} 4$.
+\begin{enumerate}
+\item \begin{enumerate}
+\item Ecrire une fonction \code{monteCarlo} prenant comme argument un entier \code{N} et renvoyant la proportion de succ\'es quand on applique la m\'ethode de Monte Carlo sur \verb|N| tirages.\\
+La commande \code{np.random.uniform(a,b)} permet de tirer un nombre au hasard dans $[a;b]$.
+\item Ecrire une fonction \code{monteCarloG} prenant comme argument un entier \code{N} et renvoyant la proportion de succ\'es quand on applique la m\'ethode de Monte Carlo sur \verb|N| tirages et plaçant sur un graphe les \code{N} points, en les mettant en rouge si ils sont à l'intérieur du disque et en bleu sinon.
+\begin{center}
+\vskip -.5cm
+\includegraphics[width=8cm]{images/graphe3.png}
+\end{center}
+\end{enumerate}
+\item \vskip -.5cm Ecrire une fonction \code{monteCarlo2} prenant comme argument une pr\'ecision \code{e} et renvoyant le nombre de tirages de points qui ont \'et\'e n\'ecessaires pour que l'estimation de l'aire soit proche de $\tfrac \pi 4$ \`a cette pr\'ecision pr\`es.
+
+\end{enumerate}
+
+\section*{Exercice 3 : Suite de Syracuse}
+\noindent
+On d\'efinit la suite de Syracuse de premier terme $u_0=a\in\N$ par r\'ecurrence au moyen des indications suivantes :\\
+Pour $k\geq 0$, si $u_k$ est pair, alors $u_{k+1}=\dfrac {u_k}2$ et sinon, $u_{k+1}=3u_k+1$.
+\begin{enumerate}
+\item Calculer les 10 premiers termes de la suite de syracuse quand le premier terme est $a=10$, puis quand ce premier terme vaut $a=17$.\\
+Qu'observe-t-on ? 
+\item Ecrire une fonction \verb|syracuse1| prenant comme argument deux entiers $a$ et $n$ et renvoyant une liste U contenant les termes $u_0$,...,$u_n$ de la suite de syracuse de premier terme $a$.\\
+La commande \code{u\%2} renvoie le reste de la division de \code{u} par \code{2}.
+\item On remarque que quelque soit l'entier $a$ entr\'e, la suite de Syracuse semble atteindre la valeur $1$ et \`a partir de celle ci executer un cycle $1\mapsto 4\mapsto 2\mapsto 1$.\\
+Ecrire une fonction \verb|syracuse2| prenant comme argument un entier $a$ et renvoyant le premier rang pour lequel la valeur $1$ est atteinte. 
+\item Ecrire une fonction \verb|trace_syracuse1| prenant comme argument un entier $a$ et traçant la ligne polygonale reliant les points \code{(k,u$_k$)} jusqu'à que celle-ci atteigne la valeur $1$. 
+\item (*) On appelle Temps de vol de la suite le temps que met la suite pour atteindre la valeur $1$.\\
+Ecrire une fonction \code{calcul\_temps\_vol} qui renvoie un tableau \code{TTV} tel que \code{TTV[i]} contient tous les entiers \code{a} pour lesquels le temps de vol vaut \code{i} si il en existe et contient une liste vide \code{[]} sinon.  
+\end{enumerate}
+\section*{Exercice 4 : Quelques images}
+On rappelle que le module \code{matplotlib.image} permet de convertir des images en tableau de nombre et vice-versa.\\
+En partant du coin haut-gauche, le pixel ligne \code{i} et colonne \code{j} est représenté par l'élément \code{[i][j]} du tableau.\\
+Celui-ci est une liste de trois ou quatre nombres entre $0$ et $1$ donnant la couleur du pixel au format RGB de 0 : absence de la couleur à 1 : présence maximale de la couleur, la quatrième valeur allant de 0 : transparence complète à 1 : opacité complète.\\
+Ainsi, sous Python, 
+\begin{itemize}
+\item \code{[0,0,0]} repr\'esentera un pixel noir,
+\item \code{[1,0,0]} repr\'esentera un pixel rouge,
+\item \code{[1,0,1]}repr\'esentera un pixel violet (rouge+bleu),
+\item \code{[1,1,1]} repr\'esentera un pixel blanc.
+\item \code{[1,0,0,0.2]} repr\'esentera un pixel rouge très effacé,
+\item \code{[0,0,1,1]} repr\'esentera un pixel bleu très marqué,
+\end{itemize} 
+La commande pour générer une image à partir d'un tableau \code{T} est 
+\begin{Python}
+plt.imshow(T)
+\end{Python}
+La commande pour afficher alors l'image est 
+\begin{Python}
+plt.show()
+\end{Python}
+Le programme suivant permet de créer un tableau correspondant à une image blanche de \code{n} par \code{p} pixels.
+\begin{Python}
+def tableau_blanc(n,p):
+    M=[]
+    for i in range(n):
+        L=[]
+        for j in range(p):
+            L=L+[[1,1,1]]
+        M=M+[L]
+    return(M)
+\end{Python}
+\begin{enumerate}
+\item Créer une fonction \code{drap\_fr} sans arguments affichant un drapeau Français de 200$\times$300 pixels.
+\item Créer une fonction \code{drap\_lux} sans arguments affichant un drapeau Luxembourgeois de 200$\times$300 pixels.
+\item Créer une fonction \code{degrade\_v} prenant comme argument deux 3-listes donnant des couleurs au format RGB et réalisant un dégradé vertical entre ces couleurs dans un carré de 300$\times$300 pixels.
+\item Créer une fonction \code{degrade\_o} prenant comme argument deux 3-listes donnant des couleurs au format RGB et réalisant un dégradé oblique entre ces couleurs dans un carré de 300$\times$300 pixels.
+\end{enumerate} 
+ 
+\end{document}
+ 
