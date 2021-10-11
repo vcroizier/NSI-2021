@@ -1,0 +1,358 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+% cSpell:ignore LIFO FIFO
+% TODO: Ajuster la position des sauts de page.
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2021--2022}
+{Numérique et Sciences Informatiques}{Chap. 5 : Piles et Files}
+Dans ce chapitre, nous voyons deux structures de données hyper classique en informatique : 
+les Piles et les Files. On va donner pour chacune une définition théorique, qui décrit une situation standard pour laquelle on développera des réflexes, des stratégies,... puis on fournira une ou des implémentations en langage Python.   
+\section{Les Piles}
+\subsection{Définition théorique}
+\begin{Definition}{Pile}
+Une {\color{red}pile} ({\em stack}) est une structure linéaire de données dans laquelle on 
+peut ajouter ou retirer un objet en suivant la règle du {\color{red} Dernier entré, 
+Premier sorti} ({\em Last in, first out} : LIFO).
+
+Pour une pile non vide, 
+\begin{itemize}
+    \item le {\color{red} sommet de la pile} est le dernier élément ajouté/le 
+prochain élément à sortir.
+   \item le {\color{red} base de la pile} est le premier élément ajouté.
+\end{itemize}
+\end{Definition}
+
+\medskip
+Pour imaginer le fonctionnement d'une pile, on peut imaginer une pile d'assiettes (éventuellement avec des informations marquées au dos des assiettes) que l'on s'obligerait à manipuler une à la fois.
+
+On construit le pile en empilant les assiettes une à une et à chaque fois, la seule assiette que l'on peut retirer de la pile (pour accéder à l'information) est forcément celle du sommet et donc, la dernière à avoir été posée.
+
+\vfill\noindent 
+Une tel type peut être muni de l'interface suivante : 
+
+\medskip
+\begin{Definition}{Interface d'une Pile}
+L'interface minimale pour le type Pile est constituée de :
+\begin{itemize}
+\item une fonction créant une pile vide; 
+\item une fonction testant si une pile est vide;
+\item une fonction permettant d'empiler un élément sur une pile existante;
+\item une fonction permettant de dépiler un élément d'une pile non vide : 
+\begin{itemize}
+\item elle déclenche une erreur si la pile est vide;
+\item elle renvoie l'élément au sommet de la pile (qui est donc raccourcie d'un élément) sinon.
+\end{itemize}
+\end{itemize}
+\end{Definition}
+\newpage\noindent
+\subsubsection*{Activité 1}
+Sur le principe du Crêpier Psychorigide,\medskip\\
+Transformer la pile \hskip 5mm \code{p}= {\footnotesize$\begin{array}{|c|}\hline6\\\hline5
+\\\hline4\\\hline3\\\hline2\\\hline1\\\hline\end{array}$}\hskip 5mm  en \hskip 5mm 
+{\footnotesize$\begin{array}{|c|}\hline4\\\hline5\\\hline6\\\hline 
+3\\\hline2\\\hline1\\\hline\end{array}$}
+\vfill \noindent
+\subsection{Implémentation en Python}
+\subsubsection{Implémentation avec le type \texorpdfstring{\code{list}}{list}}
+En python, le type \code{list} permet de coder très facilement une pile.
+
+On rappelle à travers un exemple quelques commandes classiques :
+\begin{Python}
+pile1=[]
+pile1.append(10)
+pile1.append(5)
+pile1.append(7)
+pile1.pop()
+pile1
+pile1.pop()
+pile1
+\end{Python}
+
+On voit ainsi comment on peut coder l'interface minimale pour une pile :
+% cSpell:disable
+\begin{Python}
+def creer_pile():
+    return []
+    
+def est_vide(L):
+    return len(L)==0
+
+def empile(L,x):
+    L.append(x)
+
+def depile(L):
+    if est_vide(L):
+        raise IndexError('depilement d une pile vide')
+    else :
+        return L.pop()
+\end{Python}% cSpell:enable
+
+Notons qu'avec cette représentation, la base de la pile est à l'indice 0 et que 
+le sommet d'une pile \code{p} est à l'indice \code{len(p)-1}.
+
+
+Naturellement, si on veut utiliser un type \code{list} pour modéliser une pile, 
+il faut alors s'interdire l'utilisation des indices et en fait l'accès direct à 
+toute autre valeur que la dernière.
+\newpage\noindent
+Pour aider à cela, on peut définir une classe \code{Pile} :
+
+% cSpell:disable
+\begin{Python}
+class Pile:
+    def __init__(self):
+        self.valeurs=[]
+    
+    def est_vide(self):
+        return len(self.valeurs)==0
+    
+    def empile(self,x):
+        self.valeurs.append(x)
+    
+    def depile(self):
+        if self.est_vide():
+            raise IndexError('depilement d une pile vide')
+        else :
+            return self.valeurs.pop()
+
+def cree_Pile():
+    return Pile()
+\end{Python}% cSpell:enable
+
+La "technologie" utilisée est la même que précédemment, mais maintenant, avec un
+type \code{Pile}, on ne peut plus utiliser les instructions propres aux types \code{list} 
+
+\subsubsection*{Activité 2}
+En utilisant uniquement les méthodes de la classe \code{Pile}, écrire les fonctions 
+suivantes : 
+\begin{enumerate}
+\item \code{retourne} d'argument une pile \code{p1} et qui renvoie une pile 
+ayant les mêmes valeurs que \code{p1} mais données dans l'autre sens.
+\item \code{retourne\_derniers()} prenant comme argument une pile \code{p1} et 
+un entier \code{k} et renvoyant 
+\begin{itemize}
+\item une erreur si \code{p1} possède moins de \code{k} éléments;
+\item une pile contenant les \code{k} dernières valeurs de \code{p1} 
+mais données dans l'autre sens, sinon.
+\end{itemize}
+\item \code{derniers()} prenant comme argument une pile \code{p1} et un entier 
+\code{k} et renvoyant :
+\begin{itemize}
+    \item une erreur si \code{p1} possède moins de \code{k} éléments;
+    \item une pile contenant les \code{k} dernières valeurs de \code{p1} 
+    dans le même ordre, sinon.
+\end{itemize}
+\end{enumerate}
+\newpage\noindent
+\subsubsection{Au moyen d'une liste chainée}
+On rappelle sur un schéma le principe d'une liste chaînée : 
+\vfill\noindent
+Dès lors, on constate que l'on peut aussi très facilement modéliser une 
+pile par une liste chaînée.  
+\begin{itemize}
+\item la première cellule, (celle pour laquelle on a un accès direct à la valeur)
+est le sommet de la pile;
+\item dépiler signifie récupérer la valeur de la cellule et remplacer la cellule 
+par son successeur;
+\item empiler signifie créer une nouvelle cellule qui aura pour successeur le 
+sommet actuel de la pile.   
+\end{itemize}
+On peut alors donner la classe suivante : 
+% cSpell:disable
+\begin{Python}
+class Cellule:
+    def __init__(self,v,s):
+        self.valeur=v
+        self.suivante=s
+        
+class Pile:
+    def __init__(self):
+        self.contenu=None
+    
+    def est_vide(self):
+        return self.contenu is None
+    
+    def empile(self,x):
+        self.contenu=Cellule(x,self.contenu)
+    
+    def depile(self):
+        if self.est_vide():
+            raise IndexError('depilement d une pile vide')
+        else :
+            v=self.contenu.valeur
+            self.contenu=self.contenu.suivante
+            return v
+\end{Python}% cSpell:enable
+
+On constate alors toute l'utilité du procédé d'encapsulation : si on remplace 
+l'ancienne classe \code{Pile} par celle-ci, les fonctions écrites dans l'activité 
+{\bf 2} fonctionnent encore même si les mécanismes mis en jeux n'ont rien à voir !! 
+\newpage\noindent
+\section{Les Files}
+\subsection{Définition théorique}
+\begin{Definition}{File}
+Une file ({\em queue}) est une structure linéaire de données dans laquelle on peut 
+ajouter ou retirer un objet en suivant la règle du {\color{red} Premier entré, 
+Premier sorti} ({\em First in, first out} : FIFO).
+
+Pour une file non vide, on appelle :
+\begin{itemize}
+    \item {\color{red} tête de file} l'élément ajouté le plus anciennement encore présent/le 
+prochain élément à sortir.
+   \item  {\color{red} queue/fin de file} l'élément ajouté le plus récemment à la file.
+\end{itemize}
+\end{Definition}
+
+\medskip
+Pour imaginer le fonctionnement d'une file, on peut imaginer une file d'attente (dans laquelle chaque personne qui attend est porteuse d'une information).
+
+La file se construit avec les personnes arrivant les unes après les autres, prenant place en fin de queue, la seule personne pouvant quitter la queue et délivrer son information étant forcément celle en tête de file, c'est à dire celle arrivée en premier.
+
+Une tel type peut être muni de l'interface suivante :
+
+\medskip
+\begin{Definition}{Interface d'une File}
+L'interface minimale pour le type File est constitué de :
+\begin{itemize}
+\item une fonction créant une file vide; 
+\item une fonction testant si une file est vide;
+\item une fonction permettant d'enfiler un élément sur une file existante;
+\item une fonction permettant de défiler un élément sur une file non vide : 
+\begin{itemize}
+\item elle déclenche une erreur si la file est vide;
+\item elle renvoie l'élément en tête de file (qui est donc raccourcie d'un élément) sinon.
+\end{itemize}
+\end{itemize}
+\end{Definition}
+\subsubsection*{Activité 3}
+Transformer la file \hskip 5mm \code{f}= {\footnotesize$\begin{array}{|c|c|c|c|c|c|c|c|}\hline
+T&1&2&3&4&5&6&F\\\hline\end{array}$}\hskip 5mm  en \hskip 5mm 
+{\footnotesize$\begin{array}{|c|c|c|c|c|c|c|c|}\hline
+T&4&5&6&3&2&1&F\\\hline\end{array}$}
+\newpage\noindent
+\subsection{Implémentation en Python}
+\subsubsection{Implémentation avec le type \texorpdfstring{\code{list}}{list}}
+On peut assez facilement coder l'interface minimale pour une pile grace au type 
+\code{list}. 
+
+Ceci est cependant considéré comme maladroit car en général, supprimer le terme 
+d'indice 0 d'une liste (pour défiler) suppose de renuméroter tous les autres et 
+peut donc être coûteux en ressources.
+
+% cSpell:disable
+\begin{Python}
+def creer_file():
+    return []
+    
+def est_vide(L):
+    return len(L)==0
+
+def enfile(L,x):
+    L.append(x)
+
+def defile(L):
+    if est_vide(L):
+        raise IndexError('defilement d une file vide')
+    else :
+        return L.pop(0)
+\end{Python}% cSpell:enable
+
+Notons qu'avec cette représentation, la tête de liste est à l'indice 0 et la queue 
+de liste au dernier indice.
+
+On peut là encore encapsuler ces opérations dans une classe \code{File} :
+
+% cSpell:disable
+\begin{Python}
+class File:
+    def __init__(self):
+        self.valeurs=[]
+    
+    def est_vide(self):
+        return len(self.valeurs)==0
+    
+    def enfile(self,x):
+        self.valeurs.append(x)
+    
+    def defile(self):
+        if self.est_vide():
+            raise IndexError('defilement d une file vide')
+        else :
+            return L.pop(0)
+\end{Python}% cSpell:enable
+
+\subsubsection*{Activité 4}
+En utilisant uniquement les méthodes de la classe \code{File}, écrire les fonctions 
+suivantes : 
+\begin{enumerate}
+\item \code{retourne} d'argument une file \code{f1} et qui renvoie une file 
+ayant les mêmes valeurs que \code{f1} mais données dans l'autre sens.
+\item \code{premiers()} prenant comme argument une file \code{f1} et 
+un entier \code{k} et renvoyant 
+\begin{itemize}
+\item une erreur si \code{f1} possède moins de \code{k} éléments;
+\item une file contenant les \code{k} premières valeurs de \code{f1} 
+données dans le même ordre, sinon.
+\end{itemize}
+\item \code{retourne\_premiers()} prenant comme argument une file \code{f1} et un entier 
+\code{k} et renvoyant :
+\begin{itemize}
+    \item une erreur si \code{f1} possède moins de \code{k} éléments;
+    \item une file contenant les \code{k} premières valeurs de \code{f1} 
+    dans l'ordre inverse, sinon.
+\end{itemize}
+\end{enumerate}
+
+\newpage\noindent
+
+\subsubsection{Utilisation d'une liste chainée}
+On peut également utiliser une liste chaînée. L'écriture est un peu plus compliquée que pour les piles car on doit pouvoir accéder aux deux extrémités de la chaîne.
+
+L'implémentation suivante n'est pas optimale, mais elle est très lisible, distinguant bien les cas d'une file vide ou à un seul ou deux éléments.
+
+% cSpell:disable
+\begin{Python}
+class Cellule:
+    def __init__(self,v,s):
+        self.valeur=v
+        self.suivante=s
+        
+class File:
+    def __init__(self):
+        self.tete=None
+        self.queue=None
+            	
+    def est_vide(self):
+        return self.tete is None
+    
+	def enfile(self,x):
+		c=Cellule(x,None)
+		if self.est_vide() :
+			self.tete=c
+		elif self.queue is None :
+			self.queue=c
+			self.tete.suivante=self.queue
+		else :
+			self.queue.suivante=c
+			self.queue=c
+    
+	def defile(self):
+		if self.est_vide():
+			raise IndexError('defilement d une file vide')
+		else :
+			v=self.tete.valeur
+			if self.queue is None :
+				self.tete=None
+			elif self.tete.suivante is self.queue :
+				self.tete=self.queue
+				self.queue=None
+			else :
+				self.tete=self.tete.suivante						
+			return v
+\end{Python} % cSpell:enable
+ 
+%%TODO: Avec une classe interface qui ajoute en fin de liste grâce à un pointeur
+% sur la dernière cellule et qui retire le premier élément de la liste.
+
+
+\end{document}
