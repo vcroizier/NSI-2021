@@ -1,12 +1,11 @@
 \documentclass[11pt,a4paper,french,twoside]{PMCours}
 \usepackage{hyperref}
-\frenchbsetup{StandardLists=true}
 % cSpell:ignore LIFO FIFO
 % TODO: Ajuster la position des sauts de page.
 \begin{document}
 \TitreISN{Classe de Terminale}{Année 2021--2022}
 {Numérique et Sciences Informatiques}{Chap. 5 : Piles et Files}
-\vskip -.7cm Dans ce chapitre, nous voyons deux structures de données très classiques en informatique : 
+Dans ce chapitre, nous voyons deux structures de données hyper classique en informatique : 
 les Piles et les Files. On va donner pour chacune une définition théorique, qui décrit une situation standard pour laquelle on développera des réflexes, des stratégies,... puis on fournira une ou des implémentations en langage Python.   
 \section{Les Piles}
 \subsection{Définition théorique}
@@ -22,14 +21,16 @@ prochain élément à sortir.
    \item le {\color{red} base de la pile} est le premier élément ajouté.
 \end{itemize}
 \end{Definition}
-\ \\ 
+
+\medskip
 Pour imaginer le fonctionnement d'une pile, on peut imaginer une pile d'assiettes (éventuellement avec des informations marquées au dos des assiettes) que l'on s'obligerait à manipuler une à la fois.
 
 On construit le pile en empilant les assiettes une à une et à chaque fois, la seule assiette que l'on peut retirer de la pile (pour accéder à l'information) est forcément celle du sommet et donc, la dernière à avoir été posée.
 
-
+\vfill\noindent 
 Une tel type peut être muni de l'interface suivante : 
-\medskip \\
+
+\medskip
 \begin{Definition}{Interface d'une Pile}
 L'interface minimale pour le type Pile est constituée de :
 \begin{itemize}
@@ -45,6 +46,7 @@ L'interface minimale pour le type Pile est constituée de :
 \end{Definition}
 \newpage\noindent
 \subsubsection*{Activité 1}
+Sur le principe du Crêpier Psychorigide,\medskip\\
 Transformer la pile \hskip 5mm \code{p}= {\footnotesize$\begin{array}{|c|}\hline6\\\hline5
 \\\hline4\\\hline3\\\hline2\\\hline1\\\hline\end{array}$}\hskip 5mm  en \hskip 5mm 
 {\footnotesize$\begin{array}{|c|}\hline4\\\hline5\\\hline6\\\hline 
@@ -279,7 +281,7 @@ class File:
             return L.pop(0)
 \end{Python}% cSpell:enable
 
-\subsubsection*{\vskip -8mm Activité 4}
+\subsubsection*{Activité 4}
 En utilisant uniquement les méthodes de la classe \code{File}, écrire les fonctions 
 suivantes : 
 \begin{enumerate}
@@ -310,95 +312,45 @@ L'implémentation suivante n'est pas optimale, mais elle est très lisible, dist
 
 % cSpell:disable
 \begin{Python}
-class Cellule :
-    def __init__(self,v,s) :
-        self.valeur = v
-        self.suivante = s
+class Cellule:
+    def __init__(self,v,s):
+        self.valeur=v
+        self.suivante=s
         
-class File :
-    def __init__(self) :
-        self.tete = None
-        self.queue = None
-                
-    def est_vide(self) :
+class File:
+    def __init__(self):
+        self.tete=None
+        self.queue=None
+            	
+    def est_vide(self):
         return self.tete is None
     
-    def enfile(self,x) :
-        c = Cellule(x,None)
-        if self.est_vide() :
-            self.tete = c
-            self.queue = c
-        elif self.queue is self.tete :
-            self.queue = c
-            self.tete.suivante = self.queue
-        else :
-            self.queue.suivante = c
-            self.queue = c
+	def enfile(self,x):
+		c=Cellule(x,None)
+		if self.est_vide() :
+			self.tete=c
+		elif self.queue is None :
+			self.queue=c
+			self.tete.suivante=self.queue
+		else :
+			self.queue.suivante=c
+			self.queue=c
     
-    def defile(self) :
-        if self.est_vide() :
-            raise IndexError('defilement d une file vide')
-        else :
-            v = self.tete.valeur
-            if self.queue is self.tete :
-                self.tete = None
-                self.queue = None
-            elif self.tete.suivante is self.queue :
-                self.tete = self.queue
-            else :
-                self.tete = self.tete.suivante                      
-            return v
-
-    def affiche(self) :
-        texte = "T"
-        a = self.tete
-        while a is not None :
-            texte = texte + "-(" + str(a.valeur) + ")"
-            a = a.suivante
-        return texte + "-Q"
-\end{Python}
-\newpage\noindent
-Plus précisément :
-\begin{itemize}
-\item Une file est vide si et seulement si sa tête est la cellule \code{None}.
-\item Pour file contenant un seul élément de valeur \code{x}, la tête et la queue sont égales (le test \code{self.tete is self.queue} est évalué à \code{True}) et sont une cellule de valeur \code{x} et de suivante \code{None}.
-\item Pour file contenant deux éléments, la cellule qui suit la tête de file est la queue de file. Donc, le test \code{self.tete.suivante is self.queue} est évalué à \code{True}.
-\item La dernière cellule de la file est toujours sa queue. Ainsi, le test \code{self.queue.suivante is None} est toujours évalué à \code{True}.
-\end{itemize}
-\subsubsection*{\vskip -0.7cm Activité 5} 
-On peut vérifier le bon fonctionnement de cette implémentation grace aux commandes suivantes :\medskip\\
-\begin{tabular}{|p{5cm}|p{6cm}|p{4cm}|}\hline
-commande & Commentaire & file \\ \hline
-\code{fil=File() }& création file vide nommée \code{fil}& \code{file vide}\\ \hline
-\code{fil.affiche() }& affichage de \code{fil}& \\ \hline
-\code{fil.tete is None}&&\\ \hline
-\code{fil.queue is None}&&\\ \hline
-\code{fil.enfile(1) }& & \\ \hline
-\code{fil.affiche() }&&\\ \hline
-\code{fil.tete}&&\\ \hline
-\code{fil.queue}&&\\ \hline
-\code{fil.tete is fil.queue}&&\\ \hline
-\code{fil.enfile(2) }& & \\ \hline
-\code{fil.affiche() }&&\\ \hline
-\code{fil.tete is fil.queue}&&\\ \hline
-\code{fil.tete.suivante is fil.queue}&&\\ \hline
-\code{fil.enfile(3) }&&  \\ \hline
-\code{fil.affiche() }&&\\ \hline
-\code{fil.tete.suivante.suivante is fil.queue}&&\\ \hline
-\code{fil.enfile(4) }& & \\ \hline
-\code{fil.enfile(5) }& & \\ \hline
-\code{fil.affiche}&&\\ \hline
-\code{fil.defile() }&&  \\ \hline
-\code{fil.defile() }&&  \\ \hline
-\code{fil.defile() }&&  \\ \hline
-\code{fil.affiche() }&&  \\ \hline
-\code{fil.defile() }&&  \\ \hline
-\code{fil.defile() }&&  \\ \hline
-\end{tabular}
-
-
-
-
+	def defile(self):
+		if self.est_vide():
+			raise IndexError('defilement d une file vide')
+		else :
+			v=self.tete.valeur
+			if self.queue is None :
+				self.tete=None
+			elif self.tete.suivante is self.queue :
+				self.tete=self.queue
+				self.queue=None
+			else :
+				self.tete=self.tete.suivante						
+			return v
+\end{Python} % cSpell:enable
+ 
 %%TODO: Avec une classe interface qui ajoute en fin de liste grâce à un pointeur
 % sur la dernière cellule et qui retire le premier élément de la liste.
 
