@@ -1,0 +1,96 @@
+// Test filius DMZ
+
+::T2Q01:: Le but de cette activité est d'étudier et partiellement configurer 
+une DMZ (zone démilitarisée).\n
+Ouvrez le fichier filius joint à ce test. Il présente une structure en trois 
+zones:\n
+Une zone extérieure (dont le switch est représenté par un nuage) représentant 
+Internet. Une zone intérieure représentant le réseau interne de l'entreprise.
+Et enfin, reliée au deux autres par deux routeurs, la DMZ qui contient deux
+serveurs (DNS1 et server.org).\n
+\n
+Quelle est l'adresse IP de OrdiExt1 ?\n
+{=128.12.50.101}
+
+::T2Q02:: Quelle est l'adresse de sous-réseau de OrdiExt1 ? {=128.12.0.0}
+
+::T2Q03:: Quelle est l'adresse de sous-réseau de DNS1 ? {=128.100.0.0}
+
+::T2Q04:: Quelle est l'adresse de sous-réseau de OrdiInt1 ? {=192.168.10.0}
+
+::T2Q05:: Cocher les communications possibles (un paquet peut-il aller de 
+l'expéditeur vers le destinataire ?): 
+{
+    ~%25%OrdiExt1-->OrdiExt2
+    ~%25%OrdiExt1-->DNS1
+    ~%0%OrdiExt1-->OrdiInt1
+    ~%25%DNS1-->OrdiExt1
+    ~%25%DNS1-->OrdiInt1
+    ~%0%OrdiInt1-->OrdiInt2
+    ~%0%OrdiInt1-->DNS1
+    ~%0%OrdiInt1-->OrdiExt1
+}
+
+
+::T2Q06:: Quel problème empêche OrdiInt1 de faire un ping sur DNS1 ?
+{ }
+Corrigez le problème pour OrdiInt1 et OrdiInt2.
+
+::T2Q07:: Quel problème empêche OrdiInt1 de faire un ping sur server.org ?
+{ }
+Corrigez le problème.
+
+::T2Q08:: Lors d'un ping de OrdiExt1 sur DNS1, les paquets passent par :
+{
+    ~Nulle part, c'est direct. 
+    ~RouteurExt uniquement 
+    ~RouteurInt uniquement
+    =RouteurExt et routeurInt    
+}
+
+::T2Q09:: Si un ordinateur du réseau externe essaie de contacter un ordinateur 
+du réseau interne :
+{
+    ~ça passe. 
+    ~c'est arrêté par le SwitchExt. 
+    =c'est arrêté par le RouteurExt. 
+    ~c'est arrêté par le SwitchDMZ. 
+    ~c'est arrêté par le RouteurInt. 
+    ~c'est arrêté par le SwitchInt. 
+}
+
+::T2Q10:: Si un ordinateur du réseau interne essaie de contacter un ordinateur 
+du réseau externe :
+{
+    ~ça passe. 
+    ~c'est arrêté par le SwitchExt. 
+    ~c'est arrêté par le RouteurExt. 
+    ~c'est arrêté par le SwitchDMZ. 
+    =c'est arrêté par le RouteurInt. 
+    ~c'est arrêté par le SwitchInt. 
+}
+
+::T2Q11:: Si un ordinateur du réseau interne essaie de contacter DNS1. Quelles
+lignes interviennent dans les tables de routage :\n
+RouteurInt ligne numéro {1:MULTICHOICE:~aucune~1~2~3~=4~5~6}\n
+RouteurExt ligne numéro {1:MULTICHOICE:~=aucune~1~2~3~4~5}\n
+
+::T2Q12:: Si un ordinateur du réseau externe essaie de contacter DNS1. Quelles
+lignes interviennent dans les tables de routage :\n
+RouteurInt ligne numéro {1:MULTICHOICE:~=aucune~1~2~3~4~5~6}\n
+RouteurExt ligne numéro {1:MULTICHOICE:~aucune~1~2~=3~4~5}\n
+
+::T2Q13:: Si DNS1 essaie de répondre à OrdiExt1. Quelles
+lignes interviennent dans les tables de routage :\n
+RouteurInt ligne numéro {1:MULTICHOICE:~aucune~1~2~3~4~5~=6}\n
+RouteurExt ligne numéro {1:MULTICHOICE:~aucune~1~=2~3~4~5}\n
+
+::T2Q14:: Mettez en place un serveur DNS sur la machine DNS1. Ce serveur doit 
+associer server.org à l'IP de la machine server.org. Que devez-vous faire en
+pour que les ordinateurs des réseaux extérieur et intérieur aient accès à ce service ?
+{}
+
+::T2Q15:: Si on ajoutait un cable réseau entre SwitchDMZ et SwitchInt, cela
+permettrait-il à un paquet de passer ? Si oui, donner un exemple. Si non, 
+dites pourquoi : 
+{}
