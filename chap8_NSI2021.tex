@@ -1,0 +1,458 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+\usepackage{epsfig}
+% TODO: Ajuster la position des sauts de page.
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2021--2022}
+{Numérique et Sciences Informatiques}{Chap.8 : Architecture des ordinateurs}
+
+% \documentclass[a4paper,11pt]{article}
+% \usepackage[utf8]{inputenc}
+% \usepackage{url}
+% \usepackage{array}                          % pour les tableaux
+% \usepackage{multirow}                       % pour les tableaux
+% \usepackage{longtable}                      % pour les tableaux
+% \usepackage{graphicx}                       % pour les dessins et images
+% \usepackage{float}                          % positionnement des flottants
+% 
+% %opening
+% \title{}
+% \author{}
+% \date{}
+% 
+% \begin{document}
+% 
+% \maketitle
+
+
+
+Une machine (informatique), terme générique pour désigner un ordinateur, est un système électronique, avec plusieurs composants, capable de lire et d'exécuter un programme informatique, exploitant des données éventuelles, le tout étant stocké en mémoire. Les ordinateurs, au niveau le plus fondamental de leur structure, ne savent manipuler que des nombres binaires : 0 ou 1. A partir de circuits simples élémentaires, assemblés judicieusement, on réalise des opérations plus complexes de logique, mathématiques, de transfert et de traitement de données. 
+
+La structure des ordinateurs actuels suivent un modèle d'architecture célèbre, dont on va préciser les principaux constituants. Les progrès scientifiques et technologiques ont permis de miniaturer de plus en plus les composants et de les intégrer sur des surfaces de plus en plus réduites, avec des performances de plus en plus grandes. Aussi, depuis quelques années sont apparus des systèmes rassemblant, sur une surface de quelques centimètres carrés, tous les constituants principaux d'un ordinateur classique. 
+
+Le présent document, en accord avec le Programme Officiel, décrit, dans une première partie, la notion de porte logique et de circuit combinatoires, puis en deuxième partie, le modèle d'architecture séquentielle (dit \emph{Von Neumann}), et enfin dans une dernière partie, les systèmes intégrés sur puce.
+
+Quelques références bibliographiques utilisées pour écrire ce document ou pour prolonger ce cours : 
+\begin{itemize}
+ \item \emph{Architecture de l'ordinateur}, A. Tanenbaum, 4eme édition révisée, Dunod, 2001
+ \item \textsc{Wikipédia}, dont les pages :
+ \begin{itemize}
+  \item \url{https://fr.wikipedia.org/wiki/Fonction_logique}
+  %\item \url{https://fr.wikipedia.org/wiki/Processeur}
+  \item \url{https://fr.wikipedia.org/wiki/Langage_machine}
+  \item \url{https://en.wikipedia.org/wiki/System_on_a_chip}
+ \end{itemize}
+ \item \url{https://interstices.info/le-modele-darchitecture-de-von-neumann/}
+ \item MOOC (archivé) \emph{Computational Structures}, MITx, \url{www.edx.com}
+ \item \emph{Numérique et sciences informatiques, Première}, T. Balabonski et al., éditions Ellipses, 2019
+ \item \emph{Numérique et sciences informatiques, Terminale}, T. Balabonski et al., éditions Ellipses, 2020
+\end{itemize}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Portes logiques et circuits combinatoires}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Du transistor aux portes logiques}
+
+Le composant électronique fondamental d'un ordinateur est le transistor. Il s'agit d'un composant à 3 bornes, appelées émetteur, collecteur et base. L'application ou non d'un courant ou d'une tension au niveau de la base permet de laisser passer ou de bloquer le courant qui circule entre collecteur et émetteur. Grâce à cette propriété, on a l'équivalent matériel d'une structure conditionnelle (\verb'if' en Python), à la base de toutes les structures de programmation plus complexes (\verb'for', \verb'while', ...). Mais aussi et surtout, la combinaison de plusieurs transistors permet de concevoir des circuits réalisant des opérations logiques fondamentales en algèbre booléenne à deux éléments. Ces deux éléments (ou niveaux logiques) sont :
+\begin{itemize}
+ \item la valeur 1, qui correspond à un état haut (tension positive, passage d'un courant, ...),
+ \item la valeur 0, qui correspond à un état bas (tension nulle, courant nul, ...).
+\end{itemize}
+\begin{Definition}{}
+Une \emph{porte logique} est un circuit électronique réalisant une fonction logique\footnote{En pratique, on fait l'abus de langage et on  confondra porte et fonction logique}. On distingue deux types de fonctions logiques : 
+\begin{itemize}
+ \item combinatoires, où l'état de sortie ne dépend que de l'état des entrées.
+ \item séquentielles, où l'état de sortie dépend de l'état des entrées et de l'état antérieur de la porte (effet mémoire).
+\end{itemize}
+\end{Definition}
+
+
+
+\subsection{Portes logiques élémentaires}
+
+Chaque porte logique élémentaire peut être définie par une table indiquant l'état de sa sortie en fonction de l'état de sa ou ses entrées. Dans les sous-sections qui suivent, on indique le nom français d'une porte, son nom anglais, son schéma américain (en haut), son schéma européen (en bas) et sa table de vérité.
+
+\subsubsection{Porte NON (NOT)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=6cm]{images/porteNOT.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsubsection{Porte ET (AND)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=7cm]{images/porteAND.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsubsection{Porte NON ET (NAND)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=7cm]{images/porteNAND.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsubsection{Porte OU (OR)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=7cm]{images/porteOR.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+
+\subsubsection{Porte NON OU (NOR)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=7cm]{images/porteNOR.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsubsection{Porte OU EXCLUSIF (XOR)}
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=7cm]{images/porteXOR.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+
+
+\subsubsection*{Activité 1}
+
+En électronique, on fabrique uniquement des portes NAND, car elles sont plus facile à réaliser, et surtout, on peut construire toutes les autres portes logiques à partir d'elles ! On dit que les portes NAND sont \emph{complètes}. Cherchez comment les combiner (ou simplement relier les entrées et/ou les sorties entre elles) pour réaliser les portes NOT, OR, AND et NOR (XOR est complexe et nécessite 5 NAND ...).
+
+% NOT : utiliser 1 NAND, avec ses 2 entrées reliées entre elles
+% OR : 1 NAND avec, devant chaque entrée, 1 NOT
+% AND : NAND suivi de NOT
+% NOR : OR suivi de NOT
+
+\subsection{Circuits combinatoires}
+
+En associant judicieusement des portes logiques, on forme des circuits réalisant des fonctions plus complexes comme des codeurs, des additionneurs, des multiplexeurs, des décaleurs, des unités arithmétiques et logiques ... On va voir ici un décodeur et un additionneur.
+
+\subsubsection{Décodeur}
+
+Un décodeur n bits a n entrées et $2^n$ sorties. Les n bits en entrée sont utilisés pour mettre à 1 la sortie dont le numéro est égal au nombre codé (en base 2) par les entrées (les autres sorties étant mises à 0).
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=8cm]{images/decodeur.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsubsection*{Activité 2}
+
+Ecrire la table de vérité du décodeur 2 bits.
+
+\subsubsection{Additionneur}
+
+On se limite au plus simple : le demi-additionneur 1 bit. On note que 1+1 ne fait pas 2 en binaire, mais 10 ! D'où l'introduction d'une sortie "retennue". En combinant judicieusement des demi-additionneurs 1 bit, on fait des additionneurs n bits.
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=8cm]{images/demiadd.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+
+\subsubsection*{Activité 3}
+
+Le circuit suivant est un comparateur. Vérifiez-le en établissant sa table de vérité.
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{images/compa.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+
+\subsection{Circuits séquentiels}
+
+
+Les circuits combinatoires ne peuvent suffire pour réaliser un ordinateur. Il manque des dispositifs électroniques à mémoire. Et, de plus, il y a besoin d'une horloge pour que chaque circuit fasse son calcul à un instant précis, puis le transmette à un autre circuit, de manière cadencée et coordonnée. Bien que non au programme, on présente juste deux exemples fondamentaux ci-après.
+
+
+\subsubsection{Bascule RS (ou verrou RS)}
+
+Cette bascule, formée de deux portes NOR, comprend une entrée S (comme \emph{Set}) pour la mise à l'état 1 de la bascule, une entrée R (comme \emph{Reset}) pour la mise à l'état 0 de la bascule, et deux sorties : Q et $\overline{Q}$.
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=12cm]{images/RS.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+C'est le prototype le plus simple de mémoire électronique, car la bascule conserve son état lorsque les deux entrées sont à 0. A noter l'état interdit (car logiquement impossible) si les deux entrées étaient à 1.
+
+
+\subsubsection{Bascule RS commandée par une horloge}
+
+Il est souvent nécessaire de ne faire changer d'état une bascule qu'à des instants bien précis, grâce à un signal fourni par une horloge. Ce signal, dit créneau, est une alternance régulière de 0 et de 1, selon une période précise. On peut modifier simplement la bascule RS (en ajoutant des NAND), pour qu'elle prenne en compte l'état de ses deux entrées, uniquement lorsque le signal d'horloge est à l'état 1. 
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=9cm]{images/RSclock.jpg}
+% \caption{}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+
+\subsection{Calcul binaire avec Python}
+
+En Python, un nombre binaire commence par \verb'0b' suivi des chiffres binaires constituant ce nombre\footnote{Si les bits de poids les plus forts sont des zéros, ils ne sont pas affichés. On peut donc écrire indifféremment 0b1010 ou 0b0001010}. Par exemple : 
+\begin{verbatim}
+>>> 0b1010
+10
+\end{verbatim}
+On constate que la console affiche le résultat en décimal. Pour écrire un décimal en binaire, on utilise la commande \verb'bin'. Attention celle-ci renvoit une chaîne de caractères. Par exemple : 
+\begin{verbatim}
+>>> bin(10)
+'0b1010'
+\end{verbatim}
+Pour convertir cette chaîne de caractères en nombre décimal, on utilise la commande \verb'int', avec l'argument 2. Par exemple : 
+\begin{verbatim}
+>>> int('0b1010', 2)
+10
+\end{verbatim}
+
+On peut simuler des portes logiques grâce à des commandes Python. Les opérateurs qui agissent directement sur des nombres binaires sont qualifiés d'opérateurs bit-à-bit (\emph{elementwise} an anglais). Voici les plus utiles : 
+\begin{verbatim}
+>>> a = 0b1011
+>>> b = 0b10 
+>>> bin(a & b)  # ET logique
+'0b10'
+>>> bin(a | b)  # OU logique
+'0b1011'
+>>> bin(a ^ b)  # OU EXCLUSIF
+'0b1001'
+>>> bin(~a)     # COMPLEMENT A 1 ... DISCUSSION AVEC COMPLEMENT A 2 !
+'-0b1100'
+>>> bin(~a & 0b1111)     # NON logique ... AVEC ASTUCE !
+'0b100'
+>>> bin(a+b)    # ADDITION
+'0b1101'
+>>> bin(a-b)    # SOUSTRACTION
+'0b1001'
+>>> bin(a << 3) # DECALAGE DE BITS A GAUCHE
+'0b1011000'
+>>> bin(a >> 1) # DECALAGE DE BITS A DROITE
+'0b101'
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Architecture Von Neumann}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Description}
+
+\begin{Definition}{}
+L'architecture de type Von Neumann est un type d'organisation interne d'ordinateur, où programmes et données sont stockés au même endroit\footnote{Par opposition à l'architecture de type Harvard, qui sépare physiquement la mémoire de données et la mémoire programme. Ex : microcontrôleurs, DSP, ...}. C'est l'architecture générale de tous les ordinateurs usuels (ordinateurs de bureau, PC gamers, serveurs Internet, supercalculateurs ...).
+\end{Definition}
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{images/modele-originel.jpg}
+ \caption{Modèle originel d'architecture Von Neumann}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+L’architecture de von Neumann décompose l’ordinateur en 4 parties distinctes :
+\begin{itemize}
+ \item \emph{l’unité arithmétique et logique} (Arithmetic Logic Unit ou ALU en anglais) : son rôle est d’effectuer les opérations de calcul de base, sur des nombres binaires. Elle inclut des petites mémoires ultra-rapides, les \emph{registres}.
+ \item \emph{l’unité de contrôle} (Control Unit ou UC en anglais), chargée du séquençage des opérations : elle récupère de la mémoire la prochaine instruction à exécuter et les données sur lesquelles elle doit agir, puis les envoie à l'ALU.
+ \item \emph{la mémoire} qui contient à la fois les données et le programme qui indiquera à l’unité de contrôle quels sont les calculs à faire sur ces données. La mémoire se divise entre \emph{mémoire volatile} (programmes et données en cours de fonctionnement) et \emph{mémoire permanente} (programmes et données de base de la machine).
+ \item \emph{les dispositifs d’entrée-sortie}, qui permettent de communiquer avec le monde extérieur. Ex : claviers, souris, webcams, écrans, imprimantes, haut-parleurs, disques durs, clés USB, cartes graphiques, lecteurs de disques Blue Ray, ...
+\end{itemize}
+
+L'ensemble formé de de l'ALU et de l'UC constitue le \emph{processeur} ou \emph{Unité Centrale de Traitement} (Central Processing Unit ou CPU en anglais). Lorsque l'unité arithmétique et logique et l’unité de contrôle sont rassemblés sur une même puce, on parle de \emph{microprocesseur} (exemples de noms commerciaux : Pentium, Intel Core i7, PowerPC G5, ARM Cortex-M7, ...)
+
+Au delà de cette organisation très générale, il existe de nombreuses variations possibles (processeurs multi-coeurs, processeurs vectoriels, jeux d'instructions réduit ou étendu, ...), propre à chaque fabricant et fonction de l'utilisation de l'ordinateur (serveurs, calcul intensif,  affichage graphique (GPU), ...).
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=10cm]{images/modele-actuel.jpg}
+ \caption{Modèle actuel d'architecture Von Neumann}
+% \label{fig:}
+\end{figure}
+\end{center}
+En particulier, dans le modèle d'architecture des ordinateurs actuels, il y a deux évolutions remarquables :
+\begin{itemize}
+ \item les entrées-sorties, initialement commandées par l’unité centrale, sont désormais sous le contrôle de processeurs autonomes (canaux d’entrée-sortie et mécanismes assimilés). Associée à la multiprogrammation (partage de la mémoire entre plusieurs programmes), cette organisation a notamment permis le développement des systèmes en temps partagé. D'autre part, les entrées-sorties peuvent avoir directement accès à la mémoire, grâce au contrôleur DMA (\emph{Direct Access Memory}).
+ \item les ordinateurs comportent maintenant des processeurs multiples, qu’il s’agisse d’unités séparées ou de coeurs multiples à l’intérieur d’une même puce. Cette organisation permet d’atteindre une puissance globale de calcul élevée sans augmenter la vitesse des processeurs individuels, limitée par les capacités d’évacuation de la chaleur dans des circuits de plus en plus denses.
+\end{itemize}
+
+Au final, la mémoire reste l'élément limitatif du modèle de Von Neumann. En effet, les temps d'accès des données en mémoire sont de l'ordre de quelques dizaines de nanosecondes ($10^{-9}$ s), alors que les calculs et les transferts de données dans les CPU sont de l'ordre de la nanoseconde. Aussi les fabricants ont conçu des améliorations, telles que des mémoires caches, placés entre la mémoire vive et les CPU, qui permettent notamment d'avoir un accès plus rapide à des données utilisées plusieurs fois.
+
+
+
+
+\subsection{Langage machine}
+
+Le langage machine, ou code machine, est la suite de bits qui est interprétée par le processeur d'un ordinateur exécutant un programme informatique. C'est le langage natif d'un processeur, c'est-à-dire le seul qu'il puisse traiter. Il est composé d'instructions et de données à traiter codées en binaire.
+
+Chaque processeur possède son propre langage machine, dont un code machine qui ne peut s'exécuter que sur la machine pour laquelle il a été préparé. Si un processeur A est capable d'exécuter toutes les instructions du processeur B, on dit que A est compatible avec B. L'inverse n'est pas forcément vrai : A peut avoir des instructions supplémentaires que B ne connaît pas.
+
+Les mots (suites de bits de taille fixe, souvent 32 ou 64 bits) d'un langage machine sont appelés \emph{instructions}. Chacune d'elles déclenche une commande de la part du processeur (par exemple : chercher une valeur dans la mémoire pour charger un registre, additionner deux registres, etc.)
+
+Pour progresser dans l'exécution d'un programme, l'unité de contrôle (CU) réalise en permanence, à un rythme imposé par une horloge globale (d'une fréquence de plusieurs GHz !), un \emph{cycle d'exécution d'une instruction} : 
+\begin{enumerate}
+ \item \emph{Chargement} : A l'adresse mémoire indiquée par un registre spécial appelé \emph{Instruction Pointer}, le CU va récupérer le mot binaire, correspondant à la prochaine instruction à exécuter, et le stocker dans un autre registre spécial, appelé \emph{Instruction Register}.
+ \item \emph{Décodage} : Le mot binaire est décodé, pour savoir quelle opération exacte doit effectuer l'UC. Cela peut aussi engendrer des chargements supplémentaires de mots binaires correspondant à des données, sur lesquelles l'instruction agira.
+ \item \emph{Exécution} : L'instruction est exécutée, soit par l'ALU, s'il s'agit d'une opération arithmétique ou logique, soit par le CU, s'il s'agit d'une opération dite de \emph{branchement}, qui va modifier la valeur du registre IP
+\end{enumerate}
+
+Aux premiers temps de l'informatique, quand on programmait les premiers microprocesseurs (années 1970), on utilisait un langage de programmation dit de bas niveau, le plus simple possible et le plus proche possible du langage machine (qui, lui, est quasi-incompréhensible aux êtres humains, car étant une suite de 0 et de 1, sans signification claire). Il s'agit du langage assembleur. On présente ci-dessous un exemple de programme assembleur (pour les microprocesseurs Intel x86), faisant l'addition des éléments d'un tableau d'entiers : 
+
+\begin{verbatim}
+    section .data
+tab dd 11,2,32,40,6
+
+    section .bss
+sum dd 0
+
+    section .text
+    global _start
+    
+_start:
+    MOV EAX, 0
+    MOV EBX, tab
+    MOV ECX, 5
+bcl:
+    CMP ECX, 0
+    JE fin
+    ADD EAX, [EBX]
+    ADD EBX, 4
+    SUB ECX, 1
+    JMP bcl
+fin:
+    MOV [sum], EAX
+\end{verbatim}
+
+Détaillons ce programme : 
+\begin{itemize}
+ \item La section .data définit une mémoire avec des déclarations de constantes. Ici, on alloue une zone mémoire constante, contenant un tableau, nommé \verb'tab', contenant des valeurs numériques entières (11, 2, 32, 40, 6), codées chacune sur32 bits (type \verb'dd').
+ \item La section .bss définit des zones mémoire modifiables, autrement dit des variables. Ici, une variable nommée \verb'sum' codée sur 32 bits (type \verb'dd'), est initialisée à 0. C'est cette case mémoire qui va contenir, à la fin du programme, la somme finale des éléments du tableau.
+ \item La section .text contient les instructions du programme. Chaque instruction peut être précédée d'une étiquette, qui représente la "position" de cette instruction, et qui permet d'y revenir, en cas de branchement. Ici, \verb'_start' désigne l'étiquette de l'instruction de départ du programme.
+ \item Les 3 instructions \verb'MOV' désignent des transferts de données entre les registres et/ou la mémoire. Le format est :
+ \begin{verbatim}
+MOV destination, source
+ \end{verbatim}
+Ici, le registre nommé \verb'ECX' est initialisé à 0 (il servira d'accumulateur pour la somme des éléments du tableau). Le registre nommé \verb'EBX', initialisé avec \emph{l'adresse} du tableau \verb'tab', va servir à accéder successivement aux éléments du tableau. Enfin, le registre \verb'ECX' est initialisé avec la valeur 5, et va jouer le rôle de compteur de boucle (le programme s'arrêtera quand cette valeur sera à 0).
+\item A la suite de l'étiquette \verb'bcl', sont écrites les instructions de la boucle principale pour le calcul de la somme des éléments du tableau. Les 2 premières lignes font une comparaison (\verb'CMP') de la valeur stockée dans le registre \verb'ECX' avec 0 ; et si elles sont égales, alors l'exécution du programme se poursuit ("saut conditionnel") à l'instruction précédée de l'étiquette \verb'fin'. Sinon, on continue l'exécution des instructions suivantes. Celles-ci comprennent l'addition de la valeur de la case mémoire pointée (d'où les crochets []) par \verb'EBX' à la valeur du registre \verb'EAX'. Puis on ajoute 4 au registre \verb'EBX', de manière à ce que la valeur contenue dans ce registre corresponde à l'adresse de l'élément suivant du tableau \verb'tab' (en effet, 4 correspond à 4 octets, soit 32 bits, qui est la taille des mots binaires, représentant les éléments de ce tableau). Puis on soustrait 1 à la valeur du registre \verb'ECX' (le compteur de boucle) et on recommence la boucle (saut non conditionnel ou \emph{jump} à l'instruction suivant l'étiquette \verb'bcl'). Enfin, une fois sorti de la boucle, on transfert le contenu de l'accumulateur \verb'EAX' dans la variable \verb'sum' (repérée par son adresse mémoire).
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Systèmes sur puce}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Présentation}
+
+
+\begin{Definition}{}
+Les systèmes sur puce (en anglais \emph{Systems On Chip} ou SoC) sont des circuits intégrés qui rassemblent tous les éléments habituellement présents sur la carte mère d'un ordinateur : CPU, mémoire vive, dispositifs d'entrée-sortie, contrôleurs divers, ... 
+\end{Definition}
+
+Ce sont des systèmes électroniques relativement récents, qui ont pu voir le jour grâce aux progrès continues de la miniaturisation et des performances\footnote{Cf la célèbre loi (empirique) de Moore qui prévoit un doublement des caractéristiques (vitesse, nombre de transistor par unité de surface, taille mémoire, ...) tous les 2 ans environ.}
+
+On rencontre de tels systèmes notamment dans tous les smartphones, mais aussi les circuits logiques programmables FPGA ou encore les microcontrôleurs (présents dans de nombreux systèmes embarqués ou robotiques). 
+
+\subsection{Avantages et inconvénients}
+
+Avantages par rapport à un système informatique avec carte mère : 
+\begin{itemize}
+ \item Consommation énergétique réduite : les distances étant plus courtes que des systèmes classiques, les connections le sont aussi, donc moins de dissipation d'énergie par effet Joule (au passage, moins de chaleur dégagée donc en général pas de systèmes de votilation nécessaire pour refroidir). Autre argument : des tensions d'utilisation plus basses.
+ \item Coûts réduits : dû à une production en très grande quantité (économie d'échelle) entièrement automatisée.
+ \item Sécurité accrue : dû à l'impossibilité de modifier ou d'ajouter des composants.
+\end{itemize}
+
+Ce dernier avantage constitue cependant le point faible des dispositifs SoC, car au moindre défaut ou à la moindre défaillance matérielle d'un composant, l'ensemble devient irréparable !
+
+\subsection{Cas particulier des microcontrôleurs}
+
+Les microcontrôleurs sont des SoC particuliers dans la mesure où ils ont une architecture dite Harvard : les données et les programmes sont stockés dans des mémoires distinctes ; les bus assurant les transferts avec le CPU sont également différents et avec des performances (vitesses de transfert, tailles de mots) différentes. De plus, ils sont plus simples à concevoir, fonctionnent avec des fréquences d'horloge assez basses (quelques dizaines ou centaines de MHz) et ont un jeu d'instructions réduit (en anglais \emph{Reducede Instruction Set Computer} ou RISC). Enfin, il ont comme particularité d'exécuter un unique programme qui tourne en boucle infinie (après une phase éventuelle d'initialisation). L'intérêt des microcontrôleurs est de pouvoir faire de la gestion temps réel (prise en compte de contraintes temporelles fortes, comme des temps de réponse à des sollicitation extérieures inférieures à des durées imposées) , de consommer très peu d'énergie, de pouvoir interagir facilement avec des capteurs (notamment analogiques, via des Convertisseurs analogiques/numériques). Les microcontrôleurs sont donc très présents en robotique, en aéronautique, dans les automobiles, dans les appareils électroménagers. 
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=8cm]{images/ARM.jpg}
+ \caption{Détail de l'organisation d'un microcontrôleur ARM}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+Un exemple célèbre de microcontrôleur est le Atmel AVR présent sur les cartes Arduino UNO\footnote{A ne pas confondre avec des Raspberry qui sont de véritables ordinateurs, mais en SoC. Il y a un système d'exploitation (type Linux) et des performances comparables à ceux d'un ordinateur personnel.}. Outre le microcontrôleur proprement dit, on trouve sur ces cartes  une dizaines de bornes d'entrée-sortie, un port USB, une prise pour l'alimentation électrique, ... Ce microcontrôleur, à l'origine développé par des universitaires italiens, est aujourd'hui très répandu dans la robotique amateure, l'univers des makers, l'enseignement, le design, le protoypage, .. Pour l'utiliser, il faut connecter d'abord l'UNO à un ordinateur muni d'un environnement de développement intégré dédié, où on écrit un programme dans un  langage de programmation proche du C/C++ (légèrement modifié par rapport au langage normé, pour tenir compte de certaines spécificité du microcontrôleur). On transfère alors, via câble USB, le programme, préalablement compilé, et dès que l'UNO est alimenté, le programme s'exécute en boucle infinie.
+
+\begin{center}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=5cm]{images/uno.jpg}
+ \caption{Microcontrôleur Arduino UNO}
+% \label{fig:}
+\end{figure}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=11cm]{images/compa_arduino.jpg}
+ \caption{Caractéristiques de quelques cartes Arduino}
+% \label{fig:}
+\end{figure}
+\end{center}
+
+\subsection{Cas des Soc pour smartphones}
+
+Ce sont des Soc très performants, avec des performances similaires (voire supérieures) aux ordinateurs personnels. Basés sur une architecture Von Neumann, l'accès mémoire et les échanges avec les périphériques d'entrée-sortie constituent la contrainte limitante du fait des temps d'accès beaucoup plus grands que les temps de calcul du microprocesseur. Les fabricants ont donc imaginés des astuces et des stratégies pour contourner cette limitation, comme : 
+\begin{itemize}
+ \item l'utilisation de 2 bus de communication (l'un à haute performances pour les échanges entre CPU, processeurs graphiques et composants mémoire, l'autre)
+ \item des contrôleurs DMA
+ \item des mémoires caches
+\end{itemize}
+De plus, par rapport aux ordinateurs personnels, ces SoC intègrent de plus en plus des circuits spécialisés pour réaliser extrêmement vite certaines tâches spécifiques. On peut citer notamment des calculs matriciels, intervenant dans le Machine Learning (une des techniques d'intelligence artificielle) ou bien des calculs de factorisation avec des nombres premiers pour de la cryptographie.
+
+Pour apprécier les performances de ces systèmes, on peut prendre l'exemple du SoC A13 bionic, présents dans les derniers IPhones. La puce contient 8,5 milliards de transistors, avec 6 coeurs, dont 2 rapides cadencés à 2,65 GHz. Elle inclut un processeur graphique avec 4 coeurs, un processeur à 8 coeurs appelé \emph{Neural Engine}, qui s'occupe des calculs liés à l'IA, pour le traitement d'images du triple appareil photo, pour la reconnaissance faciale et la réalité augmentée. Enfin 4 Go de mémoire RAM sont directement présents sur la puce.
+
+
+
+
+\end{document}
