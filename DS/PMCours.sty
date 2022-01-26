@@ -1,0 +1,798 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{PMCours}[2017/07/30]
+
+%%% A utiliser avec :
+% \documentclass[french]{article}
+% \usepackage{VcCours}
+%%% ou mieux, avec :
+% \documentclass[french]{VcCours}
+
+%%%%%%%%%%%%
+% Packages %
+%%%%%%%%%%%%
+
+\RequirePackage{ifluatex} 
+\ifluatex
+	\RequirePackage{fontspec}
+\else
+	\RequirePackage[T1]{fontenc} 
+	\RequirePackage[utf8]{inputenc}
+	\RequirePackage{textcomp} 	
+\fi
+\RequirePackage{babel}
+\RequirePackage[dvips]{graphicx}
+\RequirePackage{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage[dvipsnames*,svgnames]{xcolor}
+	\definecolors{OliveGreen}
+	\definecolors{Sepia}
+	\definecolors{Violet}
+	\definecolors{RubineRed}
+	\definecolors{BrickRed}
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{fourier-orns}
+\RequirePackage{nopageno}
+\RequirePackage{multicol}
+\RequirePackage{eurosym}
+\RequirePackage[normalem]{ulem}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{environ}
+\RequirePackage{tabls}
+\RequirePackage{slashbox}
+\RequirePackage{tikz}
+\RequirePackage{tkz-tab}
+\usetikzlibrary{shapes.geometric,backgrounds,calc,patterns}
+\RequirePackage{wrapfig}
+%\RequirePackage{mathtools}
+\RequirePackage{mathrsfs}
+\RequirePackage{alltt}
+\RequirePackage{listings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Polices de caractères %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifluatex
+	\setmainfont{Latin Modern Roman}[SmallCapsFont=Latin Modern Roman Caps]
+	%\setsansfont{}
+	%\setmonofont{}
+	\defaultfontfeatures{ligatures = TeX}
+\fi
+
+%%%%%%%%%%%%%%%%
+% Mise en page %
+%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\headwidth=17cm
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{paper=a4paper,footskip=5pt,lmargin=2cm,rmargin=2cm,bmargin=2cm,top=2cm,
+		  marginparwidth=0cm,marginparsep=0cm}
+\parindent=0cm
+\topsep=0cm
+\headheight=1.5em
+
+%%%%%%%%%%
+% Listes %
+%%%%%%%%%%
+
+\setlist[itemize]{itemsep=1ex,leftmargin=1cm}
+\setlist[itemize,1]{label=\textbullet}
+\setlist[itemize,2]{label=\scriptsize$\blacktriangleright$}
+\setlist[itemize,3]{label=\textopenbullet}
+\setlist[itemize,4]{label=$\triangleright$}
+
+\setlist[enumerate]{itemsep=1ex,leftmargin=1cm}
+%%%% 1er niveau
+%\setlength\leftmargini{2em}                 % Marge gauche
+%\renewcommand{\theenumi}{\roman{enumi}}     % Numérotation
+\renewcommand{\labelenumi}{\textbf{\theenumi})}      % Mise en forme
+%%%% 2ème niveau
+%\setlength\leftmarginii{4em}
+\renewcommand{\theenumii}{\alph{enumii}}
+\renewcommand{\labelenumii}{\textbf{(\theenumii)}}
+%%%% 3ème niveau
+%\setlength\leftmarginii{6em}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+\renewcommand{\labelenumiii}{\textbf{(\theenumiii)}}
+%%%% 4ème niveau
+%\setlength\leftmarginii{8em}
+\renewcommand{\theenumiv}{\alph{enumiv}}
+\renewcommand{\labelenumiv}{\textbf{(\theenumiv)}}
+
+\setlist[description]{itemsep=1ex,leftmargin=1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titre, Table des matières, sections %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\author{}
+
+\makeatletter
+\def\@hautGauche{\@empty}
+\def\hautGauche#1{\global\def\@hautGauche{#1}}
+\def\@hautDroite{\@empty}
+\def\hautDroite#1{\global\def\@hautDroite{#1}}
+\def\@subtitle{\@empty}
+\def\subtitle#1{\global\def\@subtitle{#1}}
+\def\@maketitle{%
+  \newpage
+  \@hautGauche\hfill\@hautDroite
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE\bf \@title \par}%
+    \vskip 1.5em%
+    {\LARGE \@subtitle \par}%
+    %\vskip 1.5em%
+    %{\large
+    %  \lineskip .5em%
+    %  \begin{tabular}[t]{c}%
+    %    \@author
+    %  \end{tabular}\par}%
+    %\vskip 1em%
+    %{\large \@date}%
+  \end{center}%
+  \par
+  \vskip 3em
+  \hrule
+  \vspace{0.3ex}
+  \hrule
+  \vskip 1.5em}
+\makeatother
+
+
+%%% Titre du document
+%\Titre{BCPST1}{Promotion 2017--2018}{Mathématiques}{Chapitre 1 : Dérivation}
+\newcommand\Titre[4]{
+	\fancyhead{}
+	\fancyfoot{}
+	\fancyhead[CE,CO]{\bf{#4}}
+	\fancyhead[LE,RO]{\bf\thepage}
+	\hautGauche{\resizebox{!}{1.9em}{\includegraphics{logoCPGEtitre.png}}}
+	\hautDroite{\vbox{\hbox{\bf #1}\hbox{#2}}}
+	\title{#3}
+	\subtitle{#4}
+    \date{}
+    \maketitle
+}
+   
+\newcommand\separationTitre{% 
+  \vskip 1.5em
+  \hrule
+  \vspace{0.3ex}
+  \hrule
+  \vskip 3em
+}
+
+%%% Titre spécial ISN
+%\TitreISN{Terminale S}{Année 2017--2018}{Informatique et Science du Numérique}{Petite introduction au HTML}
+\newcommand\TitreISN[4]{
+	\fancyhead{}
+	\fancyfoot{}
+	\fancyhead[CE,CO]{\bf{#4}}
+	\fancyhead[LE,RO]{\bf\thepage}
+	\hautGauche{\resizebox{!}{1.9em}{\includegraphics{logoLyceeTitre.png}}}
+	\hautDroite{\vbox{\hbox{\bf #1}\hbox{#2}}}
+	\title{#3}
+	\subtitle{\vspace{-1.5em}}
+    \date{}
+    \maketitle
+    {\Large\bf #4}
+    \separationTitre
+}
+
+%%% Titre spécial pour Pierre-Marie Moyaux
+%\TitrePMM{PCSI}{Année 2017--2018}{Mathématiques}{titre du chapitre}{titre abrégé}
+\newcommand\TitrePMM[5]{
+	\fancyhead{}
+	\fancyfoot{}
+	\fancyhead[CE,CO]{\bf{#5}}
+	\fancyhead[LE,RO]{\bf\thepage}
+	\hautGauche{\resizebox{!}{1.9em}{\includegraphics{logoCPGEtitre.png}}}
+	\hautDroite{\vbox{\hbox{\bf #1}\hbox{#2}}}
+	\title{#3}
+	\subtitle{\vspace{-1.5em}}
+    \date{}
+    \maketitle
+    {\Large\bf #4}
+    \separationTitre
+	% Couleurs, Macros et définitions supplémentaires
+	\definecolor{SectionColor}{named}{black}
+	\definecolor{SubsectionColor}{named}{black}
+	\definecolor{SubsubsectionColor}{named}{black}
+	\newtheorem{theoreme}[equation]{Th\'eor\`eme}
+	\newtheorem{proposition}[equation]{Proposition}
+	\newtheorem{corollaire}[equation]{Corollaire}
+	\newtheorem{definition}[equation]{D\'efinition}
+	\newtheorem{exemple}[equation]{Exemple}
+	\newtheorem{remarque}[equation]{Remarque}
+	\newcommand{\dis}{\displaystyle}
+	\newcommand{\pt}[1]{ \fcolorbox{black}{LightGrey}{\parbox{\linewidth}{##1}} }
+	\newcommand{\pd}[1]{ \fcolorbox{Blue}{PaleTurquoise}{\parbox{\linewidth}{##1}} }
+	\newcommand{\card}{{\rm card}}
+	\newcommand{\bin}[2]{\displaystyle{\left(\begin{array}{c}{##1}\\{##2}\end{array}\right)}}
+}
+
+% Définitions des couleurs
+\definecolor{SectionColor}{named}{OliveGreen}
+\definecolor{SubsectionColor}{named}{Sepia}
+\definecolor{SubsubsectionColor}{named}{Violet}
+
+%%%% Modifier le style des titres  %%%%
+
+
+%%%% Modifier le style de tableOfContents %%%%
+\makeatletter
+\renewcommand\l@section{\@dottedtocline{1}{2.2em}{2.2em}}
+\renewcommand\l@subsection{\@dottedtocline{2}{4.4em}{2.2em}}
+\renewcommand\l@subsubsection{\@dottedtocline{3}{6.6em}{2.2em}}
+\renewcommand\l@paragraph{\@dottedtocline{4}{8.8em}{2.2em}}
+\renewcommand\l@subparagraph{\@dottedtocline{5}{11em}{2.2em}}
+\renewcommand\l@figure{\l@section}
+\renewcommand\l@table{\l@section}
+\makeatother
+
+%%% Section des exercices %%%
+\newcommand\sectionExercices{\section*{Exercices}\addcontentsline{toc}{section}{Exercices}%
+\stepcounter{section}\setcounter{exercices}{0}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Environnements des énoncés %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% définitions des dimensions
+\newcommand{\largeur}{14cm} % Largeur des textes des énoncés
+\newcommand{\marge}{1cm}    % Marge à droite des énoncés
+
+% Définitions des compteurs
+\everymath{\displaystyle}
+\newcounter{definitions}
+\newcounter{propositions}
+\newcounter{remarques}
+\newcounter{exemples}
+\newcounter{methodes}
+\newcounter{exercices}
+
+% Définitions des couleurs
+\definecolor{DefColor}{named}{RubineRed}
+\definecolor{NotColor}{named}{RubineRed}
+\definecolor{ThmDefColor}{named}{RubineRed}
+\definecolor{ThmColor}{named}{RubineRed}
+\definecolor{PropColor}{named}{RubineRed}
+\definecolor{CoroColor}{named}{RubineRed}
+\definecolor{CsqColor}{named}{RubineRed}
+\definecolor{LemColor}{named}{RubineRed}
+\definecolor{RmqColor}{named}{RubineRed}
+\definecolor{ExmColor}{named}{Violet}
+\definecolor{MethodeColor}{named}{OliveGreen}
+
+% Définitions des théorèmes et autres...
+
+\newcommand{\etoiles}{%
+\begin{scope}[line width=1pt]
+  \node[xshift=-0.5cm,yshift=-1em] at (mabox.west){$\bigstar$};
+  \node[xshift=-0.5cm] at (mabox.west){$\bigstar$};
+  \node[xshift=-0.5cm,yshift=1em] at (mabox.west){$\bigstar$};
+\end{scope}}
+
+\newcommand{\espaceAvant}{\smallskip}
+\newcommand{\espaceApres}{\medskip}
+
+%\Enonce{titre}{compteur}{nom du
+% résultat}{bordures}{étoiles}{corps}{couleur}{couleur de fond}
+\makeatletter
+\newcommand{\@Enonce}[8]{%
+\espaceAvant\begin{tikzpicture}
+\node[fill=#8,inner sep=1em, inner ysep=1em,text justified,text
+width=\linewidth-2cm-2em-1pt] (mabox) {#6}; \begin{scope}[line width=0.75pt,#7]
+#4  
+\end{scope}%
+\node[fill=#8,rectangle,above right,xshift=-1cm,yshift=-0.5pt] at (mabox.north
+west) {\uline{\textbf{#1~\stepcounter{#2}\arabic{#2}~:}}~\textcolor{#7}{\bf{}#3}};
+\begin{scope}[#7]#5\end{scope}
+\end{tikzpicture}\espaceApres}
+
+\NewEnviron{Definition}[2][]{\@Enonce{Définition}{definitions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{DefColor}{black!5}}
+
+\NewEnviron{Notation}[2][]{\@Enonce{Notation}{definitions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{NotColor}{black!5}}
+
+\NewEnviron{Vocabulaire}[2][]{\@Enonce{Vocabulaire}{definitions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{NotColor}{black!5}}
+
+\NewEnviron{TheoremeDefinition}[2][]{\@Enonce{Théorème et définition}{definitions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+  \draw[transform canvas={xshift = 4pt}] (mabox.north west) -- (mabox.south west);
+}{#1}{\BODY}{ThmDefColor}{black!5}}
+
+\NewEnviron{Theoreme}[2][]{\@Enonce{Théorème}{propositions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+  \draw[transform canvas={xshift = 4pt}] (mabox.north west) -- (mabox.south west);
+}{#1}{\BODY}{ThmColor}{black!5}}
+
+\NewEnviron{Proposition}[2][]{\@Enonce{Proposition}{propositions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{PropColor}{white}}
+
+\NewEnviron{Corollaire}[2][]{\@Enonce{Corollaire}{propositions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{CoroColor}{white}}
+
+\NewEnviron{Consequence}[2][]{\@Enonce{Conséquence}{propositions}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{CsqColor}{white}}
+
+\NewEnviron{Lemme}[2][]{\@Enonce{Lemme}{propositions}{#2}{%
+  \draw[densely dotted] (mabox.north west) -- (mabox.south west) -- (mabox.south east); 
+  \draw[densely dotted,transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{LemColor}{white}}
+
+\NewEnviron{Remarques}[2][]{\@Enonce{Remarques}{remarques}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{RmqColor}{white}}
+
+\NewEnviron{Remarque}[2][]{\@Enonce{Remarque}{remarques}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+  \draw[transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{RmqColor}{white}}
+
+\NewEnviron{Methode}[2][]{\@Enonce{Méthode}{methodes}{#2}{%
+  \draw (mabox.north west) -- (mabox.south west); 
+  \draw[dashed,transform canvas={xshift = 2pt}] (mabox.north west) -- (mabox.south west); 
+  \draw[transform canvas={xshift = 4pt}] (mabox.north west) -- (mabox.south west); 
+}{#1}{\BODY}{MethodeColor}{black!5}}
+
+\NewEnviron{Demonstration}[1]{\espaceAvant\begin{description}[leftmargin=1cm]%
+\item[\textbf{\uwave{Démonstration\ifx&#1&\else{ #1}\fi:}}]~\par\nobreak\@nobreaktrue%
+\BODY~\hspace{\stretch{1}}\rule{1ex}{1ex}
+\end{description}\espaceApres}
+
+\newcommand{\Admis}{\espaceAvant\textbf{\uwave{ADMIS}} \rule{1ex}{1ex}\espaceApres}
+
+\NewEnviron{ContreExemple}[1][]{\espaceAvant\begin{description}[leftmargin=1cm]%
+\item[\textbf{Contre-exemple~\refstepcounter{exemples}\arabic{exemples}:}]#1~\par\nobreak\@nobreaktrue%
+\BODY%
+\end{description}\espaceApres}
+
+\NewEnviron{Exemple}[1][]{\espaceAvant\begin{description}[leftmargin=1cm]%
+\item[\textbf{Exemple~\refstepcounter{exemples}\arabic{exemples}:}]#1~\par\nobreak\@nobreaktrue%
+\BODY%
+\end{description}\espaceApres}
+
+\NewEnviron{Exemples}[1][]{\espaceAvant\begin{description}[leftmargin=1cm]%
+\item[\textbf{Exemples~\refstepcounter{exemples}\arabic{exemples}:}]#1~\par\nobreak\@nobreaktrue%
+\BODY%
+\end{description}\espaceApres}
+
+\NewEnviron{Exercice}[1][]{\espaceAvant\begin{description}[leftmargin=1cm]%
+\item[\textbf{Exercice~\refstepcounter{exercices}\arabic{exercices}:}]#1~\par\nobreak\@nobreaktrue%
+\BODY%
+\end{description}\espaceApres}
+
+\NewEnviron{Enonce}{\begin{tikzpicture}[baseline=(mabox.base)]
+\node[fill=black!5,inner sep=1em, inner ysep=1em,text justified,text
+width=\linewidth-2em-1pt] (mabox) {\BODY}; \begin{scope}[line
+width=0.75pt] \draw (mabox.north west) -- (mabox.south west);
+\end{scope}%
+\end{tikzpicture}}
+
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gestions des commentaires %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\commentaires}[1]{} % *** A Revoir ***
+\newcommand{\indication}[1]{{\footnotesize{\uline{Indication:}}\emph{ #1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Pour faire les trous %
+%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\trou}[1]{\phantom{\parbox{\linewidth}{#1}}\\\phantom{\parbox{\linewidth}{#1}}} % *** A Revoir ***
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Macro mathématiques %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%Ensembles
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\D}{\mathbb{D}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\Rb}{\overline{\R}}
+\DeclareMathOperator{\C}{\mathbb{C}}
+\DeclareMathOperator{\K}{\mathbb{K}}
+\DeclareMathOperator{\Card}{Card}
+\newcommand{\ii}[2]{[\![#1;#2]\!]}
+\newcommand{\iii}[2]{\left[\!\!\left[#1;#2\right]\!\!\right]}
+\newcommand{\ensemble}[2]{\left\{\left.#1\phantom{\makebox[0cm]{$#2$}}\right|#2\right\}}
+
+%Lettres arrondies
+\let\oldAA\AA
+\DeclareMathOperator{\calA}{\mathcal{A}}
+\renewcommand{\AA}{\relax\ifmmode\calA\else\oldAA\fi}
+\DeclareMathOperator{\BB}{\mathcal{B}}
+\DeclareMathOperator{\CC}{\mathcal{C}}
+\DeclareMathOperator{\DD}{\mathcal{D}}
+\DeclareMathOperator{\EE}{\mathcal{E}}
+\DeclareMathOperator{\FF}{\mathcal{F}}
+\DeclareMathOperator{\GG}{\mathcal{G}}
+\DeclareMathOperator{\HH}{\mathcal{H}}
+\DeclareMathOperator{\II}{\mathcal{I}}
+\DeclareMathOperator{\JJ}{\mathcal{J}}
+\DeclareMathOperator{\KK}{\mathcal{K}}
+\DeclareMathOperator{\LL}{\mathcal{L}}
+\DeclareMathOperator{\MM}{\mathcal{M}}
+\DeclareMathOperator{\NN}{\mathcal{N}}
+\DeclareMathOperator{\OO}{\mathcal{O}}
+\DeclareMathOperator{\PP}{\mathcal{P}}
+\DeclareMathOperator{\QQ}{\mathcal{Q}}
+\DeclareMathOperator{\RR}{\mathcal{R}}
+\let\oldSS\SS
+\DeclareMathOperator{\calSS}{\mathcal{SS}}
+\renewcommand{\SS}{\relax\ifmmode\calSS\else\oldSS\fi}
+\DeclareMathOperator{\TT}{\mathcal{T}}
+\DeclareMathOperator{\UU}{\mathcal{U}}
+\DeclareMathOperator{\VV}{\mathcal{V}}
+\DeclareMathOperator{\WW}{\mathcal{W}}
+\DeclareMathOperator{\XX}{\mathcal{X}}
+\DeclareMathOperator{\YY}{\mathcal{Y}}
+\DeclareMathOperator{\ZZ}{\mathcal{Z}}
+
+%Lettres cursive
+\DeclareMathOperator{\SSS}{\mathscr{S}}
+\DeclareMathOperator{\AAA}{\mathscr{A}}
+
+%Typographie mathématique
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+%Complexes
+\DeclareMathOperator{\Rez}{Re}
+\DeclareMathOperator{\Imz}{Im}
+
+%Logique
+\newcommand{\si}{\text{ si }}
+\newcommand{\ou}{\text{ ou }}
+\newcommand{\et}{\text{ et }}
+\DeclareMathOperator{\imp}{\Longrightarrow}
+\DeclareMathOperator{\ssi}{\Longleftrightarrow}
+
+%Analyse
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\sh}{sh}
+\let\oldth\th
+\let\th\relax
+\DeclareMathOperator{\th}{th}
+\DeclareMathOperator{\argsh}{argsh}
+\DeclareMathOperator{\argch}{argch}
+\DeclareMathOperator{\argth}{argth}
+\newcommand{\diff}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\DeclareMathOperator*{\egal}{=}
+\DeclareMathOperator{\oo}{o}
+\DeclareMathOperator*{\tend}{\longrightarrow}
+\DeclareMathOperator*{\equi}{\sim}
+\DeclareMathOperator{\dd}{d}
+
+%Probas
+\newcommand{\binominv}[2]{\binom{#2}{#1}}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\Cov}{Cov}
+
+%Matrices
+\DeclareMathOperator{\M}{M}
+\DeclareMathOperator{\Mat}{Mat}
+\newcommand{\matrice}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\vecteur}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand*{\tr}[2][-3mu]{\ensuremath{\mskip1mu\prescript{\smash{\mathrm t\mkern#1}}{}{\mathstrut#2}}}
+\DeclareMathOperator{\diag}{\textrm{diag}}
+
+%Algèbre linéaire
+\DeclareMathOperator{\GLL}{\mathcal{GL}}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Vect}{Vect}
+\DeclareMathOperator{\rg}{rg} 
+
+
+%Géométrie
+\DeclareMathOperator{\Oij}{\big(O;\vect{i},\vect{j}\big)}
+\DeclareMathOperator{\Oijk}{\big(O;\vect{i},\vect{j},\vect{k}\big)}
+
+%Autres
+\newcommand{\sys}[1]{\left\{\begin{array}{l}#1\end{array}\right.}
+\let\systeme\sys
+\newcommand{\cas}[1]{\left\{\begin{array}{ll}#1\end{array}\right.}
+\newcommand{\application}[5]{\renewcommand\arraystretch{1}
+\begin{array}{cccl}
+  #1: & #2 & \longrightarrow & #3 \\
+      & #4 & \longmapsto & #5
+\end{array}
+}
+\newcommand{\applicationsans}[4]{\renewcommand\arraystretch{1}
+\begin{array}{ccl}
+  #1 & \longrightarrow & #2 \\
+  #3 & \longmapsto & #4
+\end{array}
+}
+\makeatletter
+\def\@restriction#1#2{{#1\,\smash{\vrule height .8\ht1 depth .85\dp1}}_{\,#2}}
+\def\restriction#1#2{\mathchoice
+              {\setbox1\hbox{${\displaystyle #1}_{\scriptstyle #2}$}
+              \@restriction{#1}{#2}}
+              {\setbox1\hbox{${\textstyle #1}_{\scriptstyle #2}$}
+              \@restriction{#1}{#2}}
+              {\setbox1\hbox{${\scriptstyle #1}_{\scriptscriptstyle #2}$}
+              \@restriction{#1}{#2}}
+              {\setbox1\hbox{${\scriptscriptstyle #1}_{\scriptscriptstyle #2}$}
+              \@restriction{#1}{#2}}}
+\makeatother
+
+%%%%%%%%%%%%%%
+% Espacement %
+%%%%%%%%%%%%%%
+
+\newcommand{\espace}{\medskip}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pour Tous les languages %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\info}{\fbox{\textbf{Informatique}}}
+
+\makeatletter
+\newcommand*{\textalltt}{}
+\DeclareRobustCommand*{\textalltt}{%
+  \begingroup
+    \let\do\@makeother
+    \dospecials
+    \catcode`\\=\z@
+    \catcode`\{=\@ne
+    \catcode`\}=\tw@
+    \verbatim@font\@noligs
+    \@vobeyspaces
+    \frenchspacing
+    \@textalltt
+}
+\newcommand*{\@textalltt}[1]{%
+    #1%
+  \endgroup
+}
+\makeatother
+
+\newcommand{\code}[1]{\textalltt{#1}}
+
+
+%Couleurs
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{printgray}{rgb}{.995,.995,.995}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{darkgreen}{rgb}{0,.5,0}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+%Paramètres généraux des listings
+\lstset{
+	frame=single,
+	backgroundcolor=\color{printgray},
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\bfseries,
+	identifierstyle=\color{black},
+	commentstyle=\color{darkgray}\ttfamily,
+	ndkeywordstyle=\color{darkgreen}\bfseries,
+	commentstyle=\color{purple}\ttfamily,
+	stringstyle=\color{BrickRed}\ttfamily,
+	alsodigit={.:;},
+	breaklines=true,  
+	numbers=left,
+	numberfirstline=true,
+	stepnumber=1,
+	firstnumber=1,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=4,
+	breaklines=true,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	captionpos=t,
+	xleftmargin=1cm,
+	xrightmargin=1cm
+}
+
+\lstset{%
+        inputencoding=utf8,
+        extendedchars=true,
+        literate=%
+        {é}{{\'{e}}}1
+        {è}{{\`{e}}}1
+        {ê}{{\^{e}}}1
+        {ë}{{\¨{e}}}1
+        {É}{{\'{E}}}1
+        {Ê}{{\^{E}}}1
+        {û}{{\^{u}}}1
+        {ù}{{\`{u}}}1
+        {â}{{\^{a}}}1
+        {à}{{\`{a}}}1
+        {á}{{\'{a}}}1
+        {ã}{{\~{a}}}1
+        {Á}{{\'{A}}}1
+        {Â}{{\^{A}}}1
+        {Ã}{{\~{A}}}1
+        {ç}{{\c{c}}}1
+        {Ç}{{\c{C}}}1
+        {õ}{{\~{o}}}1
+        {ó}{{\'{o}}}1
+        {ô}{{\^{o}}}1
+        {Õ}{{\~{O}}}1
+        {Ó}{{\'{O}}}1
+        {Ô}{{\^{O}}}1
+        {î}{{\^{i}}}1
+        {Î}{{\^{I}}}1
+        {í}{{\'{i}}}1
+        {Í}{{\'{I}}}1
+}
+
+
+%%%%%%%%%%%%%%%
+% Pour Python %
+%%%%%%%%%%%%%%%
+
+\lstdefinelanguage{Python}{
+  keywords={typeof, catch, switch, in, int, str, float, return,
+  class, if ,elif, endif, while, do, else, catch, def, for, range, boolean,or,and,not,type,help,len,:,
+  throw, import,print,input}, keywordstyle=\color{blue}\bfseries, 
+  ndkeywords={True, False, null, self},
+  sensitive=false,
+  comment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstnewenvironment{Python}{\lstset{language=Python}}{}
+\lstnewenvironment{Python*}{\lstset{language=Python,numbers=none}}{}
+\lstnewenvironment{PY}{\lstset{language=Python}}{}
+\lstnewenvironment{PY*}{\lstset{language=Python,numbers=none}}{}
+\newcommand{\codePY}{\lstset{language=Python}\lstinline}
+\newcommand{\codePython}{\lstset{language=Python}\lstinline}
+
+
+
+%%%%%%%%%%%%%%%
+% Pour Assembleur %
+%%%%%%%%%%%%%%%
+
+\lstdefinelanguage{Assembleur}{
+  keywords={ADD,LDR, STR, SUB, MOV, B, CMP, BEQ, BNE, BGT, BLT, HALT, AND}, keywordstyle=\color{blue}\bfseries, 
+  ndkeywords={True, False, null, self},
+  sensitive=false,
+  comment=[l]{~},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstnewenvironment{Assembleur}{\lstset{language=Assembleur}}{}
+\lstnewenvironment{Assembleur*}{\lstset{language=Assembleur,numbers=none}}{}
+\lstnewenvironment{Ass}{\lstset{language=Assembleur}}{}
+\lstnewenvironment{Ass*}{\lstset{language=Assembleur,numbers=none}}{}
+\newcommand{\codeAss}{\lstset{language=Assembleur}\lstinline}
+\newcommand{\codeAssembleur}{\lstset{language=Assembleur}\lstinline}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+% Pour Javascript %
+%%%%%%%%%%%%%%%%%%%
+
+\lstdefinelanguage{JavaScript}{
+	keywords={break, case, catch, continue, debugger, default, delete,
+		do, else, false, finally, for, function, if, in, instanceof, new, null,
+		return, switch, this, throw, true, try, typeof, var, void, while, with
+	},
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstnewenvironment{JavaScript}{\lstset{language=JavaScript}}{}
+\lstnewenvironment{JavaScript*}{\lstset{language=JavaScript,numbers=none}}{}
+\lstnewenvironment{JS}{\lstset{language=JavaScript}}{}
+\lstnewenvironment{JS*}{\lstset{language=JavaScript,numbers=none}}{}
+\newcommand{\codeJS}{\lstset{language=JavaScript}\lstinline}
+\newcommand{\codeJavaScript}{\lstset{language=JavaScript}\lstinline}
+
+%%%%%%%%%%%%%%%%%
+% Pour HTML/CSS %
+%%%%%%%%%%%%%%%%%
+
+\lstloadlanguages{HTML}
+
+\lstdefinelanguage{CSS}{
+	keywords={accelerator,azimuth,background,background-attachment,background-color,background-image,
+		background-position,background-position-x,background-position-y,background-repeat,behavior,border,
+		border-bottom,border-bottom-color,border-bottom-style,border-bottom-width,border-collapse,border-color,
+		border-left,border-left-color,border-left-style,border-left-width,border-right,border-right-color,
+		border-right-style,border-right-width,border-spacing,border-style,border-top,border-top-color,
+		border-top-style,border-top-width,border-width,bottom,caption-side,clear,clip,color,content,
+		counter-increment,counter-reset,cue,cue-after,cue-before,cursor,direction,display,elevation,
+		empty-cells,filter,float,font,font-family,font-size,font-size-adjust,font-stretch,font-style,
+		font-variant,font-weight,height,ime-mode,include-source,layer-background-color,layer-background-image,
+		layout-flow,layout-grid,layout-grid-char,layout-grid-char-spacing,layout-grid-line,layout-grid-mode,
+		layout-grid-type,left,letter-spacing,line-break,line-height,list-style,list-style-image,list-style-position,
+		list-style-type,margin,margin-bottom,margin-left,margin-right,margin-top,marker-offset,marks,max-height,
+		max-width,min-height,min-width,-moz-binding,-moz-border-radius,-moz-border-radius-topleft,
+		-moz-border-radius-topright,-moz-border-radius-bottomright,-moz-border-radius-bottomleft,
+		-moz-border-top-colors,-moz-border-right-colors,-moz-border-bottom-colors,-moz-border-left-colors,
+		-moz-opacity,-moz-outline,-moz-outline-color,-moz-outline-style,-moz-outline-width,-moz-user-focus,
+		-moz-user-input,-moz-user-modify,-moz-user-select,orphans,outline,outline-color,outline-style,
+		outline-width,overflow,overflow-X,overflow-Y,padding,padding-bottom,padding-left,padding-right,
+		padding-top,page,page-break-after,page-break-before,page-break-inside,pause,pause-after,pause-before,
+		pitch,pitch-range,play-during,position,quotes,-replace,richness,right,ruby-align,ruby-overhang,
+		ruby-position,-set-link-source,size,speak,speak-header,speak-numeral,speak-punctuation,speech-rate,
+		stress,scrollbar-arrow-color,scrollbar-base-color,scrollbar-dark-shadow-color,scrollbar-face-color,
+		scrollbar-highlight-color,scrollbar-shadow-color,scrollbar-3d-light-color,scrollbar-track-color,
+		table-layout,text-align,text-align-last,text-decoration,text-indent,text-justify,text-overflow,
+		text-shadow,text-transform,text-autospace,text-kashida-space,text-underline-position,top,unicode-bidi,
+		-use-link-source,vertical-align,visibility,voice-family,volume,white-space,widows,width,word-break,
+		word-spacing,word-wrap,writing-mode,z-index,zoom
+	},  
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	morestring=[b]',
+	morestring=[b]",
+	alsodigit={-}
+}
+
+\lstnewenvironment{HTML}{\lstset{language=HTML}}{}
+\lstnewenvironment{HTML*}{\lstset{language=HTML,numbers=none}}{}
+\newcommand{\codeHTML}{\lstset{language=HTML}\lstinline}
+\lstnewenvironment{CSS}{\lstset{language=CSS}}{}
+\lstnewenvironment{CSS*}{\lstset{language=CSS,numbers=none}}{}
+\newcommand{\codeCSS}{\lstset{language=CSS}\lstinline}
+
+%%%%%%%%%%%%%%
+% Pour LaTeX %
+%%%%%%%%%%%%%%
+
+\lstloadlanguages{[LaTeX]TeX}
+
+\lstnewenvironment{Latex}{\lstset{language=[LaTeX]TeX}}{}
+\lstnewenvironment{Latex*}{\lstset{language=[LaTeX]TeX,numbers=none}}{}
+\newcommand{\codeLatex}{\lstset{language=[LaTeX]TeX}\lstinline}
+
+%%%%%%%%%%%%%%%%%%
+% Fin du package %
+%%%%%%%%%%%%%%%%%%
+\endinput

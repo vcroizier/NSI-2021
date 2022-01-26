@@ -1,0 +1,123 @@
+\documentclass[11pt,a4paper,french,twoside]{VcCours}
+\begin{document}
+\section*{Exercice ? (4 points)}
+\emph{Cet exercice traite principalement le thème \og{} algorithmique
+langages et programmation\fg{}.}
+
+L'objectif de cet exercice est de définir un moyen de de définir l'ordre 
+d'exécution des processus dans un système d'exploitation multitâche sur un 
+ordinateur ayant un unique processeur. En effet, le système doit assurer
+l'exécution d'un nombre important de tâches, mais cele-ci ne peuvent être
+assignées au processeur qu'une par une. De plus, les tâches ont des priorités
+différentes. Dans un système d'exploitation, c'est le trvail de l'ordonnanceur.
+
+\medskip
+On choisit de représenter la file d'attente des processus à exécuter par 
+un tableau (type \code{list}) dont les éléments sont de objets définis 
+par la classe suivante :
+\begin{Python}
+class Processus:
+    def __init__(self, nom, chemin, duree, priorite):
+        self.nom=nom
+        self.chemin=chemin
+        self.duree=duree
+        self.priorite=priorite
+\end{Python}
+Chaque processus est donc défini par son nom, son chemin, sa durée (en cycles 
+d'horloge) et le niveau priorité (qui est un entier de $1$ à $10$, 
+$1$ correspondant à une très faible priorité et $10$ à une tâche ultra prioritaire,
+autrement dit : une tâche temps réel). 
+
+\begin{enumerate}
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Processus("zip.exe","C:/bin",100,1))
+attente.append(Processus("chrome.exe","C:/bin",50,6))
+attente.append(Processus("skype.exe","C:/users/eve",60,9))
+\end{Python}
+\begin{enumerate}
+    \item Quel est le résultat de l'exécution de \code{L[2].duree} ?
+    \item Quel est le résultat de l'exécution de \code{L[1].chemin[2]} ?
+    \item Quelle commande exécuter pour passer la priorité de skype à $10$ ?
+\end{enumerate}    
+    \item On considère la fonction suivante:
+\begin{Python}
+def mystere(attente):
+    D=0
+    for k in range(len(attente)):
+        if attente[k].duree<D:
+            D=attente[k].duree
+    return D
+\end{Python}
+    Pour une liste \code{attente} d'objets de classe \code{Processus} quelconque,
+    que fait cette fonction ?
+    \item Écrire (en s'inspirant de la question précédente) une fonction 
+    \code{tache\_critique(attente)} qui détermine
+    le processus le plus prioritaire ou, s'il y a égalité, celui qui dure le 
+    plus longtemps.
+    Cette fonction doit retourner le rang du processus en question dans 
+    la liste \code{attente}.
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Processus("zip.exe","C:/bin",100,1))
+attente.append(Processus("chrome.exe","C:/bin",50,6))
+attente[0]=attente[1]
+attente[1]=attente[0]
+\end{Python}
+    Choisissez une réponse parmi les cinq suivantes :
+    \begin{enumerate}
+        \item La liste \code{attente} contient deux fois le processus zip.exe. 
+        \item La liste \code{attente} contient deux fois le processus chrome.exe. 
+        \item La liste \code{attente} est inchangée. 
+        \item Les processus zip.exe et chrome.exe ont échangé leur place dans 
+        la liste \code{attente}. 
+        \item Une erreur se produit à l'exécution. 
+    \end{enumerate}
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Processus("zip.exe","C:/bin",100,1))
+attente.append(Processus("chrome.exe","C:/bin",50,6))
+x=attente[1]
+attente[1]=attente[0]
+attente[0]=x
+\end{Python}
+    Choisissez une réponse parmi les cinq suivantes :
+    \begin{enumerate}
+        \item La liste \code{attente} contient deux fois le processus zip.exe. 
+        \item La liste \code{attente} contient deux fois le processus chrome.exe. 
+        \item La liste \code{attente} est inchangée. 
+        \item Les processus zip.exe et chrome.exe ont échangé leur place dans 
+        la liste \code{attente}. 
+        \item Une erreur se produit à l'exécution. 
+    \end{enumerate}
+    \item Écrire une fonction \code{depasser(attente,k)}, qui compare les processus
+    correspondants aux index $k-1$ et $k$ et les échange éventuellement pour que
+    le prcessus le plus prioritaire (le plus court, s'ils ont la même priorité) 
+    soit en position $k-1$.
+    \item Écrire une fonction \code{suivant(attente)}, qui appliqué la fontion 
+    \code{depasser} à toute la file d'attente, en commençant par les plus petits 
+    index. Puis renvoie le premier processus en le retirant la liste.
+    \item On souhaite modifier la fonction \code{depasser(attente,k)} pour qu'elle
+    déplace le processus d'index $k$ vers la gauche et ce tant que le total des 
+    priorités des processus qu'il dépasse est strictement inférieur 
+    à son propre niveau de priorité. (Un processus de priorité $8$ pourra 
+    dépasser les trois processus qui le précèdent si leurs priorités sont $1$, $4$, $2$, 
+    mais il s'arrêtera là car $1+4+2=7<8$.)
+    
+    Compléter le code suivant :
+\begin{Python}
+def depasser(attente,k):
+    p=attente[k].priorite
+    i=k-1
+    S=0
+    while ____ and ________________:
+        S=S+attente[i].priorite
+        attente[i],attente[i+1]=_________________________
+        i=___
+\end{Python}
+\end{enumerate}
+
+\end{document}

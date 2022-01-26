@@ -1,0 +1,348 @@
+\documentclass[11pt,a4paper,french,twoside]{PMCours}
+\usepackage{hyperref}
+\frenchbsetup{StandardLists=true}
+
+\begin{document}
+\TitreISN{Classe de Terminale}{Année 2021--2022}
+{Numérique et Sciences Informatiques}{Épreuve de Spécialité - Sujet 2 - 3h30}
+
+\medskip
+{\large Chaque candidat traitera trois exercices au choix parmi les quatre proposés, chaque exercice étant noté sur sept points.
+
+\medskip
+L'usage de tout document, calculatrice, etc... est interdit.
+
+\medskip
+Les élèves rendront de manière impérative brouillons et sujet en même temps que leur composition.}
+
+\newpage
+\section*{Exercice 1}
+\emph{Cet exercice porte sur les bases de données relationnelles et le langage SQL}
+
+\medskip
+Cet exercice utilise les mots du langage SQL suivant :
+\begin{verbatim}
+SELECT, FROM, WHERE, JOIN, ON, INSERT INTO, DELETE FROM, 
+VALUES, ORDER BY, ASC, DESC, DISTINCT, AS,
+LIMIT, LIKE, IN, AND, OR, NOT, MIN, MAX, COUNT, SUM,
+<, >, <=, >=, =, !=
+\end{verbatim} 
+On rappelle que \verb'LIMIT', suivi d'un entier strictement positif, permet de limiter le nombre de n-uplets retournés par une requête à la valeur indiquée par cet entier. 
+
+On rappelle que \verb's LIKE m', où \verb's' est le nom d'un attribut de type chaîne de caractères et \verb'm' est un motif de chaîne de caractères (contenant le caractère \verb"'_'" qui remplace n'importe quel caractère ou bien le caractère \verb"'%'" qui remplace n'importe quelle chaîne de caractères), renvoie un booléen indiquant si \verb's' est compatible avec le motif \verb'm'. Par exemple, \verb'"Bonjour" LIKE "B_nj%"' renvoie \verb'true'.
+
+Les types SQL des attributs utilisés dans cet exercice sont : 
+\begin{verbatim}
+Int, Float, String, Time, Date, Boolean
+\end{verbatim} 
+Le format retenu pour le type \verb'Time' est JJ/MM/AAAA (sans guillemets) et le format retenu pour le type \verb'Date' est HH:MM (sans guillemets).
+
+\medskip
+Un ingénieur en informatique doit concevoir une base de données relationnelle pour gérer l'aéroport de NataSahId. Cette base de données sert pour l'affichage des informations de vols que les voyageurs peuvent consulter, ainsi qu'aux mécaniciens chargés des opérations de maintenance. Pour cela, il envisage quatre relations, dont des extraits sont précisés ci-après. Les attributs soulignés d'une relation désignent la clé primaire. Les attributs suivis du symbole \verb'#' désignent des clés étrangères.
+
+\begin{itemize}
+\item \verb'Compagnie' (Nom : String, \underline{Symbole} : String, CodePays : String)
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|}\hline
+Nom & Symbole & CodePays\\\hline
+Air France & AF & F\\\hline
+Air Toto & AT & F\\\hline
+Sky Freedom & SKF & GB\\\hline
+\end{tabular}
+\end{center}
+\caption{Extrait de la relation \textbf{Compagnie}}
+\end{figure}
+\end{itemize}
+
+\begin{itemize}
+\item \verb'Avion' (\underline{RefComp} \verb'#' : String, \underline{Matricule} : String, Modele : String, RayonDActionKm : Float, VitesseMaxKmH : Float, NbDePassagers : Int)
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}\hline
+RefComp & Matricule & Modele & RayonDActionKm & VitesseMaxKmH & NbDePassagers\\\hline
+AF & AF 1234 & Airbus A380 & 2500 & 780 & 550\\\hline
+SKF & SKF 547 & Boeing 737 & 1500 & 974,8 & 350\\\hline
+LFT & LFT 78549 & Airbus A350 & 1700,5 & 830,0 & 350\\\hline
+\end{tabular}
+\end{center}
+\caption{Extrait de la relation \textbf{Avion}}
+\end{figure}
+\end{itemize}
+
+\begin{itemize}
+\item \verb'Vol' 
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}\hline
+Reference & Type & Date & Horaire & Lieu & Retard\\\hline
+SKF 547 & Départ & 14/07/2022 & 14:30 & Londres & false\\\hline
+LFT 78549 & Arrivée & 12/06/2022 & 13:00 & Paris & true\\\hline
+LFT 78549 & Départ & 16/08/2022 & 07:15 & Berlin & false\\\hline
+\end{tabular}
+\end{center}
+\caption{Extrait de la relation \textbf{Vol}}
+\end{figure}
+Le lieu d'un vol de type 'Départ' désigne l'aéroport de destination de ce vol. Le lieu d'un vol de type 'Arrivée' désigne l'aéroport de provenance de ce vol. 
+\end{itemize}
+
+\begin{itemize}
+\item \verb'Operation' (\underline{Reference} \verb'#' : String, \underline{Date} : String, Horaire : Time, HoraireFin : Time, Nature : String)
+\begin{figure}[ht]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}\hline
+Reference & Date & HoraireDebut & HoraireFin & Nature\\\hline
+LFT 78549 & 17/06/2022 & 10:15 & 15:00 & Visite mensuelle des moteurs\\\hline
+AF 1234 & 17/06/2022 & 09:00 & 13:00 & Réparation volet droit\\\hline
+AF 1234 & 01/05/2022 & 08:00 & 17:00 & Visite annuelle générale\\\hline
+\end{tabular}
+\end{center}
+\caption{Extrait de la relation \textbf{Operation}}
+\end{figure}
+\end{itemize}
+
+\begin{enumerate}
+\item Ecrivez le schéma relationnel de la table \verb'Vol' (sans préciser de clé primaire), en indiquant les éventuelles clés étrangères.
+\item Pourquoi l'attribut \verb'Reference' ne peut pas être utilisé comme clé primaire pour la relation \verb'Vol' ? Proposez une clé primaire valide, avec le minimum d'attributs, sachant qu'un avion peut faire plusieurs rotations par jour vers une même destination.
+\item Parmi les propositions suivantes, indiquez celles qui ne sont pas des contraintes d'intégrités que doivent respecter des bases de données relationnelles : 
+\begin{itemize}
+\item les contraintes syntaxiques % faux
+\item les contraintes d'entités
+\item les contraintes de poids % faux
+\item les contraintes utilisateurs
+\item les contraintes de références
+\item les contraintes de domaines
+\end{itemize}
+\item Avec cette base de données, un avion peut-il avoir plusieurs opérations de maintenance le même jour ? Justifiez.
+\item Qu'affiche la requête SQL suivante :
+\begin{verbatim}
+SELECT Reference FROM Operation WHERE Date = 17/06/2022 AND HoraireFin >= 14:00
+\end{verbatim} 
+\item Ecrivez une requête SQL qui affiche la référence des vols retardés aujourd'hui (date de l'épreuve).
+\item Ecrivez une requête SQL qui ajoute à la relation \verb'Avion' l'Airbus A321, de matricule SKF 2468, dont la vitesse maximale est de 960 km/h, pouvant emporter 260 passagers sur une distance maximale de 1800 km.
+\item Ecrivez une requête SQL qui affiche les références des vols d'avions qui sont en provenance de Strasbourg le vendredi 1er avril 2022 au matin.
+\item Ecrivez une requête SQL qui affiche le nombre de compagnies françaises (le code pays de la France étant F).
+\item Ecrivez une requête SQL qui affiche les modèles d'avion qui peuvent transporter le plus de passagers.
+\item Ecrivez une requête SQL qui affiche le matricule des avions qui n'ont pas d'opération de maintenance prévue le mercredi 11 mai 2022, ni le mercredi 18 mai 2022.
+\item On exécute la requête SQL suivante :
+\begin{verbatim}
+DELETE FROM Avion WHERE Matricule = "AF 1234"
+\end{verbatim} 
+mais un message d'erreur est renvoyé, indiquant que l'opération est impossible. Expliquez pourquoi, en analysant les extraits de la base de données fournis, puis écrivez les commandes SQL complémentaires, en plus de celle-ci, afin que la requête puisse être réalisée avec succès.
+\item Ecrivez une requête SQL qui affiche, sans répétition, le nom des compagnies aériennes qui possèdent au moins un Airbus.
+\item Pour des raisons logistiques, une opération de maintenance ne peut pas être programmée pour un avion un jour où il effectue un vol. Ecrivez une requête SQL qui affiche les matricules d'avions qui ne respecteraient pas cette règle.
+\item Ecrivez une requête SQL qui affiche la liste des couples nom de compagnie / matricule d'avion de cette compagnie, triée dans l'ordre alphabétique décroissant des noms de compagnie.
+\item Ecrivez une requête SQL qui affiche le nombre total de passagers que la compagnie aérienne Air France peut transporter avec ses avions.
+% \item Ecrivez une requête SQL qui affiche les références des vols d'avions qui font escale à l'aéroport de NataSahId. Par convention, on suppose qu'un avion fait une escale lorsqu'il atterrit puis redécolle le même jour.
+\item Ecrivez une requête SQL qui affiche les matricules des avions français qui ont une visite annuelle générale prévue en janvier 2022.
+\end{enumerate}
+
+
+\newpage
+\section*{Exercice 2}
+
+
+\newpage
+\section*{Exercice 3}
+\emph{Cet exercice traite de manipulation de tableaux, de récursivité et du paradigme
+« diviser pour régner ».}
+
+\medskip
+Dans un tableau Python d'entiers \code{tab}, on dit que le couple d'indices $(i,j)$ forme une inversion
+lorsque $i<j$ et \code{tab[i] > tab[j]}. On donne ci-dessous quelques exemples.
+\begin{itemize}
+\item Dans le tableau \code{[1, 5, 3, 7]}, le couple d'indices $(1,2)$ forme une inversion car $5 > 3$.
+Par contre, le couple $(1,3)$ ne forme pas d'inversion car $5 < 7$.
+
+Il n'y a qu'une inversion dans ce tableau.
+\item Il y a trois inversions dans le tableau \code{[1, 6, 2, 7, 3]}, à savoir les couples d'indices
+$(1, 2)$, $(1, 4)$ et $(3, 4)$.
+\item On peut compter six inversions dans le tableau \code{[7, 6, 5, 3]} : les couples d'indices
+$(0, 1)$, $(0, 2)$, $(0, 3)$, $(1, 2)$, $(1, 3)$ et $(2, 3)$.
+\end{itemize}
+On se propose dans cet exercice de déterminer le nombre d'inversions dans un tableau
+quelconque.
+
+\subsection*{Questions préliminaires}
+\begin{enumerate}
+    \item Expliquer pourquoi le couple $(1, 3)$ est une inversion dans le tableau \code{[4, 8, 3, 7]}.
+    \item Justifier que le couple $(2, 3)$ n'en est pas une.
+\end{enumerate}
+
+\subsection*{Partie A : Méthode itérative}
+Le but de cette partie est d'écrire une fonction itérative \code{nombre\_inversion} qui renvoie le
+nombre d'inversions dans un tableau. Pour cela, on commence par écrire une fonction
+\code{fonction1} qui sera ensuite utilisée pour écrire la fonction \code{nombre\_inversion}.
+\begin{enumerate}
+    \item On donne la fonction suivante.
+\begin{alltt}
+def fonction1(tab, i):
+    nb_elem = len(tab)
+    cpt = 0
+    for j in range(i+1, nb_elem):
+        if tab[j] < tab[i]:
+            cpt += 1
+    return cpt
+\end{alltt}
+\begin{enumerate}
+\item Indiquer ce que renvoie la \code{fonction1(tab, i)} dans les cas suivants.
+\begin{itemize}
+\item Cas n°1 : \code{tab = [1, 5, 3, 7]} et \code{i = 0}.
+\item Cas n°2 : \code{tab = [1, 5, 3, 7]} et \code{i = 1}.
+\item Cas n°3 : \code{tab = [1, 5, 2, 6, 4]} et \code{i = 1}.
+\end{itemize}
+\item Expliquer ce que permet de déterminer cette fonction.
+\end{enumerate}
+\item En utilisant la fonction précédente, écrire une fonction \code{nombre\_inversion(tab)} qui
+prend en argument un tableau et renvoie le nombre d'inversions dans ce tableau.
+
+On donne ci-dessous les résultats attendus pour certains appels.
+\begin{alltt}
+>>> nombre\_inversions([1, 5, 7])
+0
+>>> nombre\_inversions([1, 6, 2, 7, 3])
+3
+>>> nombre\_inversions([7, 6, 5, 3])
+6
+\end{alltt}
+\item Quelle est l'ordre de grandeur de la complexité en temps de l'algorithme obtenu ?
+
+Aucune justification n'est attendue.
+\end{enumerate}
+
+\subsection*{Partie B : Méthode récursive}
+Le but de cette partie est de concevoir une version récursive de la fonction
+\code{nombre\_inversion}.
+
+On définit pour cela des fonctions auxiliaires.
+\begin{enumerate}
+\item Donner le nom d'un algorithme de tri ayant une complexité meilleure que quadratique.
+\end{enumerate}
+
+Dans la suite de cet exercice, on suppose qu'on dispose d'une fonction \code{tri(tab)} qui prend en
+argument un tableau et renvoie un tableau contenant les mêmes éléments rangés dans l'ordre
+croissant.
+
+\begin{enumerate}\setcounter{enumi}{1}
+\item Écrire une fonction \code{moitie\_gauche(tab)} qui prend en argument un tableau \code{tab} et
+renvoie un nouveau tableau contenant la moitié gauche de \code{tab}. Si le nombre d'éléments
+de \code{tab} est impair, l'élément du centre se trouve dans cette partie gauche.
+
+On donne ci-dessous les résultats attendus pour certains appels.
+\begin{alltt}
+>>> moitie\_gauche([])
+[]
+>>> moitie\_gauche([4, 8, 3])
+[4, 8]
+>>> moitie\_gauche ([4, 8, 3, 7])
+[4, 8]
+\end{alltt}
+\end{enumerate}
+
+Dans la suite, on suppose qu'on dispose de la fonction \code{moitie\_droite(tab)} qui renvoie la
+moitié droite sans l'élément du milieu.
+
+\begin{enumerate}\setcounter{enumi}{2}
+\item On suppose qu'une fonction \code{nb\_inv\_tab(tab1, tab2)} a été écrite. Cette fonction
+renvoie le nombre d'inversions du tableau obtenu en mettant bout à bout les tableaux
+\code{tab1} et \code{tab2}, à condition que \code{tab1} et \code{tab2} soient triés dans l'ordre croissant.
+
+On donne ci-dessous deux exemples d'appel de cette fonction :
+\begin{alltt}
+>>> nb\_inv\_tab([3, 7, 9], [2, 10])
+3
+>>> nb\_inv\_tab([7, 9, 13], [7, 10, 14])
+3
+\end{alltt}
+En utilisant la fonction \code{nb\_inv\_tab} et les questions précédentes, écrire une fonction
+récursive \code{nb\_inversions\_rec(tab)} qui permet de calculer le nombre d'inversions
+dans un tableau. Cette fonction renverra le même nombre que
+\code{nombre\_inversions(tab)} de la partie A. On procédera de la façon suivante :
+\begin{itemize}
+\item Séparer le tableau en deux tableaux de tailles égales (à une unité près).
+\item Appeler récursivement la fonction \code{nb\_inversions\_rec} pour compter le nombre
+d'inversions dans chacun des deux tableaux.
+\item Trier les deux tableaux (on rappelle qu'une fonction de tri est déjà définie).
+\item Ajouter au nombre d'inversions précédemment comptées le nombre renvoyé par la
+fonction \code{nb\_inv\_tab} avec pour arguments les deux tableaux triés.
+\end{itemize}
+\end{enumerate}
+
+\newpage
+\section*{Exercice 4}
+
+
+
+\newpage
+\section*{Exercice 5}
+\emph{Cet exercice porte sur les structures de données linéaires}
+
+\medskip
+Une méthode simple pour gérer l'ordonnancement des processus est d'exécuter les processus
+en une seule fois et dans leur ordre d'arrivée.
+\begin{enumerate}
+\item Parmi les propositions suivantes, quelle est la structure de données la plus appropriée pour
+mettre en œuvre le mode FIFO (First In First Out) ?
+\begin{enumerate}
+\item liste
+\item dictionnaire
+\item pile
+\item file
+\end{enumerate}
+\item On choisit de stocker les données des processus en attente à l'aide d'une liste Python \code{lst}.
+On dispose déjà d'une fonction \code{retirer(lst)} qui renvoie l'élément \code{lst[0]} puis le
+supprime de la liste \code{lst}. Écrire en Python le code d'une fonction \code{ajouter(lst, proc)} qui
+ajoute à la fin de la liste lst le nouveau processus en attente \code{proc}.
+\end{enumerate}
+
+On choisit maintenant d'implémenter une file \code{file} à l'aide d'un couple \code{(p1,p2)} où \code{p1} et \code{p2}
+sont des piles. Ainsi \code{file[0]} et \code{file[1]} sont respectivement les piles \code{p1} et \code{p2}.
+Pour enfiler un nouvel élément \code{elt} dans \code{file}, on l'empile dans \code{p1}.
+Pour défiler \code{file}, deux cas se présentent.
+\begin{itemize}
+    \item La pile \code{p2} n'est pas vide : on dépile \code{p2}.
+    \item La pile \code{p2} est vide : on dépile les éléments de \code{p1} en les empilant dans \code{p2} jusqu'à ce
+    que \code{p1} soit vide, puis on dépile \code{p2}.
+\end{itemize}
+\begin{center}
+    \includegraphics[width=\textwidth]{BacBlanc2Sujet2_NSI2122-img1.png}
+    
+    Illustration du fonctionnement des fonctions \code{enfiler} et \code{defiler}.
+\end{center}
+
+\newpage
+\begin{enumerate}\setcounter{enumi}{2}
+\item On considère la situation représentée ci-dessous.
+
+\includegraphics[width=0.4\textwidth]{BacBlanc2Sujet2_NSI2122-img2.png}
+
+On exécute la séquence d'instructions suivante :
+\begin{alltt}
+enfiler(file,ps6)
+defiler(file)
+defiler(file)
+defiler(file)
+enfiler(file,ps7)
+\end{alltt}
+Représenter le contenu final des deux piles à la suite de ces instructions.
+\item On dispose des fonctions :
+\begin{itemize}
+    \item \code{empiler(p,elt)} qui empile l'élément \code{elt} dans la pile \code{p},
+    \item \code{depiler(p)} qui renvoie le sommet de la pile \code{p} si \code{p} n'est pas vide et le
+    supprime,
+    \item \code{pile\_vide(p)} qui renvoie \code{True} si la pile \code{p} est vide, \code{False} si la pile \code{p} n'est
+    pas vide.
+\end{itemize}
+\begin{enumerate}
+    \item Écrire en Python une fonction \code{est\_vide(f)} qui prend en argument un couple de
+    piles \code{f} et qui renvoie \code{True} si la file représentée par \code{f} est vide, \code{False} sinon.
+    \item Écrire en Python une fonction \code{enfiler(f,elt)} qui prend en arguments un couple de
+    piles \code{f} et un élément \code{elt} et qui ajoute \code{elt} en queue de la file représentée par \code{f}.
+    \item Écrire en Python une fonction \code{defiler(f)} qui prend en argument un couple de piles \code{f}
+    et qui renvoie l'élement en tête de la file représentée par \code{f} en le retirant.
+\end{enumerate}
+\end{enumerate}
+
+
+\end{document}
+

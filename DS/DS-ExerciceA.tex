@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper,french,twoside]{VcCours}
+\begin{document}
+\section*{Exercice ? (4 points)}
+\emph{Cet exercice traite principalement le thème \og{} algorithmique
+langages et programmation\fg{}.}
+
+L'objectif de cet exercice est de permettre, dans le service des urgences
+d'un hôpital, la prise en compte de la gravité des cas dans la gestion
+de l'ordre de passage des patients.
+
+\medskip
+On choisit de représenter la file d'attente par un tableau (type \code{list})
+dont les éléments sont de objets définis par la classe suivante :
+\begin{Python}
+class Patient:
+    def __init__(self, nom, prenom, age, gravite):
+        self.nom=nom
+        self.prenom=prenom
+        self.age=age
+        self.gravite=gravite
+\end{Python}
+Chaque patient est donc défini par son nom, son prénom, son âge (en années)
+et la gravité de son cas (qui est un entier de $1$ à $10$, $1$ correspondant
+aux cas sans urgence et 10 aux cas d'urgence vitale).
+
+\begin{enumerate}
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Patient("Martin","Abel",35,1))
+attente.append(Patient("Dupond","Béatrice",42,5))
+attente.append(Patient("Laurent","Charles",60,2))
+\end{Python}
+\begin{enumerate}
+    \item Quel est le résultat de l'exécution de \code{L[1].age} ?
+    \item Quel est le résultat de l'exécution de \code{L[2].prenom[1]} ?
+    \item Quelle commande exécuter pour passer la gravité de Béatrice à $7$ ?
+\end{enumerate}    
+    \item On considère la fonction suivante:
+\begin{Python}
+def mystere(attente):
+    A=0
+    for k in range(len(attente)):
+        if attente[k].age>A:
+            A=attente[k].age
+    return A
+\end{Python}
+    Pour une liste \code{attente} d'objets de classe \code{Patient} quelconque,
+    que fait cette fonction ?
+    \item Écrire (en s'inspirant de la question précédente) une fonction \code{cas\_critique(attente)} qui détermine
+    le cas le plus grave ou, s'il y a égalité, le plus jeune.
+    Cette fonction doit retourner le rang du patient en question dans la liste 
+    \code{attente}.
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Patient("Martin","Abel",35,1))
+attente.append(Patient("Dupond","Béatrice",42,5))
+attente[0]=attente[1]
+attente[1]=attente[0]
+\end{Python}
+    Choisissez une réponse parmi les cinq suivantes :
+    \begin{enumerate}
+        \item La liste \code{attente} contient deux fois le patient Martin. 
+        \item La liste \code{attente} contient deux fois la patiente Dupond. 
+        \item La liste \code{attente} est inchangée. 
+        \item Les patients Martin et Dupond ont échangé leur place dans la liste \code{attente}. 
+        \item Une erreur se produit à l'exécution. 
+    \end{enumerate}
+    \item On exécute une à une les instructions suivantes :
+\begin{Python}
+attente=[]
+attente.append(Patient("Martin","Abel",35,1))
+attente.append(Patient("Dupond","Béatrice",42,5))
+x=attente[1]
+attente[1]=attente[0]
+attente[0]=x
+\end{Python}
+    Choisissez une réponse parmi les cinq suivantes :
+    \begin{enumerate}
+        \item La liste \code{attente} contient deux fois le patient Martin. 
+        \item La liste \code{attente} contient deux fois la patiente Dupond. 
+        \item La liste \code{attente} est inchangée. 
+        \item Les patients Martin et Dupond ont échangé leur place dans la liste \code{attente}. 
+        \item Une erreur se produit à l'exécution. 
+    \end{enumerate}
+    \item Écrire une fonction \code{doubler(attente,k)}, qui compare les patients
+    correspondants aux index $k-1$ et $k$ et les échange éventuellement pour que
+    le cas le plus grave (le plus âgé, s'ils ont la même gravité) soit en position $k-1$.
+    \item Écrire une fonction \code{suivant(attente)}, qui appliqué la fontion 
+    \code{doubler} à toute la file d'attente, en commençant par les plus petits 
+    index. Puis renvoie le premier patient en le retirant la liste.
+    \item On souhaite modifier la fonction \code{doubler(attente,k)} pour qu'elle
+    déplace le patient d'index $k$ vers la gauche et ce tant que le total de 
+    gravité des patients qu'il dépasse est strictement inférieur 
+    à sa propre gravité. (Un patient de gravité $5$ pourra dépasser les trois 
+    patients qui le précèdent si leurs gravités sont $1$, $2$, $1$, 
+    mais il s'arrêtera là car $1+2+1=4<5$.)
+    
+    Compléter le code suivant :
+\begin{Python}
+def doubler(attente,k):
+    g=attente[k].gravite
+    i=k-1
+    S=0
+    while ____ and _______________:
+        S=S+attente[i].gravite
+        attente[i],attente[i+1]=_________________________
+        i=___
+\end{Python}
+\end{enumerate}
+
+\end{document}
