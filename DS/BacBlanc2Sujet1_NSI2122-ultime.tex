@@ -5,7 +5,7 @@
 
 \begin{document}
 \TitreISN{Classe de Terminale}{Année 2021--2022}
-{Numérique et Sciences Informatiques}{Épreuve de Spécialité - Sujet 2 - 3h30}
+{Numérique et Sciences Informatiques}{Épreuve de Spécialité - Sujet 1 - 3h30}
 
 \medskip
 {\large Dès que ce sujet vous est remis, assurez-vous qu’il est complet.
@@ -203,7 +203,7 @@ De plus, un chemin entre deux routeurs est remplacé par un autre chemin uniquem
         \end{tabular}
     \end{center}
     \item Une liaison directe a été ajoutée entre deux routeurs.
-    La nouvelle table de routage du routeur D est alors :
+    La nouvelle table de routage du routeur G est alors :
     \begin{center}
         \begin{tabular}{|c|c|c|}\hline
             Destination&Routeur suivant&Distance\\ \hline
@@ -308,7 +308,6 @@ disque SSD externe USB. Il n'a pas d'écran.
     \item Les processus s'exécutant sur le Raspberry~Pi ne doivent surtout pas
     s'arrêter. Expliquer ce qu'on appelle un interblocage.
 \end{enumerate}
-
 
 \newpage
 \section*{Exercice 3}
@@ -485,7 +484,7 @@ Une agence immobilière développe un programme pour gérer les biens immobilier
 propose à la vente.
 
 Dans ce programme, pour modéliser les données de biens immobiliers, on définit une classe
-Bim avec les attributs suivants :
+\code{Bim} avec les attributs suivants :
 \begin{itemize}
 \item \code{nt} de type \code{str} représente la nature du bien (appartement, maison, bureau,
 commerces, … ) ;
@@ -522,9 +521,32 @@ produit de sa surface par le prix moyen par m² multiplié par $0,\!8$ ;
 \end{itemize}
 Modifier le code de la méthode \code{estim\_prix} afin de prendre en compte ce changement
 de calcul.
-\item Écrire le code Python d'une fonction \code{nb\_maison(lst)} qui prend en argument une liste
-Python de biens immobiliers de type \code{Bim} et qui renvoie le nombre d'objets de nature
-\code{'maison'} contenus dans la liste \code{lst}.
+\item 
+\begin{enumerate} 
+\item Recopier et compléter le code Python ci-dessous afin d'obtenir une fonction \code{nb\_maison} qui prend en argument une liste Python de biens immobiliers de type \code{Bim} et qui renvoie le nombre d'objets de nature \code{'maison'} contenus dans la liste \code{lst}.
+\begin{Python}
+def nb_maison(lst) : 
+	#à compléter1
+	for bien in lst : 
+		if #à compléter2 :
+			c=c+1
+	return c
+\end{Python}
+On veut maintenant utiliser une structure de dictionnaire pour compter le nombre de bien de chaque type immobilier.
+\item On crée la variable \code{dict=\{''AB'' : 3, ''CD'' : 4\}}.\\
+Pour chacune des commandes suivantes, en précisant votre réponse, dire si il y a une valeur renvoyée, une modification apportée à \code{dict} ou une erreur : 
+\begin{itemize} 
+\item \code{dict[''CD'']=8}
+\item \code{dict(''AB'')}
+\item \code{dict[''AB'']}
+\item \code{dict[''AB'']+=1}
+\item \code{dict[''EF'']=1}
+\item \code{''AB'' in dict}
+\item \code{''XY'' in dict}
+\end{itemize} 
+\item Écrire le code d'une fonction \code{nb\_type} qui prend en argument une liste Python de biens immobiliers de type \code{Bim} et qui renvoie un dictionnaire comptabilisant le nombre de bien de chaque type contenus dans la liste \code{lst}.\\
+Par exemple, la fonction renverra \code{\{''maison'' : 3, ''appartement'' : 7, ''garage'' : 2\}} si il y a 3 maisons, 7 appartements et 2 garages dans la liste.
+\end{enumerate}    
 \item Pour une recherche efficace des biens immobiliers selon le critère de leur surface, on
 stocke les objets de type \code{Bim} dans un arbre binaire de recherche, nommé \code{abr}. Pour tout
 nœud de cet arbre :
@@ -546,9 +568,9 @@ sinon.
 \end{itemize}
 
 \begin{enumerate}
-\item Dans cette question, on suppose que l'arbre binaire abr a la forme ci-dessous :
+\item Dans cette question, on suppose que l'arbre binaire \code{abr} a la forme ci-dessous :
 \begin{center}
-   \begin{tikzpicture}[xscale=.5,yscale=.5]
+   \begin{tikzpicture}[xscale=.5,yscale=.4]
 % Styles (MODIFIABLES)
 \tikzstyle{fleche}=[->,>=latex,thick]
 \tikzstyle{noeud}=[fill=yellow,circle,draw]
