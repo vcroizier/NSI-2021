@@ -18,17 +18,31 @@ Les élèves rendront de manière impérative brouillons et sujet en même temps
 \emph{Cet exercice porte sur les bases de données relationnelles et le langage SQL}
 
 \medskip
-Cet exercice utilise les mots du langage SQL suivant :
+Cet exercice utilise les mots du langage SQL parmi :
 \begin{verbatim}
 SELECT, FROM, WHERE, JOIN, ON, INSERT INTO, DELETE FROM, 
 VALUES, ORDER BY, ASC, DESC, DISTINCT, AS,
 LIMIT, LIKE, IN, AND, OR, NOT, MIN, MAX, COUNT, SUM,
 <, >, <=, >=, =, !=
 \end{verbatim} 
-On rappelle que \verb'LIMIT', suivi d'un entier strictement positif, permet de limiter le nombre de n-uplets retournés par une requête à la valeur indiquée par cet entier. 
 
-On rappelle que \verb's LIKE m', où \verb's' est le nom d'un attribut de type chaîne de caractères et \verb'm' est un motif de chaîne de caractères (contenant le caractère \verb"'_'" qui remplace n'importe quel caractère ou bien le caractère \verb"'%'" qui remplace n'importe quelle chaîne de caractères), renvoie un booléen indiquant si \verb's' est compatible avec le motif \verb'm'. Par exemple, \verb'"Bonjour" LIKE "B_nj%"' renvoie \verb'true'.
+\medskip
+On rappelle que :
+\begin{itemize}
+\item \code{DISTINCT} utilisé après \code{SELECT} supprime les doublons dans les résultats des requêtes.
+\item \verb'ORDER BY' permet de classer les résultats d'une requête (par ordre croissant \code{ASC} ou décroissant \code{DESC}) et obéit à la syntaxe : 
+\begin{verbatim}
+SELECT Attributs FROM Table WHERE Condition ORDER BY Attribut_de_classement ASC (ou DESC)
+\end{verbatim}
+\item \code{COUNT} renvoie le nombre de lignes dans la réponse à une requête et obéit à la syntaxe :
+\begin{verbatim}
+SELECT COUNT(Attribut) FROM Table WHERE Condition
+\end{verbatim}
+\item \code{MIN}, \code{MAX}, \code{SUM} s'utilisent de manière similaire.
+\end{itemize}
 
+%On rappelle que \verb's LIKE m', où \verb's' est le nom d'un attribut de type chaîne de caractères et \verb'm' est un motif de chaîne de caractères (contenant le caractère \verb"'_'" qui remplace n'importe quel caractère ou bien le caractère \verb"'%'" qui remplace n'importe quelle chaîne de caractères), renvoie un booléen indiquant si \verb's' est compatible avec le motif \verb'm'. Par exemple, \verb'"Bonjour" LIKE "B_nj%"' renvoie \verb'true'.
+\medskip
 Les types SQL des attributs utilisés dans cet exercice sont : 
 \begin{verbatim}
 Int, Float, String, Time, Date, Boolean
@@ -37,11 +51,10 @@ Le format retenu pour le type \verb'Time' est JJ/MM/AAAA (sans guillemets) et
 le format retenu pour le type \verb'Date' est HH:MM (sans guillemets).
 
 \medskip
-Un ingénieur en informatique doit concevoir une base de données relationnelle pour gérer la gare ferroviaire de NataSahId. Cette base de données sert pour l'affichage des informations  que les voyageurs peuvent consulter, ainsi qu'aux mécaniciens chargés des opérations de maintenance. Pour cela, il envisage quatre relations, dont des extraits sont précisés ci-après. Les attributs soulignés d'une relation désignent la clé primaire. Les attributs suivis du symbole \verb'#' désignent des clés étrangères.
+Un ingénieur en informatique doit concevoir une base de données relationnelle pour gérer la gare ferroviaire d'Arras. Cette base de données sert pour l'affichage des informations  que les voyageurs peuvent consulter, ainsi qu'aux mécaniciens chargés des opérations de maintenance. Pour cela, il envisage quatre relations, dont des extraits sont précisés ci-après. Les attributs soulignés d'une relation désignent la clé primaire. Les attributs suivis du symbole \verb'#' désignent des clés étrangères.
 
 \begin{itemize}
 \item \verb'Compagnie' (Nom : String, \underline{Symbole} : String, CodePays : String)
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|}\hline
 Nom & Symbole & CodePays\\\hline
@@ -50,14 +63,8 @@ Train Toto & TT & F\\\hline
 QuickTrains & QKT & GB\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Compagnie}}
-\end{figure}
-\end{itemize}
-
-%\newpage
-\begin{itemize}
-\item \verb'Train' (\underline{RefComp} \verb'#' : String, \underline{Matricule} : String, Modele : String, AutonomieKm : Float, VitesseMaxKmH : Float, NbDePassagers : Int)
-\begin{figure}[ht]
+%\caption{Extrait de la relation \textbf{Compagnie}}
+\item \verb'Train' (\underline{RefComp} \verb'#' : String, \underline{Matricule} : String, Modele : String, AutonomieKm : Float, \\VitesseMaxKmH : Float, NbDePassagers : Int)
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}\hline
 RefComp & Matricule & Modele & AutonomieKm & VitesseMaxKmH & NbDePassagers\\\hline
@@ -66,12 +73,9 @@ TT & TT 547 & Siemens 737 & 1500 & 174,8 & 350\\\hline
 QKT & QKT 78549 & Alstom A350 & 1700,5 & 130,0 & 350\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Train}}
-\end{figure}
-\end{itemize}
-\begin{itemize}
-\item \verb'Voyage' 
-\begin{figure}[ht]
+%\caption{Extrait de la relation \textbf{Train}}
+\newpage
+\item \verb'Voyage'
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}\hline
 Reference & Type & Date & Horaire & Lieu & Retard\\\hline
@@ -80,15 +84,9 @@ QKT 78549 & Arrivée & 12/06/2022 & 13:00 & Paris & true\\\hline
 QKT 78549 & Départ & 16/08/2022 & 07:15 & Berlin & false\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Voyage}}
-\end{figure}
-
+%\caption{Extrait de la relation \textbf{Voyage}}
 Le lieu d'un voyage de type 'Départ' désigne la gare de destination de ce voyage. Le lieu d'un voyage de type 'Arrivée' désigne la gare de provenance de ce voyage. 
-\end{itemize}
-
-\begin{itemize}
 \item \verb'Operation' (\underline{Reference} \verb'#' : String, \underline{Date} : String, Horaire : Time, HoraireFin : Time, Nature : String)
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}\hline
 Reference & Date & HoraireDebut & HoraireFin & Nature\\\hline
@@ -97,49 +95,208 @@ SNCF 1234 & 17/06/2022 & 09:00 & 13:00 & Réparation bogie avant\\\hline
 SNCF 1234 & 01/05/2022 & 08:00 & 17:00 & Visite annuelle générale\\\hline
 \end{tabular}
 \end{center}
-
-\caption{Extrait de la relation \textbf{Operation}}
-\end{figure}
+%\caption{Extrait de la relation \textbf{Operation}}
 \end{itemize}
 
 \begin{enumerate}
-\item Ecrivez le schéma relationnel de la table \verb'Voyage' (sans préciser de clé primaire), en indiquant les éventuelles clés étrangères.
-\item Pourquoi l'attribut \verb'Reference' ne peut pas être utilisé comme clé primaire pour la relation \verb'Voyage' ? Proposez une clé primaire valide, avec le minimum d'attributs, sachant qu'un train peut faire plusieurs rotations par jour vers une même destination.
-\item Parmi les propositions suivantes, indiquez celles qui ne sont pas des contraintes d'intégrités que doivent respecter des bases de données relationnelles : 
-\begin{itemize}
-\item les contraintes syntaxiques % faux
-\item les contraintes d'entités
-\item les contraintes de poids % faux
-\item les contraintes utilisateurs
-\item les contraintes de références
-\item les contraintes de domaines
-\end{itemize}
-\item Avec cette base de données, un train peut-il avoir plusieurs opérations de maintenance le même jour ? Justifiez.
+\item Écrire le schéma relationnel de la table \verb'Voyage' (sans préciser de clé primaire), en indiquant les éventuelles clés étrangères.
+\item Pourquoi l'attribut \verb'Reference' ne peut pas être utilisé comme clé primaire pour la relation \verb'Voyage' ? Proposer une clé primaire valide, avec le minimum d'attributs, sachant qu'un train peut faire plusieurs rotations par jour vers une même destination.
+\item Avec cette base de données, un train peut-il avoir plusieurs opérations de maintenance le même jour ? Justifier.
 \item Qu'affiche la requête SQL suivante :
 \begin{verbatim}
 SELECT Reference FROM Operation WHERE Date = 17/06/2022 AND HoraireFin >= 14:00
 \end{verbatim} 
-\item Ecrivez une requête SQL qui affiche la référence des voyages retardés aujourd'hui (date de l'épreuve).
-\item Ecrivez une requête SQL qui ajoute à la relation \verb'Train' l'Alstom A321, de matricule QKT 2468, dont la vitesse maximale est de 160 km/h, pouvant emporter 260 passagers sur une distance maximale de 1800 km.
-\item Ecrivez une requête SQL qui affiche les références des voyages de trains qui sont en provenance de Strasbourg le vendredi 1er avril 2022 au matin.
-\item Ecrivez une requête SQL qui affiche le nombre de compagnies françaises (le code pays de la France étant F).
-\item Ecrivez une requête SQL qui affiche les modèles de train qui peuvent transporter le plus de passagers.
-\item Ecrivez une requête SQL qui affiche le matricule des trains qui n'ont pas d'opération de maintenance prévue le mercredi 11 mai 2022, ni le mercredi 18 mai 2022.
+\item Écrire une requête SQL qui affiche la référence des voyages retardés le 28 Janvier 2022.
+\item Écrire une requête SQL qui ajoute à la relation \verb'Train' l'Alstom A321, de matricule QKT 2468, dont la vitesse maximale est de 160 km/h, pouvant emporter 260 passagers sur une distance maximale de 1800 km.
+\item Écrire une requête SQL qui affiche les horaires des trains qui sont en provenance de Strasbourg le vendredi 1er avril 2022.
+\item Écrire une requête SQL qui affiche le nombre de compagnies françaises (le code pays de la France étant F).
+\item Écrire une requête SQL qui donne le nombre maximal de passagers qu'un modèle de train puisse transporter.\\
+Écrire alors une requête SQL qui affiche les modèles de train qui peuvent transporter le plus de passagers.
+%\item Écrire une requête SQL qui affiche le matricule des trains qui ont une opération de maintenance prévue entre le 1er et le 10 mai 2022.
 \item On exécute la requête SQL suivante :
 \begin{verbatim}
 DELETE FROM Train WHERE Matricule = "SNCF 1234"
 \end{verbatim} 
-mais un message d'erreur est renvoyé, indiquant que l'opération est impossible. Expliquez pourquoi, en analysant les extraits de la base de données fournis, puis écrivez les commandes SQL complémentaires, en plus de celle-ci, afin que la requête puisse être réalisée avec succès.
-\item Ecrivez une requête SQL qui affiche, sans répétition, le nom des compagnies ferroviaires qui possèdent au moins un Alstom.
-\item Pour des raisons logistiques, une opération de maintenance ne peut pas être programmée pour un train un jour où il effectue un voyage. Ecrivez une requête SQL qui affiche les matricules des trains qui ne respecteraient pas cette règle.
-\item Ecrivez une requête SQL qui affiche la liste des couples nom de compagnie / matricule de train de cette compagnie, triée dans l'ordre alphabétique décroissant des noms de compagnie.
-\item Ecrivez une requête SQL qui affiche le nombre total de passagers que la compagnie ferroviaire SNCF peut transporter avec ses avions.
+mais un message d'erreur est renvoyé, indiquant que l'opération est impossible. Expliquer pourquoi, en analysant les extraits de la base de données fournis, puis écrivez les commandes SQL complémentaires, en plus de celle-ci, afin que la requête puisse être réalisée avec succès.
+\item Écrire une requête SQL qui affiche, sans répétition, le nom des compagnies ferroviaires qui possèdent au moins un Alstom A380.
+\item Pour des raisons logistiques, une opération de maintenance ne peut pas être programmée pour un train un jour où il effectue un voyage. Ecrivez une requête SQL qui affiche les matricules des trains qui ne respecteraient pas cette règle, c'est à dire pour lesquels une opération de maintenance serait prévue un jour où ils doivent voyager. 
+\item Écrire une requête SQL qui affiche la liste des couples nom de compagnie / matricule de train de cette compagnie, triée dans l'ordre alphabétique décroissant des noms de compagnie.
+%\item Ecrivez une requête SQL qui affiche le nombre total de passagers que la compagnie ferroviaire SNCF peut transporter avec ses trains.
 % \item Ecrivez une requête SQL qui affiche les références des voyages de trains qui font escale à la gare de NataSahId. Par convention, on suppose qu'un train fait une escale lorsqu'il arrive puis repart le même jour.
-\item Ecrivez une requête SQL qui affiche les matricules des trains français qui ont une visite annuelle générale prévue en janvier 2022.
+%\item Ecrivez une requête SQL qui affiche les matricules des trains français qui ont une visite annuelle générale prévue en janvier 2022.
+\item Écrire une requête SQL qui affiche le modèle de tous les trains qui arrivent de Londres ou partent vers Londres.
 \end{enumerate}
 
 \newpage
 \section*{Exercice 2}
+\emph{Cet exercice porte sur les réseaux et l'architecture.}
+
+\medskip
+
+
+\subsection*{Partie 1 : Protocole RIP}
+On considère le réseau suivant (chaque routeur est repéré par une lettre) :
+\begin{center}
+\begin{tikzpicture}[xscale=0.8,yscale=0.8]
+% Styles (MODIFIABLES)
+\tikzstyle{fleche}=[-,>=latex,thick]
+\tikzstyle{noeud}=[fill=yellow,circle,draw]
+\tikzstyle{feuille}=[fill=orange,circle,draw]
+% Dimensions (MODIFIABLES)
+\def\DistanceInterNiveaux{3}
+\def\DistanceInterFeuilles{2}
+% Dimensions calculées (NON MODIFIABLES)
+\def\NiveauA{(-0)*\DistanceInterNiveaux}
+\def\NiveauB{(-.75)*\DistanceInterNiveaux}
+\def\NiveauC{(-1.5)*\DistanceInterNiveaux}
+\def\InterFeuilles{(.75)*\DistanceInterFeuilles}
+% Noeuds (MODIFIABLES : Styles et Coefficients d'InterFeuilles)
+\node[noeud] (Ri) at ({(4)*\InterFeuilles},{\NiveauC}) {$I$};
+\node[noeud] (Rh) at ({(2)*\InterFeuilles},{\NiveauC}) {$H$};
+\node[noeud] (Rg) at ({(0)*\InterFeuilles},{\NiveauC}) {$G$};
+\node[noeud] (Rf) at ({(4)*\InterFeuilles},{\NiveauB}) {$F$};
+\node[noeud] (Re) at ({(2)*\InterFeuilles},{\NiveauB}) {$E$};
+\node[noeud] (Rd) at ({(0)*\InterFeuilles},{\NiveauB}) {$D$};
+\node[noeud] (Rc) at ({(4)*\InterFeuilles},{\NiveauA}) {$C$};
+\node[noeud] (Rb) at ({(2)*\InterFeuilles},{\NiveauA}) {$B$};
+\node[noeud] (Ra) at ({(0)*\InterFeuilles},{\NiveauA}) {$A$};
+% Arcs (MODIFIABLES : Styles)
+\draw[fleche] (Ra)--(Rb);
+\draw[fleche] (Rb)--(Rc);
+\draw[fleche] (Rb)--(Rd);
+\draw[fleche] (Rc)--(Re);
+\draw[fleche] (Rc)--(Rf);
+\draw[fleche] (Rd)--(Rg);
+%\draw[fleche,draw=white,double=black,very thick] (Re)--(Rf);
+\draw[fleche] (Rd)--(Rh);
+\draw[fleche] (Re)--(Rh);
+\draw[fleche] (Rf)--(Rh);
+\draw[fleche] (Rg)--(Rh);
+\draw[fleche] (Rh)--(Ri);
+\end{tikzpicture}
+\end{center}
+Pour les questions suivantes, on se place dans le cadre du protocole RIP.\\
+Pour départager des chemins de même longueur, on considère qu'à chaque fois que cela était possible, les connexions ont été établies dans l'ordre alphabétique. \\
+Ainsi, la liaison entre \code{A} et \code{B} a été créée avant celle entre \code{A} et \code{D},...\\
+De plus, un chemin entre deux routeurs est remplacé par un autre chemin uniquement si le nouveau chemin est strictement plus court.
+
+\begin{enumerate}
+    \item Quel est le chemin de B vers I ?
+    \item Quelle est la distance maximale entre deux routeurs de ce réseau ? 
+    \item Recopier sur votre copie et compléter la table de routage du routeur H (sur le modèle de la table du {\bf 4)}:
+    \begin{center}
+        \begin{tabular}{|c|c|c|}\hline
+            Destination&Routeur suivant&Distance\\ \hline
+            $\vdots$ &$\vdots$&$\vdots$\\ \hline
+            
+        \end{tabular}
+    \end{center}
+    \item Une liaison directe a été ajoutée entre deux routeurs.
+    La nouvelle table de routage du routeur D est alors :
+    \begin{center}
+        \begin{tabular}{|c|c|c|}\hline
+            Destination&Routeur suivant&Distance\\ \hline
+            A&D &2 \\ \hline 
+            B&D &2 \\ \hline 
+            C&D &3 \\ \hline 
+            D&D &1 \\ \hline 
+            E&H &2 \\ \hline 
+            F&H &2 \\ \hline  
+            H&H &1 \\ \hline
+            I&H &2 \\ \hline
+ \end{tabular}
+    \end{center}
+    Entre quels routeurs la liaison a-t-elle été ajoutée ? Justifier brièvement.
+\end{enumerate}
+
+\newpage
+\subsection*{Partie 2 : Protocole OSPF}
+On considère le réseau suivant (chaque routeur est repéré par une lettre) :
+\begin{multicols}{2}
+\begin{center}
+\begin{tikzpicture}[xscale=1,yscale=1]
+% Styles (MODIFIABLES)
+\tikzstyle{fleche}=[-,>=latex,thick]
+\tikzstyle{noeud}=[fill=yellow,circle,draw]
+\tikzstyle{feuille}=[fill=orange,circle,draw]
+% Dimensions (MODIFIABLES)
+\def\DistanceInterNiveaux{3}
+\def\DistanceInterFeuilles{2}
+% Dimensions calculées (NON MODIFIABLES)
+\def\NiveauA{(-0)*\DistanceInterNiveaux}
+\def\NiveauB{(-.75)*\DistanceInterNiveaux}
+\def\NiveauC{(-1.5)*\DistanceInterNiveaux}
+\def\InterFeuilles{(.75)*\DistanceInterFeuilles}
+% Noeuds (MODIFIABLES : Styles et Coefficients d'InterFeuilles)
+\node[noeud] (Ri) at ({(4)*\InterFeuilles},{\NiveauC}) {$I$};
+\node[noeud] (Rh) at ({(2)*\InterFeuilles},{\NiveauC}) {$H$};
+\node[noeud] (Rg) at ({(0)*\InterFeuilles},{\NiveauC}) {$G$};
+\node[noeud] (Rf) at ({(4)*\InterFeuilles},{\NiveauB}) {$F$};
+\node[noeud] (Re) at ({(2)*\InterFeuilles},{\NiveauB}) {$E$};
+\node[noeud] (Rd) at ({(0)*\InterFeuilles},{\NiveauB}) {$D$};
+\node[noeud] (Rc) at ({(4)*\InterFeuilles},{\NiveauA}) {$C$};
+\node[noeud] (Rb) at ({(2)*\InterFeuilles},{\NiveauA}) {$B$};
+\node[noeud] (Ra) at ({(0)*\InterFeuilles},{\NiveauA}) {$A$};
+% Arcs (MODIFIABLES : Styles)
+\draw[fleche] (Ra)--(Rb);
+\draw[fleche] (Rb)--(Rc);
+\draw[fleche] (Rb)--(Rd);
+\draw[fleche] (Rc)--(Re);
+\draw[fleche] (Rc)--(Rf);
+\draw[fleche] (Rd)--(Rg);
+%\draw[fleche,draw=white,double=black,very thick] (Re)--(Rf);
+\draw[fleche] (Rd)--(Rh);
+\draw[fleche] (Re)--(Rh);
+\draw[fleche] (Rf)--(Rh);
+\draw[fleche] (Rg)--(Rh);
+\draw[fleche] (Rh)--(Ri);
+\end{tikzpicture}
+\end{center}
+
+\begin{tabular}{|l|l|l|}\hline
+    Liaison& Type   & Débit\\\hline
+    A$\leftrightarrow$B&Wi-Fi&20 Mbit/s \\\hline
+    B$\leftrightarrow$C&Ethernet&20 Mbit/s \\\hline
+    B$\leftrightarrow$D&Fast Ethernet&100 Mbit/s \\\hline
+    C$\leftrightarrow$E&Fast Ethernet&100 Mbit/s \\\hline
+    C$\leftrightarrow$F&Fast Ethernet&100 Mbit/s \\\hline
+    D$\leftrightarrow$G&Fast Ethernet&100 Mbit/s  \\\hline
+    D$\leftrightarrow$H&Ethernet&10 Mbit/s \\\hline
+    E$\leftrightarrow$H&Fibre&1 Gbit/s \\\hline
+    F$\leftrightarrow$H&Fast Ethernet&100 Mbit/s \\\hline
+    G$\leftrightarrow$H&Ethernet&20 Mbit/s \\\hline
+    H$\leftrightarrow$I&Fibre&1 Gbit/s \\\hline
+ \end{tabular}
+\end{multicols}
+Pour les questions suivantes, on se place dans le cadre du protocole OSPF.
+On rappelle que pour ce protocole, le coût d'une liaison est 
+$\text{coût}=\frac{10^8}{d}$ où $d$ est la bande passante en $bit/s$.
+\begin{enumerate}
+    \item Quel est le coût des liaisons GH et HI ? Détailler les calculs.
+    \item Sans autres justifications, recopier sur votre copie le graphe et donner la pondération de chacun des arcs. 
+    \item Quel est le coût total du chemin B-D-H-I ?
+    \item En justifiant brièvement, quel est le chemin le moins coûteux allant de B à I ?
+\end{enumerate}
+
+\subsection*{Partie 3 : Architecture}
+On s'intéresse maintenant à une station météo gérée par un Raspberry~Pi. 
+
+Voici le schéma général du Raspberry~Pi :
+\begin{center}
+    \includegraphics[width=10cm]{SchemaSoc.png}
+\end{center}
+
+Ce Raspberry~Pi est connecté au réseau internet via une liaison wifi. Il est 
+relier directement avec la plupart de ses capteurs, sauf l'anémomètre à qui il 
+est connecté par Bluetooth. Il dispose d'un stockage persistant grâce à un
+disque SSD externe USB. Il n'a pas d'écran.  
+
+\begin{enumerate}
+    \item Donner la liste des modules d'entrée sortie (à droite dans le schéma) 
+    nécessaires au bon fonctionnement de la station météo.
+    \item Les processus s'exécutant sur le Raspberry~Pi ne doivent surtout pas
+    s'arrêter. Expliquer ce qu'on appelle un interblocage.
+\end{enumerate}
 
 
 \newpage
@@ -203,22 +360,22 @@ correspond à des coordonnées valides pour un labyrinthe de taille $(n,m)$, et 
 
 On donne ci-dessous des exemples d'appels.
 \begin{alltt}
->>> est\_valide(5, 2, 10, 10)
+>>> est\_valide(5, 2, 10, 7)
 True
->>> est\_valide(-3, 4, 10, 10)
+>>> est\_valide(10, 4, 10, 7)
 False
 \end{alltt}
 \item On suppose que le départ d'un labyrinthe est toujours indiqué, mais on ne fait aucune
-supposition sur son emplacement. Compléter la fonction \code{depart(lab)} ci-dessous de sorte
-qu'elle renvoie, sous la forme d'un tuple, les coordonnées du départ d'un labyrinthe
-(représenté par le paramètre \code{lab}). Par exemple, l'appel \code{depart(lab1)} doit renvoyer le
-tuple \code{(5, 0)}.
-\begin{alltt}
+supposition sur son emplacement. Recopier et compléter les lignes incomplètes de la fonction \code{depart(lab)} ci-dessous de sorte qu'elle renvoie, sous la forme d'un tuple, les coordonnées du départ d'un labyrinthe (représenté par le paramètre \code{lab}). Par exemple, l'appel \code{depart(lab1)} doit renvoyer le tuple \code{(5, 0)}.
+\begin{Python}
 def depart(lab) :
     n = len(lab)
     m = len(lab[0])
-...
-\end{alltt}
+    for i in #àcompléter1 : 
+    	for j in #àcompléter2 :
+    		if lab[i][j] #àcompléter3 :
+    			return (i,j)
+\end{Python}
 \item Écrire une fonction \code{nb\_cases\_vides(lab)} qui renvoie le nombre de cases vides d'un
 labyrinthe (comprenant donc l'arrivée et le départ).
 
@@ -343,7 +500,7 @@ class Bim:
 \medskip
 \code{b1 = Bim('maison', 70.0, 2000.0)}
 
-Que renvoie l'instruction b1.estim\_prix() ? Préciser le type de la valeur renvoyée.
+Que renvoie l'instruction \code{b1.estim\_prix()} ? Préciser le type de la valeur renvoyée.
 \item On souhaite affiner l'estimation du prix d'un bien en prenant en compte sa nature :
 \begin{itemize}
 \item pour un bien dont l'attribut \code{nt} est \code{'maison'} la nouvelle estimation du prix est le
@@ -351,9 +508,9 @@ produit de sa surface par le prix moyen par m² multiplié par $1,\!1$ ;
 \item pour un bien dont l'attribut \code{nt} est \code{'bureau'} la nouvelle estimation du prix est le
 produit de sa surface par le prix moyen par m² multiplié par $0,\!8$ ;
 \item pour les biens d'autres natures, l'estimation du prix ne change pas.
+\end{itemize}
 Modifier le code de la méthode \code{estim\_prix} afin de prendre en compte ce changement
 de calcul.
-\end{itemize}
 \item Écrire le code Python d'une fonction \code{nb\_maison(lst)} qui prend en argument une liste
 Python de biens immobiliers de type \code{Bim} et qui renvoie le nombre d'objets de nature
 \code{'maison'} contenus dans la liste \code{lst}.
@@ -380,7 +537,34 @@ sinon.
 \begin{enumerate}
 \item Dans cette question, on suppose que l'arbre binaire abr a la forme ci-dessous :
 \begin{center}
-    \includegraphics[width=0.7\linewidth]{BacBlanc2Sujet1_NSI2122-img6.png}
+   \begin{tikzpicture}[xscale=.5,yscale=.5]
+% Styles (MODIFIABLES)
+\tikzstyle{fleche}=[->,>=latex,thick]
+\tikzstyle{noeud}=[fill=yellow,circle,draw]
+\tikzstyle{feuille}=[fill=orange,circle,draw]
+% Dimensions (MODIFIABLES)
+\def\DistanceInterNiveaux{3}
+\def\DistanceInterFeuilles{2}
+% Dimensions calculées (NON MODIFIABLES)
+\def\NiveauA{(-0)*\DistanceInterNiveaux}
+\def\NiveauB{(-.75)*\DistanceInterNiveaux}
+\def\NiveauC{(-1.5)*\DistanceInterNiveaux}
+\def\NiveauD{(-2.25)*\DistanceInterNiveaux}
+\def\InterFeuilles{(.75)*\DistanceInterFeuilles}
+% Noeuds (MODIFIABLES : Styles et Coefficients d'InterFeuilles)
+\node[noeud] (R) at ({(0)*\InterFeuilles},{\NiveauA}) {b1};
+\node[noeud] (Ra) at ({(-3)*\InterFeuilles},{\NiveauB}) {b2};
+\node[noeud] (Rb) at ({(3)*\InterFeuilles},{\NiveauB}) {b3};
+\node[noeud] (Rab) at ({(-1.5)*\InterFeuilles},{\NiveauC}) {b4};
+\node[noeud] (Rba) at ({(1.5)*\InterFeuilles},{\NiveauC}) {b5};
+\node[noeud] (Rbb) at ({(4.5)*\InterFeuilles},{\NiveauC}) {b6};
+% Arcs (MODIFIABLES : Styles)
+\draw[fleche] (R)--(Ra);
+\draw[fleche] (R)--(Rb);
+\draw[fleche] (Ra)--(Rab);
+\draw[fleche] (Rb)--(Rba);
+\draw[fleche] (Rb)--(Rbb);
+\end{tikzpicture}
 \end{center}
 Donner la liste les biens \code{b1}, \code{b2}, \code{b3}, \code{b4}, \code{b5}, \code{b6} triée dans l'ordre croissant de leur surface.
 \item Recopier et compléter le code de la fonction récursive \code{contient} donnée ci-dessous, qui
@@ -410,53 +594,61 @@ fonctions suivantes ont été programmées préalablement en langage Python :
 \begin{itemize}
 \item[] \code{empiler(P, e)} : ajoute l'élément \code{e} sur la pile \code{P} ;
 \item[] \code{depiler(P)} : enlève le sommet de la pile \code{P} et retourne la valeur de ce sommet ;
-\item[] \code{est\_vide(P)} : retourne \code{True} si la pile est vide et \code{False} sinon ;
-\item[] \code{creer\_pile()} : retourne une pile vide.
+\item[] \code{est\_vide(P)} : renvoie \code{True} si la pile est vide et \code{False} sinon ;
+\item[] \code{creer\_pile()} : renvoie une pile vide.
 \end{itemize} 
 
 \textbf{Dans cet exercice, seule l'utilisation de ces quatre fonctions sur la structure de
 données pile est autorisée.}
 
 \begin{enumerate} 
-    \item \textbf{Recopier} le schéma ci-dessous et le compléter sur votre copie en exécutant
+    \item Recopier le schéma ci-dessous et le compléter sur votre copie en exécutant
     les appels de fonctions donnés. On écrira ce que renvoie la fonction utilisée
     dans chaque cas, et on indiquera None si la fonction ne retourne aucune
     valeur.
     \begin{center}
-        \includegraphics[width=\linewidth]{BacBlanc2Sujet1_NSI2122-img3.png}
+        \includegraphics[width=0.6\linewidth]{BacBlanc2Sujet1_NSI2122-img3.png}
     \end{center}
-    \item On propose la fonction ci-dessous, qui prend en argument une pile \code{P} et renvoie
-    un couple de piles :
-    \begin{alltt}
+    \item \begin{enumerate}
+    \item On donne la fonction ci-dessous, qui prend en argument une pile \code{P} et renvoie
+    un pile \code{Q} :
+    \begin{Python}
     def transforme(P) :
-        Q = creer\_pile()
-        while not est\_vide(P) :
+        Q = creer_pile()
+        while not est_vide(P) :
             v = depile(P)
             empile(Q,v)
-        return (P,Q)
-    \end{alltt}
-
-\newpage
-    \textbf{Recopier et compléter} sur votre copie le document ci-dessous
-    \begin{center}
-    \includegraphics[width=0.8\linewidth]{BacBlanc2Sujet1_NSI2122-img4.png}
-    \end{center}
-
-    \item \textbf{Écrire} une fonction en langage Python \code{maximum(P)} recevant une pile \code{P} comme
-    argument et qui renvoie la valeur maximale de cette pile. On ne s'interdit pas
-    qu'après exécution de la fonction, la pile soit vide.
-    On souhaite connaître le nombre d'éléments d'une pile à l'aide de la fonction \code{taille(P)}
-    \begin{center}
-    \includegraphics[width=3cm]{BacBlanc2Sujet1_NSI2122-img5.png}
-    
-    \code{taille(P)} retournera donc l'entier 5
-    \end{center}
-    \item
+        return (Q)
+    \end{Python}
+Si \code{P} est la pile à l'étape 0 de la {\bf question 1}, donner en justifiant la valeur de \code{P} et de \code{Q} après l'exécution de l'appel \code{transforme(P)} . 
+    \item En s'inspirant du code de \code{transforme}, écrire le code d'une fonction \code{transforme2} qui prend comme argument \code{P} et renvoie une pile \code{Q} comme ci-dessus mais cette fois en laissant \code{P} inchangée.\medskip\\
+On signale que si \code{P} est une pile, alors la commande \code{R=P} crée un ''clone'' de \code{P} et que toute modification apportée à \code{P} se répercute sur \code{R} et vice-versa.
+ \end{enumerate}    
+    \item On souhaite connaître le nombre d'éléments d'une pile à l'aide d'une fonction \code{taille} telle qu'à la fin de l'exécution de cette fonction, la pile de départ soit inchangée.\\
+Ainsi, si \code{P} est la pile à l'étape 0 de la {\bf question 1}, \code{taille(P)} renverra la valeur 4 et laissera \code{P} inchangée.
+   
 \begin{enumerate}
     \item Proposer une stratégie écrite en langage naturel et/ou expliquée à l'aide de
     schémas, qui permette de mettre en place une telle fonction.
-    \item Donner le code Python de cette fonction \code{taille(P)} (on pourra utiliser les
-    cinq fonctions déjà programmées).
+    \item Donner le code Python de cette fonction \code{taille}. On pourra éventuellement utiliser des fonctions précédemment programmées.
+\end{enumerate}
+
+    \item \begin{enumerate}
+    \item Recopier le code de la fonction suivante afin d'en faire une fonction prenant en entrée une liste Python \code{L} de types numériques et renvoyant le maximum de cette liste et l'indice où il a été rencontré.
+\begin{Python}
+def max_liste(L) : 
+	max=#àcompléter1
+	imax=#àcompléter2
+	for k in #àcompléter3 :
+		if L[k]>max : 
+			#àcompléter4
+			#àcompléter5
+	return max,imax
+\end{Python}
+    \item Écrire en langage Python une fonction \code{maximum} recevant une pile \code{P} comme argument et qui renvoie la valeur maximale de cette pile et la position dans la pile de cet élément (\code{1} pour le sommet de la pile, \code{2} pour l'élément suivant,...) . \\
+    On souhaite de plus que cette fonction laisse son argument \code{P} inchangé.\\
+Ainsi, si \code{P} est la pile à l'étape 0 de la {\bf question 1}, \code{maximum(P)} renverra le tuple \code{7,2} et laissera \code{P} inchangée. \\   
+On pourra éventuellement utiliser des fonctions précédemment programmées.
 \end{enumerate}
 \end{enumerate}
     
