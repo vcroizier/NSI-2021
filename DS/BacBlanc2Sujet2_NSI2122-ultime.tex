@@ -65,7 +65,6 @@ Un ingénieur en informatique doit concevoir une base de données relationnelle 
 
 \begin{itemize}
 \item \verb'Compagnie' (Nom : String, \underline{Symbole} : String, CodePays : String)
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|}\hline
 Nom & Symbole & CodePays\\\hline
@@ -74,13 +73,7 @@ Air Toto & AT & F\\\hline
 Sky Freedom & SKF & GB\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Compagnie}}
-\end{figure}
-\end{itemize}
-
-\begin{itemize}
 \item \verb'Avion' (\underline{RefComp} \verb'#' : String, \underline{Matricule} : String, Modele : String, RayonDActionKm : Float, VitesseMaxKmH : Float, NbDePassagers : Int)
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}\hline
 RefComp & Matricule & Modele & RayonDActionKm & VitesseMaxKmH & NbDePassagers\\\hline
@@ -89,13 +82,7 @@ SKF & SKF 547 & Boeing 737 & 1500 & 974,8 & 350\\\hline
 LFT & LFT 78549 & Airbus A350 & 1700,5 & 830,0 & 350\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Avion}}
-\end{figure}
-\end{itemize}
-
-\begin{itemize}
 \item \verb'Vol' \\
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|}\hline
 Reference & Type & Date & Horaire & Lieu & Retard\\\hline
@@ -104,14 +91,8 @@ LFT 78549 & Arrivée & 12/06/2022 & 13:00 & Paris & true\\\hline
 LFT 78549 & Départ & 16/08/2022 & 07:15 & Berlin & false\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Vol}}
-\end{figure}
 Le lieu d'un vol de type 'Départ' désigne l'aéroport de destination de ce vol. Le lieu d'un vol de type 'Arrivée' désigne l'aéroport de provenance de ce vol. 
-\end{itemize}
-
-\begin{itemize}
 \item \verb'Operation' (\underline{Reference} \verb'#' : String, \underline{Date} : String, Horaire : Time, HoraireFin : Time, Nature : String)
-\begin{figure}[ht]
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}\hline
 Reference & Date & HoraireDebut & HoraireFin & Nature\\\hline
@@ -120,8 +101,6 @@ AF 1234 & 17/06/2022 & 09:00 & 13:00 & Réparation volet droit\\\hline
 AF 1234 & 01/05/2022 & 08:00 & 17:00 & Visite annuelle générale\\\hline
 \end{tabular}
 \end{center}
-\caption{Extrait de la relation \textbf{Operation}}
-\end{figure}
 \end{itemize}
 
 \begin{enumerate}
@@ -425,7 +404,7 @@ On donne ci-dessous les résultats attendus pour certains appels.
 \end{enumerate}
 
 Dans la suite, on suppose qu'on dispose de la fonction \code{moitie\_droite(tab)} qui renvoie la
-moitié droite sans l'élément du milieu.
+moitié droite sans l'éventuel élément du milieu.
 
 \begin{enumerate}\setcounter{enumi}{2}
 \item On suppose qu'une fonction \code{nb\_inv\_tab(tab1, tab2)} a été écrite. Cette fonction
@@ -456,7 +435,7 @@ fonction \code{nb\_inv\_tab} avec pour arguments les deux tableaux triés.
 \newpage
 \section*{Exercice 4}
 
-\emph{Cet exercice porte sur les arbres et la programmation orientée objet.}
+\emph{Cet exercice porte sur les arbres, les dictionnaires et la programmation orientée objet.}
 
 \medskip
 Un concessionnaire automobile développe un programme pour gérer les véhicules qu'il
@@ -465,8 +444,8 @@ propose à la vente.
 Dans ce programme, pour modéliser les données de véhicules, on définit une classe
 \code{Veh} avec les attributs suivants :
 \begin{itemize}
-\item \code{ma} de type \code{str} représente la marque du véhicule (Peugeot, Renaut, Porsche, … ) ;
-\item \code{prx} de type \code{float} est le prix à neuf du bien ;
+\item \code{mar} de type \code{str} représente la marque du véhicule (Peugeot, Renaut, Porsche, … ) ;
+\item \code{prx} de type \code{float} est le prix du véhicule neuf ;
 \item \code{age} de type \code{int} est l'age du véhicule.
 \end{itemize}
 
@@ -490,9 +469,9 @@ Ainsi, on estime le prix d'un véhicule en enlevant $10\%$ de son prix neuf par 
 Que renvoie l'instruction v1.estim\_prix() ? 
 \item On souhaite affiner l'estimation du prix d'un véhicule en tenant compte de sa marque :
 \begin{itemize}
-\item pour un véhicule dont l'attribut \code{ma} est \code{'Peugeot'} la nouvelle estimation du prix est son prix neuf auquel on enlève 20$\%$ par année de circulation. Si le prix atteint $0$ euros, on le fixe à 1 euro. 
-\item pour un véhicule dont l'attribut \code{ma} est \code{'Porsche'} la nouvelle estimation du prix est son prix neuf auquel on ajoute 10$\%$ par année de circulation; 
-\item pour les biens d'autres natures, l'estimation du prix ne change pas.
+\item pour un véhicule dont l'attribut \code{mar} est \code{'Peugeot'} la nouvelle estimation du prix est son prix neuf auquel on enlève 20$\%$ par année de circulation. Si le prix atteint $0$ euros, on le fixe à 1 euro. 
+\item pour un véhicule dont l'attribut \code{mar} est \code{'Porsche'} la nouvelle estimation du prix est son prix neuf auquel on ajoute 10$\%$ par année de circulation; 
+\item pour les véhicules d'autres marques, l'estimation du prix ne change pas.
 \end{itemize}
 Modifier le code de la méthode \code{estim\_prix} afin de prendre en compte ce changement
 de calcul.
@@ -507,19 +486,19 @@ def nb_Peugeot(lst) :
 	return c
 \end{Python}
 On veut maintenant utiliser une structure de dictionnaire pour compter le nombre de véhicules de chaque marque.
-\item On crée la variable \code{dict=\{''AB'' : 3, ''CD'' : 4\}}.\\
+\item On crée la variable \code{dict=\{'AB' : 3, 'CD' : 4\}}.\\
 Pour chacune des commandes suivantes, en précisant votre réponse, dire si il y a une valeur renvoyée, une modification apportée à \code{dict} ou une erreur : 
 \begin{itemize} 
-\item \code{dict[''CD'']=8}
-\item \code{dict(''AB'')}
-\item \code{dict[''AB'']}
-\item \code{dict[''AB'']+=1}
-\item \code{dict[''EF'']=1}
-\item \code{''AB'' in dict}
-\item \code{''XY'' in dict}
+\item \code{dict['CD']=8}
+\item \code{dict('AB')}
+\item \code{dict['AB']}
+\item \code{dict['AB']+=1}
+\item \code{dict['EF']=1}
+\item \code{'AB' in dict}
+\item \code{'XY' in dict}
 \end{itemize} 
 \item Écrire le code d'une fonction \code{nb\_type} qui prend en argument une liste Python de véhicules de type \code{Veh} et qui renvoie un dictionnaire comptabilisant le nombre de véhicules de chaque marque dans la liste \code{lst}.\\
-Par exemple, la fonction renverra \code{\{''Peugeot'' : 3, ''Toyota'' : 7, ''Fiat'' : 2\}} si il y a 3 Peugeot, 7 Toyota et 2 Fiat dans la liste.
+Par exemple, la fonction renverra \code{\{'Peugeot' : 3, 'Toyota' : 7, 'Fiat' : 2\}} si il y a 3 Peugeot, 7 Toyota et 2 Fiat dans la liste.
 \end{enumerate}    
 
 \item Pour une recherche efficace de véhicules selon le critère de leur prix, on
@@ -636,7 +615,7 @@ mettre en œuvre le mode FIFO (First In First Out) ?
 \item On choisit de stocker les données des processus en attente à l'aide d'une liste Python \code{lst}.
 On dispose déjà d'une fonction \code{retirer(lst)} qui renvoie l'élément \code{lst[0]} puis le
 supprime de la liste \code{lst}. Écrire en Python le code d'une fonction \code{ajouter(lst, proc)} qui
-ajoute à la fin de la liste lst le nouveau processus en attente \code{proc}.
+ajoute à la fin de la liste \code{lst} le nouveau processus en attente \code{proc}.
 \end{enumerate}
 
 On choisit maintenant d'implémenter une file \code{file} à l'aide d'un couple \code{(p1,p2)} où \code{p1} et \code{p2}

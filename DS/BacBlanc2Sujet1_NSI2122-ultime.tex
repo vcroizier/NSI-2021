@@ -118,7 +118,7 @@ SNCF 1234 & 01/05/2022 & 08:00 & 17:00 & Visite annuelle générale\\\hline
 SELECT Reference FROM Operation WHERE Date = 17/06/2022 AND HoraireFin >= 14:00
 \end{verbatim} 
 \item Écrire une requête SQL qui affiche la référence des voyages retardés le 28 Janvier 2022.
-\item Écrire une requête SQL qui ajoute à la relation \verb'Train' l'Alstom A321, de matricule QKT 2468, dont la vitesse maximale est de 160 km/h, pouvant emporter 260 passagers sur une distance maximale de 1800 km.
+\item Écrire une requête SQL qui ajoute à la relation \verb'Train' l'Alstom A321, de matricule QKT 2468, dont la vitesse maximale est de 160 km/h, pouvant emporter 760 passagers sur une distance maximale de 1000 km.
 \item Écrire une requête SQL qui affiche les horaires des trains qui sont en provenance de Strasbourg le vendredi 1er avril 2022.
 \item Écrire une requête SQL qui affiche le nombre de compagnies françaises (le code pays de la France étant F).
 \item Écrire une requête SQL qui donne le nombre maximal de passagers qu'un modèle de train puisse transporter.\\
@@ -130,7 +130,7 @@ DELETE FROM Train WHERE Matricule = "SNCF 1234"
 \end{verbatim} 
 mais un message d'erreur est renvoyé, indiquant que l'opération est impossible. Expliquer pourquoi, en analysant les extraits de la base de données fournis, puis écrivez les commandes SQL complémentaires, en plus de celle-ci, afin que la requête puisse être réalisée avec succès.
 \item Écrire une requête SQL qui affiche, sans répétition, le nom des compagnies ferroviaires qui possèdent au moins un Alstom A380.
-\item Pour des raisons logistiques, une opération de maintenance ne peut pas être programmée pour un train un jour où il effectue un voyage. Ecrivez une requête SQL qui affiche les matricules des trains qui ne respecteraient pas cette règle, c'est à dire pour lesquels une opération de maintenance serait prévue un jour où ils doivent voyager. 
+\item Pour des raisons logistiques, une opération de maintenance ne peut pas être programmée pour un train un jour où il effectue un voyage. Ecrire une requête SQL qui affiche les matricules des trains qui ne respecteraient pas cette règle, c'est à dire pour lesquels une opération de maintenance serait prévue un jour où ils doivent voyager. 
 \item Écrire une requête SQL qui affiche la liste des couples nom de compagnie / matricule de train de cette compagnie, triée dans l'ordre alphabétique décroissant des noms de compagnie.
 %\item Ecrivez une requête SQL qui affiche le nombre total de passagers que la compagnie ferroviaire SNCF peut transporter avec ses trains.
 % \item Ecrivez une requête SQL qui affiche les références des voyages de trains qui font escale à la gare de NataSahId. Par convention, on suppose qu'un train fait une escale lorsqu'il arrive puis repart le même jour.
@@ -140,7 +140,7 @@ mais un message d'erreur est renvoyé, indiquant que l'opération est impossible
 
 \newpage
 \section*{Exercice 2}
-\emph{Cet exercice porte sur les réseaux et l'architecture.}
+\emph{Cet exercice porte sur les réseaux et l'architecture machine.}
 
 \medskip
 
@@ -376,7 +376,9 @@ True
 False
 \end{alltt}
 \item On suppose que le départ d'un labyrinthe est toujours indiqué, mais on ne fait aucune
-supposition sur son emplacement. Recopier et compléter les lignes incomplètes de la fonction \code{depart(lab)} ci-dessous de sorte qu'elle renvoie, sous la forme d'un tuple, les coordonnées du départ d'un labyrinthe (représenté par le paramètre \code{lab}). Par exemple, l'appel \code{depart(lab1)} doit renvoyer le tuple \code{(5, 0)}.
+supposition sur son emplacement. Recopier et compléter les lignes incomplètes de la fonction \code{depart(lab)} ci-dessous de sorte qu'elle renvoie, sous la forme d'un tuple, les coordonnées du départ d'un labyrinthe (représenté par le paramètre \code{lab}). 
+
+Par exemple, l'appel \code{depart(lab1)} doit renvoyer le tuple \code{(5, 0)}.
 \begin{Python}
 def depart(lab) :
     n = len(lab)
@@ -477,7 +479,7 @@ Par exemple, l'appel \code{solution(lab2)} doit renvoyer \code{[(1, 0), (1, 1), 
 
 \newpage
 \section*{Exercice 4}
-\emph{Cet exercice porte sur les arbres et la programmation orientée objet.}
+\emph{Cet exercice porte sur les arbres, les dictionnaires et la programmation orientée objet.}
 
 \medskip
 Une agence immobilière développe un programme pour gérer les biens immobiliers qu'elle
@@ -532,20 +534,20 @@ def nb_maison(lst) :
 			c=c+1
 	return c
 \end{Python}
-On veut maintenant utiliser une structure de dictionnaire pour compter le nombre de bien de chaque type immobilier.
-\item On crée la variable \code{dict=\{''AB'' : 3, ''CD'' : 4\}}.\\
+On veut maintenant utiliser une structure de dictionnaire pour compter le nombre de biens de chaque type immobilier.
+\item On crée la variable \code{dict=\{'AB' : 3, 'CD' : 4\}}.\\
 Pour chacune des commandes suivantes, en précisant votre réponse, dire si il y a une valeur renvoyée, une modification apportée à \code{dict} ou une erreur : 
 \begin{itemize} 
-\item \code{dict[''CD'']=8}
-\item \code{dict(''AB'')}
-\item \code{dict[''AB'']}
-\item \code{dict[''AB'']+=1}
-\item \code{dict[''EF'']=1}
-\item \code{''AB'' in dict}
-\item \code{''XY'' in dict}
+\item \code{dict['CD']=8}
+\item \code{dict('AB')}
+\item \code{dict['AB']}
+\item \code{dict['AB']+=1}
+\item \code{dict['EF']=1}
+\item \code{'AB' in dict}
+\item \code{'XY' in dict}
 \end{itemize} 
-\item Écrire le code d'une fonction \code{nb\_type} qui prend en argument une liste Python de biens immobiliers de type \code{Bim} et qui renvoie un dictionnaire comptabilisant le nombre de bien de chaque type contenus dans la liste \code{lst}.\\
-Par exemple, la fonction renverra \code{\{''maison'' : 3, ''appartement'' : 7, ''garage'' : 2\}} si il y a 3 maisons, 7 appartements et 2 garages dans la liste.
+\item Écrire le code d'une fonction \code{nb\_type} qui prend en argument une liste Python de biens immobiliers de type \code{Bim} et qui renvoie un dictionnaire comptabilisant le nombre de biens de chaque type contenus dans la liste \code{lst}.\\
+Par exemple, la fonction renverra \code{\{'maison' : 3, 'appartement' : 7, 'garage' : 2\}} si il y a 3 maisons, 7 appartements et 2 garages dans la liste.
 \end{enumerate}    
 \item Pour une recherche efficace des biens immobiliers selon le critère de leur surface, on
 stocke les objets de type \code{Bim} dans un arbre binaire de recherche, nommé \code{abr}. Pour tout
@@ -602,9 +604,9 @@ sinon.
 Donner la liste les biens \code{b1}, \code{b2}, \code{b3}, \code{b4}, \code{b5}, \code{b6} triée dans l'ordre croissant de leur surface.
 \item Recopier et compléter le code de la fonction récursive \code{contient} donnée ci-dessous, qui
 prend en arguments un nombre \code{surface} de type \code{float} et un arbre binaire de recherche
-\code{abr} contenant des éléments de type \code{Bim} ordonnés selon leur attribut de surface \code{sf}. La
-fonction \code{contient(surface, abr)} renvoie \code{True} s'il existe un bien dans \code{abr} d'une
-surface supérieure ou égale à \code{surface} et \code{False} sinon.
+\code{abr} contenant des éléments de type \code{Bim} ordonnés selon leur attribut de surface \code{sf}. 
+
+La fonction \code{contient(surface, abr)} renvoie \code{True} s'il existe un bien dans \code{abr} d'une surface supérieure ou égale à \code{surface} et \code{False} sinon.
 \begin{Python*}
 def contient(surface, abr):
     if abr.est_vide():
@@ -640,7 +642,7 @@ données pile est autorisée.}
     dans chaque cas, et on indiquera None si la fonction ne retourne aucune
     valeur.
     \begin{center}
-        \includegraphics[width=0.6\linewidth]{BacBlanc2Sujet1_NSI2122-img3.png}
+        \includegraphics[width=0.8\linewidth]{BacBlanc2Sujet1_NSI2122-img3.png}
     \end{center}
     \item \begin{enumerate}
     \item On donne la fonction ci-dessous, qui prend en argument une pile \code{P} et renvoie
@@ -654,7 +656,7 @@ données pile est autorisée.}
         return (Q)
     \end{Python}
 Si \code{P} est la pile à l'étape 0 de la {\bf question 1}, donner en justifiant la valeur de \code{P} et de \code{Q} après l'exécution de l'appel \code{transforme(P)} . 
-    \item En s'inspirant du code de \code{transforme}, écrire le code d'une fonction \code{transforme2} qui prend comme argument \code{P} et renvoie une pile \code{Q} comme ci-dessus mais cette fois en laissant \code{P} inchangée.\medskip\\
+    \item En s'inspirant du code de \code{transforme}, écrire le code d'une fonction \code{transforme2} qui prend comme argument une pile \code{P} et renvoie une pile \code{Q} comme ci-dessus mais cette fois en laissant \code{P} inchangée.\medskip\\
 On signale que si \code{P} est une pile, alors la commande \code{R=P} crée un ''clone'' de \code{P} et que toute modification apportée à \code{P} se répercute sur \code{R} et vice-versa.
  \end{enumerate}    
     \item On souhaite connaître le nombre d'éléments d'une pile à l'aide d'une fonction \code{taille} telle qu'à la fin de l'exécution de cette fonction, la pile de départ soit inchangée.\\
