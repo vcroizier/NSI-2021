@@ -1,4 +1,5 @@
-#%%class Ruban:
+#%%
+class Ruban:
     def __init__(self,L,position=0,blanc="•"):
         """Crée un ruban donc les valeurs de départ
         sont dans L et la position initiale de la tête
